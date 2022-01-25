@@ -1,18 +1,18 @@
-import logo from './logo.svg';
 import './App.css';
 import Dragon from "./components/Dragon";
+import AddDragon from './components/AddDragon';
 import { useState } from 'react';
-import { isCodeInList, validateCode } from "./functions.js"
+import { isCodeInList, validateCode } from "./functions.js";
 
-function App() {
-    const [listOfDragons, updateListOfDragons] = useState([{
-        code: "xxxxx",
-        repeat: 4
-    }]);
-    const [codeToAdd, updateNewCode] = useState("");
+const settings ={
+    minRate: 200
+};
 
+export default function App() {
+    const [listOfDragons, updateListOfDragons] = useState([]);
+    const [rate, updateRate] = useState(settings.minRate);
 
-    function addDragon(){
+    function handleAdd(codeToAdd){
         // prevent people adding an already added code to the list
         if(isCodeInList(listOfDragons, codeToAdd)){
             return;
@@ -26,12 +26,40 @@ function App() {
             code: codeToAdd,
             repeat: 1
         };
+
         updateListOfDragons([...listOfDragons, dragon]);
+    }
+
+    function beginRefreshing(){
+
+    }
+
+    function handleUpdateDragon(index, val){
+        let dragons = listOfDragons;
+        dragons[index] = {
+            ...dragons[index],
+            repeat: val
+        };
+        console.log(dragons);
+        updateListOfDragons([...dragons]);
+    }
+
+    function handleRemove(index){
+        let dragons = listOfDragons;
+        dragons.splice(index, 1);
+        console.log("removing", index)
+        updateListOfDragons([...dragons]);
     }
 
     return (
         <div className="App">
-            <table>
+            <table className="table-auto">
+                <thead>
+                    <th>Image</th>
+                    <th>Code</th>
+                    <th>Repeat</th>
+                    <th>Tools</th>
+                </thead>
                 <tbody>
                     {
                         listOfDragons.map((dragon, index) => {
@@ -39,19 +67,24 @@ function App() {
                             <Dragon
                                 key={index}
                                 code={dragon.code}
-                                updateRepeat="change"/>
+                                repeat={dragon.repeat}
+                                updateRepeat={(repeatFor) => handleUpdateDragon(index, repeatFor)}
+                                remove={() => handleRemove(index)} />
                             )
                         })
                     }
+                    <AddDragon
+                        addToList={handleAdd} />
                 </tbody>
             </table>
             <div>
-                Code:
-                <input type='text' onChange={(e) => updateNewCode(e.target.value)}/>
-                <button onClick={addDragon}>Add</button>
+                <input 
+                    type='number'
+                    value={settings.minRate}
+                    min="200"
+                    onChange={(e) => { updateRate(e.target.value) }} />
+                <button onClick={beginRefreshing}>Begin autorefreshing</button>
             </div>
         </div>
     );
 }
-
-export default App;
