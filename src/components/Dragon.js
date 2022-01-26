@@ -1,6 +1,6 @@
 import "./Dragon.css";
 
-export default function Dragon({code, repeat, updateRepeat, remove}){
+export default function Dragon({code, instances, updateInstances, remove}){
     const imgLink = `https://dragcave.net/image/${code}.gif`;
     const viewLink = `https://dragcave.net/view/${code}`;
 
@@ -15,9 +15,10 @@ export default function Dragon({code, repeat, updateRepeat, remove}){
             <td>
                 <input
                     type='number'
-                    value={repeat}
+                    value={instances}
                     min="1"
-                    onChange={(e) => updateRepeat(e.target.value)} />
+                    max="10"
+                    onChange={(e) => updateInstances(e.target.value)} />
             </td>
             <td>
                 <button onClick={remove}>Delete</button>

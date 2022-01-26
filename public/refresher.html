@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <script type='text/javascript'>
+function validateDragon(props){
+    return /^[a-zA-Z0-9]{4,5}$/.test(props.code) && /^\d+$/.test(props.instances);
+}
+
+// gets query string parameters
+function getQuery(){
+    const view = document.getElementById('dragons');
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    return Object.fromEntries(urlSearchParams.entries());
+}
+
+// returns false on error, or the dragon's properties
+// if ok
+const parseDragon = function(str){
+    const p = str.split(':');
+
+    //skip if we don't have a code:instances
+    if(p.length !== 2){
+        return false;
+    }
+
+    const props = {
+        code: p[0],
+        instances: p[1]
+    }
+
+    return (validateDragon(props) ? props : false);
+}
+
+const validateRate = function(rate){
+    return rate >= 250 && rate <= 4000;
+}
+
+window.onload = function(){
+    const view = document.getElementById('view');
+    const {dragonsStr, rate} = getQuery();
+
+    console.log(dragonsStr, rate)
+    if(dragonsStr === undefined || rate === undefined){
+        return;
+    }
+
+    if(!validateRate(rate)){
+        return;
+    }
+
+    const b = dragonsStr.split(',');
+    let dragons = [];
+
+    for(let dragon of b){
+        const dr = parseDragon(dragon);
+        if(!dr){
+            continue;
+        }
+
+        dragons.push(dr);
+    }
+    console.log(dragons)
+
+    // loop through dragons
+    for(let dragon of dragons){
+        for(let i = 0; i < dragon.instances; ++i){
+            const imgLink = `https://dragcave.net/image/${dragon.code}.gif?t=${i}`;
+            view.innerHTML += `<img alt="dragon" src="${imgLink}" />`;
+        }
+    }
+
+    // refresh at the set rate
+    window.setTimeout(() => {
+        location.reload();
+    }, rate);
+}
+        </script>
+    </head>
+    <body>
+        <div id="view">
+
+        </div>
+    </body>
+</html>

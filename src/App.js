@@ -1,16 +1,14 @@
 import './App.css';
 import Dragon from "./components/Dragon";
 import AddDragon from './components/AddDragon';
+import RefresherControls from './components/RefresherControls';
 import { useState } from 'react';
 import { isCodeInList, validateCode } from "./functions.js";
 
-const settings ={
-    minRate: 200
-};
-
 export default function App() {
     const [listOfDragons, updateListOfDragons] = useState([]);
-    const [rate, updateRate] = useState(settings.minRate);
+    const [rate, updateRate] = useState(250);
+    const [autorefresh, updateAutorefresh] = useState(false);
 
     function handleAdd(codeToAdd){
         // prevent people adding an already added code to the list
@@ -24,67 +22,70 @@ export default function App() {
 
         const dragon = {
             code: codeToAdd,
-            repeat: 1
+            instances: 1
         };
 
         updateListOfDragons([...listOfDragons, dragon]);
     }
 
-    function beginRefreshing(){
-
+    function toggleAutorefresh(){
+        updateAutorefresh(!autorefresh);
     }
 
     function handleUpdateDragon(index, val){
         let dragons = listOfDragons;
         dragons[index] = {
             ...dragons[index],
-            repeat: val
+            instances: val
         };
-        console.log(dragons);
         updateListOfDragons([...dragons]);
     }
 
     function handleRemove(index){
         let dragons = listOfDragons;
         dragons.splice(index, 1);
-        console.log("removing", index)
         updateListOfDragons([...dragons]);
     }
 
+    const createIframeDragons = function(){
+        return listOfDragons.map((dragon) => `${dragon.code}:${dragon.instances}`).join(',');
+    };
+
+    const iframeSrc = `./refresher.html?rate=${rate}&dragonsStr=${createIframeDragons()}`
     return (
         <div className="App">
             <table className="table-auto">
                 <thead>
-                    <th>Image</th>
-                    <th>Code</th>
-                    <th>Repeat</th>
-                    <th>Tools</th>
+                    <tr>
+                        <th>Image</th>
+                        <th>Code</th>
+                        <th>Instances</th>
+                        <th>Tools</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {
                         listOfDragons.map((dragon, index) => {
                             return (
-                            <Dragon
-                                key={index}
-                                code={dragon.code}
-                                repeat={dragon.repeat}
-                                updateRepeat={(repeatFor) => handleUpdateDragon(index, repeatFor)}
-                                remove={() => handleRemove(index)} />
+                                <Dragon
+                                    key={index}
+                                    code={dragon.code}
+                                    instances={dragon.instances}
+                                    updateInstances={(instances) => handleUpdateDragon(index, instances)}
+                                    remove={() => handleRemove(index)} />
                             )
                         })
                     }
-                    <AddDragon
-                        addToList={handleAdd} />
+                    <AddDragon addToList={handleAdd} />
                 </tbody>
             </table>
-            <div>
-                <input 
-                    type='number'
-                    value={settings.minRate}
-                    min="200"
-                    onChange={(e) => { updateRate(e.target.value) }} />
-                <button onClick={beginRefreshing}>Begin autorefreshing</button>
-            </div>
+            <RefresherControls
+                rate={rate}
+                update={(rate) => {console.log(rate); updateRate(rate)}}
+                click={toggleAutorefresh} />
+            {
+                autorefresh ? <iframe src={iframeSrc}></iframe> : ""
+            } 
         </div>
     );
 }
