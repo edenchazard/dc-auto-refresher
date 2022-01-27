@@ -1,28 +1,34 @@
 import { useState } from 'react';
+import DragonInstancesInput from "./DragonInstancesInput";
 
 export default function AddDragon({addToList}){
-    const [codeToAdd, updateNewCode] = useState("");
+    const [code, updateNewCode] = useState("");
+    const [instances, setInstances] = useState(1);
 
     function handleAdd(){
         updateNewCode("");
-        addToList(codeToAdd);
+        setInstances(1);
+        addToList(code, instances);
     }
 
     return (
         <tr>
-            <td>&nbsp;</td>
+            <td>New</td>
             <td>
                 <input
+                    className='text-black'
                     type='text'
                     placeholder="Code"
-                    value={codeToAdd}
+                    value={code}
                     onChange={(e) => updateNewCode(e.target.value)}/>
             </td>
             <td>
-                &nbsp;
+                <DragonInstancesInput
+                    instances={instances}
+                    setInstances={setInstances} />
             </td>
             <td>
-                <button onClick={handleAdd}>Add</button>
+                <button className="rounded bg-indigo-500 px-2 py-1" onClick={handleAdd}>Add</button>
             </td>
         </tr>
     );

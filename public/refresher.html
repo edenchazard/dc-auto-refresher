@@ -38,7 +38,6 @@ window.onload = function(){
     const view = document.getElementById('view');
     const {dragonsStr, rate} = getQuery();
 
-    console.log(dragonsStr, rate)
     if(dragonsStr === undefined || rate === undefined){
         return;
     }
@@ -58,7 +57,6 @@ window.onload = function(){
 
         dragons.push(dr);
     }
-    console.log(dragons)
 
     // loop through dragons
     for(let dragon of dragons){
@@ -69,9 +67,7 @@ window.onload = function(){
     }
 
     // refresh at the set rate
-    window.setTimeout(() => {
-        location.reload();
-    }, rate);
+    window.setTimeout(() => location.reload(), rate);
 }
         </script>
     </head>

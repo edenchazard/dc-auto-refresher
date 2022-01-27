@@ -2,8 +2,10 @@ const Select = ({onChange, value}) =>{
     let options = [250, 500, 1000, 2000, 4000];
     return (
         <select
+            id='rate'
             value={value}
-            onChange={(e) => onChange(e.target.value)}>
+            onChange={(e) => onChange(e.target.value)}
+            className='text-black'>
             {
                 options.map((opt, index) =>{
                     return <option key={index} value={opt}>{opt}ms</option>
@@ -13,11 +15,21 @@ const Select = ({onChange, value}) =>{
     );
 };
 
-export default function RefresherControls({rate, update, click}) {
+export default function RefresherControls({rate, update, click, autorefresh}) {
     return (
-        <div>
-            <Select value={rate} onChange={update} />
-            <button onClick={click}>Toggle autorefresh</button>
+        <div className="flex items-center justify-between">
+            <div>
+                <label for='rate'>Rate: </label>
+                <Select value={rate} onChange={update} />
+            </div>
+            <div>
+            {
+                //AR enabled
+                (autorefresh ? <button onClick={click} className="rounded bg-blue-300 px-2 py-1">Turn off autorefresh</button>
+                            : <button onClick={click} className="rounded bg-blue-600 px-2 py-1">Turn on autorefresh</button>)
+            }
+            </div>
+            
         </div>
     );
 }

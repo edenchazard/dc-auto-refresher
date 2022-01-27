@@ -1,6 +1,7 @@
 import "./Dragon.css";
+import DragonInstancesInput from "./DragonInstancesInput";
 
-export default function Dragon({code, instances, updateInstances, remove}){
+export default function Dragon({code, instances, setInstances, remove}){
     const imgLink = `https://dragcave.net/image/${code}.gif`;
     const viewLink = `https://dragcave.net/view/${code}`;
 
@@ -13,12 +14,9 @@ export default function Dragon({code, instances, updateInstances, remove}){
             </td>
             <td><i>({code})</i></td>
             <td>
-                <input
-                    type='number'
-                    value={instances}
-                    min="1"
-                    max="10"
-                    onChange={(e) => updateInstances(e.target.value)} />
+                <DragonInstancesInput
+                    instances={instances}
+                    setInstances={setInstances} />
             </td>
             <td>
                 <button onClick={remove}>Delete</button>

@@ -10,26 +10,37 @@ export default function App() {
     const [rate, updateRate] = useState(250);
     const [autorefresh, updateAutorefresh] = useState(false);
 
-    function handleAdd(codeToAdd){
+    function handleAdd(code, instances){
         // prevent people adding an already added code to the list
-        if(isCodeInList(listOfDragons, codeToAdd)){
+        if(isCodeInList(listOfDragons, code)){
             return;
         }
 
-        if(!validateCode(codeToAdd)){
+        if(!validateCode(code)){
             return;
         }
 
         const dragon = {
-            code: codeToAdd,
-            instances: 1
+            code: code,
+            instances: instances
         };
 
+        toggleAutorefresh(false);
         updateListOfDragons([...listOfDragons, dragon]);
     }
 
-    function toggleAutorefresh(){
-        updateAutorefresh(!autorefresh);
+    function toggleAutorefresh(value){
+        /*// if there's no dragons in the list, instant false
+        if(listOfDragons.length === 0){
+            updateAutorefresh(false);
+            return;
+        }*/
+        
+        console.log('ttttt', value)
+        if(value === undefined){
+            value = !autorefresh;
+        }
+        updateAutorefresh(value);
     }
 
     function handleUpdateDragon(index, val){
@@ -38,23 +49,31 @@ export default function App() {
             ...dragons[index],
             instances: val
         };
+        toggleAutorefresh(false);
         updateListOfDragons([...dragons]);
     }
 
     function handleRemove(index){
         let dragons = listOfDragons;
         dragons.splice(index, 1);
+        toggleAutorefresh(false);
         updateListOfDragons([...dragons]);
     }
 
     const createIframeDragons = function(){
-        return listOfDragons.map((dragon) => `${dragon.code}:${dragon.instances}`).join(',');
+        return listOfDragons.map((dragon) => `${dragon.code}:${dragon.instances}`)
+            .join(',');
     };
 
-    const iframeSrc = `./refresher.html?rate=${rate}&dragonsStr=${createIframeDragons()}`
+    const iframeSrc = `refresher.html?rate=${rate}&dragonsStr=${createIframeDragons()}`
     return (
-        <div className="App">
-            <table className="table-auto">
+        <div className="App rounded-lg shadow-lg bg-blue-900 max-w-md mx-auto p-5 text-white min-h-screen m-2">
+            <RefresherControls
+                rate={rate}
+                autorefresh={autorefresh}
+                update={(rate) => {toggleAutorefresh(false); updateRate(rate)}}
+                click={toggleAutorefresh} />
+            <table className="table-auto w-full">
                 <thead>
                     <tr>
                         <th>Image</th>
@@ -71,7 +90,7 @@ export default function App() {
                                     key={index}
                                     code={dragon.code}
                                     instances={dragon.instances}
-                                    updateInstances={(instances) => handleUpdateDragon(index, instances)}
+                                    setInstances={(instances) => handleUpdateDragon(index, instances)}
                                     remove={() => handleRemove(index)} />
                             )
                         })
@@ -79,12 +98,8 @@ export default function App() {
                     <AddDragon addToList={handleAdd} />
                 </tbody>
             </table>
-            <RefresherControls
-                rate={rate}
-                update={(rate) => {console.log(rate); updateRate(rate)}}
-                click={toggleAutorefresh} />
             {
-                autorefresh ? <iframe src={iframeSrc}></iframe> : ""
+                autorefresh ? <iframe title="autorefresh region" src={iframeSrc} className='w-full'></iframe> : ""
             } 
         </div>
     );
