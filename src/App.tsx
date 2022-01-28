@@ -1,16 +1,17 @@
 import './App.css';
-import Dragon from "./components/Dragon";
+import DragonTR from "./components/DragonTR";
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
 import { useState } from 'react';
-import { isCodeInList, validateCode } from "./functions.js";
+import { isCodeInList, validateCode } from "./functions";
+import { Dragon } from "./interfaces";
 
 export default function App() {
-    const   [listOfDragons, updateListOfDragons] = useState([]),
-            [rate, updateRate] = useState(250),
-            [autorefresh, updateAutorefresh] = useState(false);
+    const   [listOfDragons, updateListOfDragons] = useState<Dragon[]>([]),
+            [rate, updateRate] = useState<number>(250),
+            [autorefresh, updateAutorefresh] = useState<boolean>(false);
 
-    function handleAdd(code, instances){
+    function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list
         if(isCodeInList(listOfDragons, code)){
             return;
@@ -20,26 +21,23 @@ export default function App() {
             return;
         }
 
-        const dragon = { code, instances};
+        const dragon: Dragon = { code, instances};
 
         toggleAutorefresh(false);
         updateListOfDragons([...listOfDragons, dragon]);
     }
 
-    function toggleAutorefresh(value){
+    function toggleAutorefresh(value: boolean){
         // if there's no dragons in the list, instant false
         if(listOfDragons.length === 0){
             updateAutorefresh(false);
             return;
         }
 
-        if(value === undefined){
-            value = !autorefresh;
-        }
         updateAutorefresh(value);
     }
 
-    function handleUpdateDragon(index, val){
+    function handleUpdateDragon(index: number, val: number){
         let dragons = listOfDragons;
         dragons[index] = {
             ...dragons[index],
@@ -49,18 +47,18 @@ export default function App() {
         updateListOfDragons([...dragons]);
     }
 
-    function handleRemove(index){
+    function handleRemove(index: number){
         let dragons = listOfDragons.splice(index, 1);
         toggleAutorefresh(false);
         updateListOfDragons([...dragons]);
     }
 
-    const createIframeDragons = function(){
-        return listOfDragons.map((dragon) => `${dragon.code}:${dragon.instances}`)
-            .join(',');
-    };
+    const createIframeDragons = listOfDragons
+        .map((dragon) => `${dragon.code}:${dragon.instances}`)
+        .join(',');
 
-    const iframeSrc = `refresher.html?rate=${rate}&dragonsStr=${createIframeDragons()}`
+    const iframeSrc = `refresher.html?rate=${rate}&dragonsStr=${createIframeDragons}`;
+
     return (
         <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto p-5 text-white min-h-screen">
             <RefresherControls
@@ -81,7 +79,7 @@ export default function App() {
                     {
                         listOfDragons.map((dragon, index) => {
                             return (
-                                <Dragon
+                                <DragonTR
                                     key={index}
                                     code={dragon.code}
                                     instances={dragon.instances}

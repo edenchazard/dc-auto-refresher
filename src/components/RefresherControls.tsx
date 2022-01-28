@@ -1,5 +1,5 @@
 const Select = ({onChange, value}) =>{
-    let options = [250, 500, 1000, 2000, 4000];
+    let options: number[] = [250, 500, 1000, 2000, 4000];
     return (
         <select
             id='rate'
@@ -19,7 +19,7 @@ export default function RefresherControls({rate, update, click, autorefresh}) {
     return (
         <div className="flex items-center justify-between">
             <div>
-                <label for='rate'>Rate: </label>
+                <label htmlFor='rate'>Rate: </label>
                 <Select value={rate} onChange={update} />
             </div>
             <div>

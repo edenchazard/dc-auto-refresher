@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "jsx": "react-jsx",
+        "allowSyntheticDefaultImports": true
+    },
+    "include": ["./src/*.ts", "./src/*.tsx"],
+    "exclude": ["node_modules"]
+}

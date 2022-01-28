@@ -2,8 +2,8 @@ import { useState } from 'react';
 import DragonInstancesInput from "./DragonInstancesInput";
 
 export default function AddDragon({addToList}){
-    const   [code, updateNewCode] = useState(""),
-            [instances, setInstances] = useState(1);
+    const   [code, updateNewCode] = useState<string>(""),
+            [instances, setInstances] = useState<number>(1);
 
     function handleAdd(){
         updateNewCode("");
@@ -20,8 +20,8 @@ export default function AddDragon({addToList}){
                     type='text'
                     placeholder="Code"
                     value={code}
-                    minLength='4'
-                    maxLength='5'
+                    minLength={4}
+                    maxLength={5}
                     onChange={(e) => updateNewCode(e.target.value)}/>
             </td>
             <td>

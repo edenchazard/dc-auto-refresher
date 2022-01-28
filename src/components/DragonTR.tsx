@@ -1,7 +1,7 @@
 import "./Dragon.css";
 import DragonInstancesInput from "./DragonInstancesInput";
 
-export default function Dragon({code, instances, setInstances, remove}){
+export default function DragonTR({code, instances, setInstances, remove}){
     const imgLink = `https://dragcave.net/image/${code}.gif`;
     const viewLink = `https://dragcave.net/view/${code}`;
 
