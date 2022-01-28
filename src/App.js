@@ -20,10 +20,7 @@ export default function App() {
             return;
         }
 
-        const dragon = {
-            code: code,
-            instances: instances
-        };
+        const dragon = { code, instances};
 
         toggleAutorefresh(false);
         updateListOfDragons([...listOfDragons, dragon]);
@@ -35,8 +32,7 @@ export default function App() {
             updateAutorefresh(false);
             return;
         }
-        
-        console.log('ttttt', value)
+
         if(value === undefined){
             value = !autorefresh;
         }
@@ -54,8 +50,7 @@ export default function App() {
     }
 
     function handleRemove(index){
-        let dragons = listOfDragons;
-        dragons.splice(index, 1);
+        let dragons = listOfDragons.splice(index, 1);
         toggleAutorefresh(false);
         updateListOfDragons([...dragons]);
     }
@@ -67,7 +62,7 @@ export default function App() {
 
     const iframeSrc = `refresher.html?rate=${rate}&dragonsStr=${createIframeDragons()}`
     return (
-        <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto p-5 text-white min-h-screen m-2">
+        <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto p-5 text-white min-h-screen">
             <RefresherControls
                 rate={rate}
                 autorefresh={autorefresh}

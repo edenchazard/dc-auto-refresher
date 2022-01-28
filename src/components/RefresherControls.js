@@ -8,7 +8,7 @@ const Select = ({onChange, value}) =>{
             className='text-black'>
             {
                 options.map((opt, index) =>{
-                    return <option key={index} value={opt}>{opt}ms</option>
+                    return <option key={index} value={opt}>{opt / 1000}s</option>
                 })
             }
         </select>
