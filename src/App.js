@@ -6,9 +6,9 @@ import { useState } from 'react';
 import { isCodeInList, validateCode } from "./functions.js";
 
 export default function App() {
-    const [listOfDragons, updateListOfDragons] = useState([]);
-    const [rate, updateRate] = useState(250);
-    const [autorefresh, updateAutorefresh] = useState(false);
+    const   [listOfDragons, updateListOfDragons] = useState([]),
+            [rate, updateRate] = useState(250),
+            [autorefresh, updateAutorefresh] = useState(false);
 
     function handleAdd(code, instances){
         // prevent people adding an already added code to the list
@@ -30,11 +30,11 @@ export default function App() {
     }
 
     function toggleAutorefresh(value){
-        /*// if there's no dragons in the list, instant false
+        // if there's no dragons in the list, instant false
         if(listOfDragons.length === 0){
             updateAutorefresh(false);
             return;
-        }*/
+        }
         
         console.log('ttttt', value)
         if(value === undefined){
@@ -67,12 +67,12 @@ export default function App() {
 
     const iframeSrc = `refresher.html?rate=${rate}&dragonsStr=${createIframeDragons()}`
     return (
-        <div className="App rounded-lg shadow-lg bg-blue-900 max-w-md mx-auto p-5 text-white min-h-screen m-2">
+        <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto p-5 text-white min-h-screen m-2">
             <RefresherControls
                 rate={rate}
                 autorefresh={autorefresh}
                 update={(rate) => {toggleAutorefresh(false); updateRate(rate)}}
-                click={toggleAutorefresh} />
+                click={() => toggleAutorefresh(!autorefresh) } />
             <table className="table-auto w-full">
                 <thead>
                     <tr>
@@ -99,7 +99,7 @@ export default function App() {
                 </tbody>
             </table>
             {
-                autorefresh ? <iframe title="autorefresh region" src={iframeSrc} className='w-full'></iframe> : ""
+                autorefresh && <iframe title="autorefresh region" src={iframeSrc} className='w-full'></iframe>
             } 
         </div>
     );
