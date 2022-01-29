@@ -60,42 +60,29 @@ export default function App() {
 
     return (
         <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto p-5 text-white min-h-screen">
+            <AddDragon
+                rate={rate}
+                addToList={handleAdd} />
             <RefresherControls
                 rate={rate}
                 autorefresh={autorefresh}
                 update={(rate) => {toggleAutorefresh(false); setRate(rate)}}
                 click={() => toggleAutorefresh(!autorefresh) } />
-            <table className="table-auto w-full">
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Code</th>
-                        <th>Instances</th>
-                        <th>
-                            <abbr title="views per minute">V/M</abbr>
-                        </th>
-                        <th>Tools</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        listOfDragons.map((dragon, index) => {
-                            return (
-                                <DragonTR
-                                    key={index}
-                                    code={dragon.code}
-                                    rate={rate}
-                                    instances={dragon.instances}
-                                    setInstances={(instances) => handleUpdateDragon(index, instances)}
-                                    remove={() => handleRemove(index)} />
-                            )
-                        })
-                    }
-                    <AddDragon
-                        rate={rate}
-                        addToList={handleAdd} />
-                </tbody>
-            </table>
+            <div className='grid grid-cols-3 gap-4 my-2'>
+                {
+                    listOfDragons.map((dragon, index) => {
+                        return (
+                            <DragonTR
+                                key={index}
+                                code={dragon.code}
+                                rate={rate}
+                                instances={dragon.instances}
+                                setInstances={(instances) => handleUpdateDragon(index, instances)}
+                                remove={() => handleRemove(index)} />
+                        )
+                    })
+                }
+            </div>
             {
                 autorefresh && <iframe title="autorefresh region" src={iframeSrc} className='w-full'></iframe>
             } 

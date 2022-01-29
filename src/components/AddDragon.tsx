@@ -7,34 +7,36 @@ export default function AddDragon({addToList, rate}){
 
     function handleAdd(){
         updateNewCode("");
-        setInstances(1);
         addToList(code, instances);
     }
 
     return (
-        <tr>
-            <td>New</td>
-            <td>
-                <input
-                    className='text-black'
-                    type='text'
-                    placeholder="Code"
-                    value={code}
-                    minLength={4}
-                    maxLength={5}
-                    onChange={(e) => updateNewCode(e.target.value)}/>
-            </td>
-            <td>
-                <DragonInstancesInput
-                    instances={instances}
-                    setInstances={setInstances} />
-            </td>
-            <td>
-                {(60000 / rate) * instances}
-            </td>
-            <td>
-                <button className="rounded bg-indigo-500 px-2 py-1" onClick={handleAdd}>Add</button>
-            </td>
-        </tr>
+            <div className='space-y-1 my-1'>
+                <div className='flex justify-between'>
+                    <label htmlFor='code'>Code:</label>
+                    <input
+                        id="code"
+                        className='text-black'
+                        type='text'
+                        placeholder="Code"
+                        value={code}
+                        size={5}
+                        minLength={4}
+                        maxLength={5}
+                        onChange={(e) => updateNewCode(e.target.value)}/>
+                </div>
+                <div className='flex justify-between'>
+                    <label htmlFor='instances'>Instances:</label>
+                    <DragonInstancesInput
+                        instances={instances}
+                        setInstances={setInstances} />
+                </div>
+                <div className='flex justify-between'>
+                    {(60000 / rate) * instances} views per minute
+                </div>
+                <div className='flex items-end flex-col'>
+                    <button className="rounded bg-indigo-500 px-2 py-1 hover:bg-indigo-700" onClick={handleAdd}>Add</button>
+                </div>
+            </div>
     );
 }
