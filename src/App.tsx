@@ -7,9 +7,9 @@ import { isCodeInList, validateCode } from "./functions";
 import { Dragon } from "./interfaces";
 
 export default function App() {
-    const   [listOfDragons, updateListOfDragons] = useState<Dragon[]>([]),
-            [rate, updateRate] = useState<number>(250),
-            [autorefresh, updateAutorefresh] = useState<boolean>(false);
+    const   [listOfDragons, setListOfDragons] = useState<Dragon[]>([]),
+            [rate, setRate] = useState<number>(250),
+            [autorefresh, setAutorefresh] = useState<boolean>(false);
 
     function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list
@@ -24,33 +24,32 @@ export default function App() {
         const dragon: Dragon = { code, instances};
 
         toggleAutorefresh(false);
-        updateListOfDragons([...listOfDragons, dragon]);
+        setListOfDragons([...listOfDragons, dragon]);
     }
 
     function toggleAutorefresh(value: boolean){
         // if there's no dragons in the list, instant false
         if(listOfDragons.length === 0){
-            updateAutorefresh(false);
+            setAutorefresh(false);
             return;
         }
 
-        updateAutorefresh(value);
+        setAutorefresh(value);
     }
 
     function handleUpdateDragon(index: number, val: number){
-        let dragons = listOfDragons;
-        dragons[index] = {
-            ...dragons[index],
+        listOfDragons[index] = {
+            ...listOfDragons[index],
             instances: val
         };
         toggleAutorefresh(false);
-        updateListOfDragons([...dragons]);
+        setListOfDragons([...listOfDragons]);
     }
 
     function handleRemove(index: number){
-        let dragons = listOfDragons.splice(index, 1);
+        listOfDragons.splice(index, 1);
         toggleAutorefresh(false);
-        updateListOfDragons([...dragons]);
+        setListOfDragons([...listOfDragons]);
     }
 
     const createIframeDragons = listOfDragons
@@ -64,7 +63,7 @@ export default function App() {
             <RefresherControls
                 rate={rate}
                 autorefresh={autorefresh}
-                update={(rate) => {toggleAutorefresh(false); updateRate(rate)}}
+                update={(rate) => {toggleAutorefresh(false); setRate(rate)}}
                 click={() => toggleAutorefresh(!autorefresh) } />
             <table className="table-auto w-full">
                 <thead>
