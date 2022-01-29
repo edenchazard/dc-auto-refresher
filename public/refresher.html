@@ -2,7 +2,10 @@
     <head>
         <script type='text/javascript'>
 function validateDragon(props){
-    return /^[a-zA-Z0-9]{4,5}$/.test(props.code) && /^\d+$/.test(props.instances);
+    return /^[a-zA-Z0-9]{4,5}$/.test(props.code)
+        && /^\d+$/.test(props.instances)
+        && props.instances >= 1
+        && props.instances <= 10;
 }
 
 // gets query string parameters
