@@ -71,6 +71,9 @@ export default function App() {
                         <th>Image</th>
                         <th>Code</th>
                         <th>Instances</th>
+                        <th>
+                            <abbr title="views per minute">V/M</abbr>
+                        </th>
                         <th>Tools</th>
                     </tr>
                 </thead>
@@ -81,13 +84,16 @@ export default function App() {
                                 <DragonTR
                                     key={index}
                                     code={dragon.code}
+                                    rate={rate}
                                     instances={dragon.instances}
                                     setInstances={(instances) => handleUpdateDragon(index, instances)}
                                     remove={() => handleRemove(index)} />
                             )
                         })
                     }
-                    <AddDragon addToList={handleAdd} />
+                    <AddDragon
+                        rate={rate}
+                        addToList={handleAdd} />
                 </tbody>
             </table>
             {

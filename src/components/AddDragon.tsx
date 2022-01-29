@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import DragonInstancesInput from "./DragonInstancesInput";
 
-export default function AddDragon({addToList}){
+export default function AddDragon({addToList, rate}){
     const   [code, updateNewCode] = useState<string>(""),
             [instances, setInstances] = useState<number>(1);
 
@@ -28,6 +28,9 @@ export default function AddDragon({addToList}){
                 <DragonInstancesInput
                     instances={instances}
                     setInstances={setInstances} />
+            </td>
+            <td>
+                {(60000 / rate) * instances}
             </td>
             <td>
                 <button className="rounded bg-indigo-500 px-2 py-1" onClick={handleAdd}>Add</button>

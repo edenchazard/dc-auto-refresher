@@ -1,7 +1,7 @@
 import "./Dragon.css";
 import DragonInstancesInput from "./DragonInstancesInput";
 
-export default function DragonTR({code, instances, setInstances, remove}){
+export default function DragonTR({code, instances, setInstances, rate, remove}){
     const imgLink = `https://dragcave.net/image/${code}.gif`;
     const viewLink = `https://dragcave.net/view/${code}`;
 
@@ -17,6 +17,9 @@ export default function DragonTR({code, instances, setInstances, remove}){
                 <DragonInstancesInput
                     instances={instances}
                     setInstances={setInstances} />
+            </td>
+            <td>
+                {(60000 / rate) * instances}
             </td>
             <td>
                 <button onClick={remove}>Delete</button>
