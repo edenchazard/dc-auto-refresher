@@ -32,7 +32,7 @@ export default function AddDragon({addToList, rate}){
                         setInstances={setInstances} />
                 </div>
                 <div className='flex justify-between'>
-                    {(60000 / rate) * instances} views per minute
+                    At {(60000 / rate) * instances} views per minute
                 </div>
                 <div className='flex items-end flex-col'>
                     <button className="rounded bg-indigo-500 px-2 py-1 hover:bg-indigo-700" onClick={handleAdd}>Add</button>

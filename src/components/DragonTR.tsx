@@ -1,8 +1,8 @@
 import DragonInstancesInput from "./DragonInstancesInput";
 
 export default function DragonTR({code, instances, setInstances, rate, remove}){
-    const imgLink = `https://dragcave.net/image/${code}.gif`;
-    const viewLink = `https://dragcave.net/view/${code}`;
+    const   imgLink = `https://dragcave.net/image/${code}.gif`,
+            viewLink = `https://dragcave.net/view/${code}`;
 
     return (
         <div className="flex flex-col items-center">

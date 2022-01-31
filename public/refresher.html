@@ -10,8 +10,8 @@ function validateDragon(props){
 
 // gets query string parameters
 function getQuery(){
-    const view = document.getElementById('dragons');
-    const urlSearchParams = new URLSearchParams(window.location.search);
+    const   view = document.getElementById('dragons'),
+            urlSearchParams = new URLSearchParams(window.location.search);
     return Object.fromEntries(urlSearchParams.entries());
 }
 
@@ -38,8 +38,8 @@ const validateRate = function(rate){
 }
 
 window.onload = function(){
-    const view = document.getElementById('view');
-    const {dragonsStr, rate} = getQuery();
+    const   view = document.getElementById('view'),
+            { dragonsStr, rate } = getQuery();
 
     if(dragonsStr === undefined || rate === undefined){
         return;
