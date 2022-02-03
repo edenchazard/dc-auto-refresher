@@ -11,11 +11,31 @@ export default function App() {
             [rate, setRate] = useState<number>(250),
             [autorefresh, setAutorefresh] = useState<boolean>(false);
 
-    const curIconCycle = useRef(0);
+    let curIconCycle = useRef(0);
     const iconInterval = useRef(null);
 
     // Code to cycle the favicon
     useEffect(() =>{
+        const changeIcon = () => {
+            const getCycle = () => {
+                curIconCycle.current += 1;
+    
+                if(listOfDragons[curIconCycle.current] === undefined){
+                    // reset to 0
+                    curIconCycle.current = 0;
+                }
+                const code = listOfDragons[curIconCycle.current].code;
+    
+                return `https://dragcave.net/image/${code}.gif`;
+            }
+    
+            const oldIcon = document.head.querySelector('link[rel="icon"]');
+            let newIcon = document.createElement('link');
+            newIcon.rel = 'icon';
+            newIcon.href = getCycle();
+            document.head.replaceChild(newIcon, oldIcon);
+        }
+
         if(autorefresh === true){
             iconInterval.current = window.setInterval(() => {
                 changeIcon();
@@ -27,27 +47,7 @@ export default function App() {
             // At some point when I have an actual favicon,
             // revert it back to that
         }
-    }, [autorefresh]);
-
-    function changeIcon(){
-        const getCycle = () => {
-            curIconCycle.current += 1;
-
-            if(listOfDragons[curIconCycle.current] === undefined){
-                // reset to 0
-                curIconCycle.current = 0;
-            }
-            const code = listOfDragons[curIconCycle.current].code;
-
-            return `https://dragcave.net/image/${code}.gif`;
-        }
-
-        const oldIcon = document.head.querySelector('link[rel="icon"]');
-        let newIcon = document.createElement('link');
-        newIcon.rel = 'icon';
-        newIcon.href = getCycle();
-        document.head.replaceChild(newIcon, oldIcon);
-    }
+    }, [autorefresh, listOfDragons]);
 
     function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list
