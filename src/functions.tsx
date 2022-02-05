@@ -8,11 +8,10 @@ export function validateCode(code: string): boolean{
     return /^[a-zA-Z0-9]{4,5}$/.test(code);
 }
 
-// Generates a dragcave img url with a cachebust (hashtag format to prevent
-// bloating the cache)
+// Generates a dragcave img url with a cachebust
 export function generateDragCaveImgUrl(code: string): string{
-    const cacheBust = Date.now();
-    return `https://dragcave.net/image/${code}.gif#${cacheBust}`;
+    const cacheBust = Date.now() + Math.random();
+    return `https://dragcave.net/image/${code}.gif?q=${cacheBust}`;
 }
 
 export function makeDOMFavicon(url: string): HTMLLinkElement{

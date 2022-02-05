@@ -2,10 +2,34 @@ import './App.css';
 import DragonTR from "./components/DragonTR";
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
         replaceFavicon } from "./functions";
 import { Dragon } from "./interfaces";
+
+function RefresherView({dragonList, rate}) {
+    const [refresh, setRefresh] = useState<boolean>(false);
+
+    // force a re-render every rate, this works because
+    // the browser thinks the images are new every time
+    // with the cachebust rendering the dragons
+    useEffect(() => {
+        const timeout = window.setTimeout(() => setRefresh(!refresh), rate);
+        return () => window.clearTimeout(timeout);
+    });
+
+    return (
+        <div className='w-full'>
+            {
+                dragonList.map((dragon: Dragon, index: number) => {
+                    return (
+                        Array.from(Array(dragon.instances), (e, it) => <img className='inline' src={generateDragCaveImgUrl(dragon.code)} key={`${index}.${it}`} alt={dragon.code} />)
+                    )
+                })
+            }
+        </div>
+    );
+}
 
 export default function App() {
     const   [listOfDragons, setListOfDragons] = useState<Dragon[]>([]),
@@ -22,7 +46,7 @@ export default function App() {
             iconInterval.current = window.setInterval(() => {
                 curIconCycle = !listOfDragons[curIconCycle + 1] ? 0 : curIconCycle + 1;
                 replaceFavicon(generateDragCaveImgUrl(listOfDragons[curIconCycle].code));
-            }, 1000);
+            }, rate);
         }
         else{
             // revert favicon
@@ -74,12 +98,6 @@ export default function App() {
         setListOfDragons([...listOfDragons]);
     }
 
-    const createIframeDragons = listOfDragons
-        .map((dragon) => `${dragon.code}:${dragon.instances}`)
-        .join(',');
-
-    const iframeSrc = `refresher.html?rate=${rate}&dragonsStr=${createIframeDragons}`;
-
     return (
         <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto p-5 text-white min-h-screen">
             <AddDragon
@@ -106,7 +124,7 @@ export default function App() {
                 }
             </div>
             {
-                autorefresh && <iframe title="autorefresh region" src={iframeSrc} className='w-full'></iframe>
+                autorefresh && <RefresherView dragonList={listOfDragons} rate={rate} />
             } 
         </div>
     );
