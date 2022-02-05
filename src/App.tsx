@@ -4,11 +4,12 @@ import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
 import { useEffect, useRef, useState } from 'react';
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
-        replaceFavicon } from "./functions";
-import { Dragon } from "./interfaces";
+        replaceFavicon, sizesSame } from "./functions";
+import { Dragon, Size } from "./interfaces";
 
-function RefresherView({dragonList, rate}) {
+function RefresherView({dragonList, rate, onImageChange}) {
     const [refresh, setRefresh] = useState<boolean>(false);
+    const sizes = useRef<Size[]>([]);
 
     // force a re-render every rate, this works because
     // the browser thinks the images are new every time
@@ -18,12 +19,38 @@ function RefresherView({dragonList, rate}) {
         return () => window.clearTimeout(timeout);
     });
 
+    // we try to detect changes in the image's h/w after load
+    // and assume if there's any change, that the
+    // dragon has been fogged/hatched/adulted/died
+    // this is more efficient, faster than constantly polling the DC API
+    function measureSize(event){
+        const   img: HTMLImageElement = event.target,
+                newSize: Size = { w: img.naturalWidth, h: img.naturalHeight },
+                code: string = img.dataset.code;
+
+        // this is the first time we've grabbed the size
+        if(sizes.current[code] !== undefined){
+            // a size change indicates a change in status
+            if(!sizesSame(sizes.current[code], newSize)){
+                onImageChange(code);
+            }
+        }
+        // update with new measurements
+        sizes.current[code] = newSize;
+    }
+
     return (
         <div className='w-full'>
             {
                 dragonList.map((dragon: Dragon, index: number) => {
                     return (
-                        Array.from(Array(dragon.instances), (e, it) => <img className='inline' src={generateDragCaveImgUrl(dragon.code)} key={`${index}.${it}`} alt={dragon.code} />)
+                        Array.from(Array(dragon.instances), (e, it) => 
+                        <img className='inline'
+                            src={generateDragCaveImgUrl(dragon.code)}
+                            key={`${index}.${it}`}
+                            alt={dragon.code}
+                            data-code={dragon.code}
+                            onLoad={measureSize} />)
                     )
                 })
             }
@@ -34,7 +61,8 @@ function RefresherView({dragonList, rate}) {
 export default function App() {
     const   [listOfDragons, setListOfDragons] = useState<Dragon[]>([]),
             [rate, setRate] = useState<number>(250),
-            [autorefresh, setAutorefresh] = useState<boolean>(false);
+            [autorefresh, setAutorefresh] = useState<boolean>(false),
+            [smartRemoval, setSmartRemoval] = useState<boolean>(true);
 
     let curIconCycle = 0;
     const iconInterval = useRef<number | null>(null);
@@ -75,8 +103,7 @@ export default function App() {
     function toggleAutorefresh(value: boolean){
         // if there's no dragons in the list, instant false
         if(listOfDragons.length === 0){
-            setAutorefresh(false);
-            return;
+            value = false;
         }
 
         handleIcon(value);
@@ -98,6 +125,22 @@ export default function App() {
         setListOfDragons([...listOfDragons]);
     }
 
+    function handleImageChange(code: string){
+        console.log('NEW SIZE FOR ', code);
+
+        // todo: check with API for confirmation
+        if(smartRemoval){
+            const index = listOfDragons.findIndex((dragon) => dragon.code === code);
+            listOfDragons.splice(index, 1);
+            setListOfDragons([...listOfDragons]);
+
+            // if no more dragons ARing, then disable AR
+            if(listOfDragons.length === 0){
+                toggleAutorefresh(false);
+            }
+        }
+    }
+
     return (
         <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto p-5 text-white min-h-screen">
             <AddDragon
@@ -105,9 +148,11 @@ export default function App() {
                 addToList={handleAdd} />
             <RefresherControls
                 rate={rate}
+                smartRemoval={smartRemoval}
                 autorefresh={autorefresh}
-                update={(rate) => {toggleAutorefresh(false); setRate(rate)}}
-                click={() => toggleAutorefresh(!autorefresh) } />
+                updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
+                click={() => toggleAutorefresh(!autorefresh) }
+                updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
             <div className='grid grid-cols-3 gap-4 my-2'>
                 {
                     listOfDragons.map((dragon, index) => {
@@ -124,7 +169,12 @@ export default function App() {
                 }
             </div>
             {
-                autorefresh && <RefresherView dragonList={listOfDragons} rate={rate} />
+                autorefresh &&
+                <RefresherView
+                    dragonList={listOfDragons}
+                    rate={rate}
+                    onImageChange={handleImageChange}
+                    />
             } 
         </div>
     );

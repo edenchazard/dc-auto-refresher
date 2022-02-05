@@ -1,4 +1,4 @@
-import { Dragon } from "./interfaces";
+import { Dragon, Size } from "./interfaces";
 
 export function isCodeInList(listOfDragons: Dragon[], code: string): boolean{
     return !!listOfDragons.find((dragon) => dragon.code === code);
@@ -26,4 +26,8 @@ export function replaceFavicon(url: string): HTMLLinkElement{
         makeDOMFavicon(url),
         document.head.querySelector('link[rel="icon"]')
     );
+}
+
+export function sizesSame(oldSize: Size, newSize: Size): boolean{
+    return (oldSize.w === newSize.w && oldSize.h === newSize.h);
 }
