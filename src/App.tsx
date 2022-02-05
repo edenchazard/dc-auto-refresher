@@ -2,8 +2,9 @@ import './App.css';
 import DragonTR from "./components/DragonTR";
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
-import { useEffect, useRef, useState } from 'react';
-import { isCodeInList, validateCode } from "./functions";
+import { useRef, useState } from 'react';
+import { isCodeInList, validateCode, generateDragCaveImgUrl, 
+        replaceFavicon } from "./functions";
 import { Dragon } from "./interfaces";
 
 export default function App() {
@@ -11,43 +12,25 @@ export default function App() {
             [rate, setRate] = useState<number>(250),
             [autorefresh, setAutorefresh] = useState<boolean>(false);
 
-    let curIconCycle = useRef(0);
-    const iconInterval = useRef(null);
+    let curIconCycle = 0;
+    const iconInterval = useRef<number | null>(null);
 
     // Code to cycle the favicon
-    useEffect(() =>{
-        const changeIcon = () => {
-            const getCycle = () => {
-                curIconCycle.current += 1;
-    
-                if(listOfDragons[curIconCycle.current] === undefined){
-                    // reset to 0
-                    curIconCycle.current = 0;
-                }
-                const code = listOfDragons[curIconCycle.current].code;
-    
-                return `https://dragcave.net/image/${code}.gif`;
-            }
-    
-            const oldIcon = document.head.querySelector('link[rel="icon"]');
-            let newIcon = document.createElement('link');
-            newIcon.rel = 'icon';
-            newIcon.href = getCycle();
-            document.head.replaceChild(newIcon, oldIcon);
-        }
-
-        if(autorefresh === true){
+    function handleIcon(active: boolean) {
+        // when aring, cycle through the various dragons
+        if(active){
             iconInterval.current = window.setInterval(() => {
-                changeIcon();
+                curIconCycle = !listOfDragons[curIconCycle + 1] ? 0 : curIconCycle + 1;
+                replaceFavicon(generateDragCaveImgUrl(listOfDragons[curIconCycle].code));
             }, 1000);
         }
         else{
+            // revert favicon
             window.clearInterval(iconInterval.current);
-            iconInterval.current = null;
-            // At some point when I have an actual favicon,
-            // revert it back to that
+            curIconCycle = 0;
+            replaceFavicon('./logo192.png');
         }
-    }, [autorefresh, listOfDragons]);
+    }
 
     function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list
@@ -72,6 +55,7 @@ export default function App() {
             return;
         }
 
+        handleIcon(value);
         setAutorefresh(value);
     }
 
