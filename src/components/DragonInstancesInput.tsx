@@ -6,7 +6,7 @@ export default function DragonInstancesInput({instances, setInstances}){
             min="1"
             max="10"
             size={2}
-            onChange={(e) => setInstances(e.target.value)}
+            onChange={(e) => setInstances(parseInt(e.target.value))}
             className='text-black' />
     )
 }
