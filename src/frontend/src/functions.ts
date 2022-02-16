@@ -5,7 +5,7 @@ export function isCodeInList(listOfDragons: Dragon[], code: string): boolean{
 }
 
 export function validateCode(code: string): boolean{
-    return /^[a-zA-Z0-9]{4,5}$/.test(code);
+    return /^[a-zA-Z0-9]{5}$/.test(code);
 }
 
 // Generates a dragcave img url with a cachebust

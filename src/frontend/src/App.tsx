@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
         replaceFavicon, sizesSame } from "./functions";
 import { Dragon, Size } from "./interfaces";
+import { DCAPI } from "./dcapi";
 
 function RefresherView({dragonList, rate, onImageChange}) {
     const [refresh, setRefresh] = useState<boolean>(false);
@@ -94,10 +95,17 @@ export default function App() {
             return;
         }
 
-        const dragon: Dragon = { code, instances};
-
-        toggleAutorefresh(false);
-        setListOfDragons([...listOfDragons, dragon]);
+        DCAPI.getHrsLeft(code)
+        .then(age => {
+            // not a frozen, hidden or adult dragon
+            if(age > 0){
+                toggleAutorefresh(false);
+                setListOfDragons([...listOfDragons, { code, instances }]);
+            }
+        })
+        .catch((err: string) => {
+            console.log(err);
+        });
     }
 
     function toggleAutorefresh(value: boolean){
@@ -120,25 +128,43 @@ export default function App() {
     }
 
     function handleRemove(index: number){
+        removeDragon(index);
+    }
+
+    function removeDragon(index: number){
         listOfDragons.splice(index, 1);
-        toggleAutorefresh(false);
         setListOfDragons([...listOfDragons]);
+
+        // if no more dragons ARing, then disable AR
+        if(listOfDragons.length === 0){
+            toggleAutorefresh(false);
+        }
     }
 
     function handleImageChange(code: string){
-        console.log('NEW SIZE FOR ', code);
-
-        // todo: check with API for confirmation
-        if(smartRemoval){
-            const index = listOfDragons.findIndex((dragon) => dragon.code === code);
-            listOfDragons.splice(index, 1);
-            setListOfDragons([...listOfDragons]);
-
-            // if no more dragons ARing, then disable AR
-            if(listOfDragons.length === 0){
-                toggleAutorefresh(false);
-            }
+        // console.log("NEW SIZE FOR "+code);
+        // if SR isn't enabled, just stay as normal.
+        if(!smartRemoval){
+            return;
         }
+
+        // continue with SR checks
+        DCAPI.getHrsLeft(code)
+        .then(age => {
+            // hours left 168 indicates a newly laid egg
+            // or a newly hatched hatchling
+            const   justHatched = age === 168,
+                    badDragon = age < 0;
+
+            if(justHatched || badDragon){
+                // console.log("SMART REMOVAL FOR "+code);
+                // confirmed to be something we should remove.
+                removeDragon(listOfDragons.findIndex((dragon) => dragon.code === code));
+            }
+        })
+        .catch(err =>{
+            console.log(err);
+        });
     }
 
     return (
