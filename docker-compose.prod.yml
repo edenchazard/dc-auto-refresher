@@ -1,0 +1,22 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/prod-api.Dockerfile
+    ports:
+      - 3001:3001
+    command: npm run prod
+    restart: always
+    environment:
+      - NODE_ENV=production
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/prod-frontend.Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - api
+    restart: always
+    environment:
+      - NODE_ENV=production
