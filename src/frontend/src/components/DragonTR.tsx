@@ -10,7 +10,7 @@ export default function DragonTR({code, instances, setInstances, rate, remove}){
             <DragonInstancesInput
                     instances={instances}
                     setInstances={setInstances} />
-            <span>{(60000 / rate) * instances} <abbr title="views per minute">V/M</abbr></span>
+            <span>~{(60000 / rate) * instances} <abbr title="views per minute">V/M</abbr></span>
             <button
                 className="bg-red-400 rounded px-2 py-1 my-1 hover:bg-red-600"
                 onClick={remove}>Delete</button>

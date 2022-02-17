@@ -199,8 +199,7 @@ export default function App() {
                 <RefresherView
                     dragonList={listOfDragons}
                     rate={rate}
-                    onImageChange={handleImageChange}
-                    />
+                    onImageChange={handleImageChange} />
             } 
         </div>
     );

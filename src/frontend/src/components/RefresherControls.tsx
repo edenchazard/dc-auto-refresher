@@ -18,17 +18,9 @@ const Select = ({onChange, value}) =>{
 export default function RefresherControls({rate, updateRate, click, autorefresh, smartRemoval, updateSmartRemoval}) {
     return (
         <div className="space-y-1 my-1">
-            <div className="flex justify-between">
-                <label htmlFor='smartRemoval'>Smart removal:</label>
-                <input
-                    type='checkbox'
-                    id='smartRemoval'
-                    checked={smartRemoval}
-                    onChange={(e) => updateSmartRemoval(e.target.checked)} />
-            </div>
             <div className="flex items-center justify-between my-2">
                 <div>
-                    <label htmlFor='rate'>Rate:</label>
+                    <label htmlFor='rate'>Rate: </label>
                     <Select value={rate} onChange={updateRate} />
                 </div>
                 <div>
@@ -38,6 +30,17 @@ export default function RefresherControls({rate, updateRate, click, autorefresh,
                                 : <button onClick={click} className="rounded bg-blue-300 px-2 py-1 hover:bg-blue-500">Turn on autorefresh</button>)
                 }
                 </div>
+            </div>
+            <div className={`${smartRemoval ? 'text-white' : 'text-gray-400' } flex justify-between items-center`}>
+                <label htmlFor='smartRemoval'>Smart removal:</label>
+                <input
+                    type='checkbox'
+                    id='smartRemoval'
+                    checked={smartRemoval}
+                    onChange={(e) => updateSmartRemoval(e.target.checked)} />
+            </div>
+            <div id="smart-removal" className={`${smartRemoval ? 'text-gray-400' : 'text-gray-600' }`}>
+                <p>Smart removal will try to detect changes for each dragon and remove freshly hatched eggs or newly grown adults however with some breeds this may not be accurate.</p>
             </div>
         </div>
     );
