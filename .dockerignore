@@ -1,3 +1,13 @@
-README.md
-.gitignore
-/build
+**/README.md
+**/.dockerignore
+**/.gitignore
+**/.git
+**/build
+**/docker-compose*
+**/Dockerfile*
+**/node_modules
+**/npm-debug.log
+**/compose*
+**/.vs
+**/.vscode
+#**/.env*
