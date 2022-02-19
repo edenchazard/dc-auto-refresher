@@ -1,4 +1,4 @@
-const API_URL = "/api";
+const API_URL = process.env.PUBLIC_URL + "/api";
 
 export const DCAPI ={
     getHrsLeft: (code: string): Promise<number> => {

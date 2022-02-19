@@ -1,9 +1,10 @@
 FROM node:current-alpine as build
-EXPOSE 80
+ARG PUBLIC_URL
+ENV PUBLIC_URL=$PUBLIC_URL
 WORKDIR /app
-COPY /src/frontend/package.json .
+COPY ./src/frontend/package.json .
 RUN npm install
-COPY /src/frontend .
+COPY ./src/frontend .
 RUN npm run build
 
 FROM nginx:latest
