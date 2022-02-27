@@ -1,6 +1,8 @@
-FROM node:current-alpine as build
+FROM node:lts-alpine3.14 as build
 EXPOSE 80
 WORKDIR /app
-COPY /src/backend/package.json .
+COPY --chown=node:node /src/backend/package*.json ./
 RUN npm install
-COPY /src/backend .
+COPY --chown=node:node /src/backend .
+USER node
+ENTRYPOINT ["npm", "run", "prod"]

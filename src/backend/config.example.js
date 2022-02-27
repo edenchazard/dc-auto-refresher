@@ -1,4 +1,4 @@
-const API_KEY = 'TEST';
+const API_KEY = 'API_KEY';
 
 module.exports = {
     port: 8080,

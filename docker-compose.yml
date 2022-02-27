@@ -2,19 +2,18 @@ services:
   api:
     build:
       context: .
-      dockerfile: docker/api.Dockerfile
-    ports:
-      - 3001:3001
+      dockerfile: ./docker/api.Dockerfile
     volumes:
       - ./src/backend:/app
       - /app/node_modules
-    command: "npm run dev"
     environment:
       - NODE_ENV=development
+    networks:
+      - internal
   frontend:
     build:
       context: .
-      dockerfile: docker/frontend.Dockerfile
+      dockerfile: ./docker/frontend.Dockerfile
     volumes:
       - ./src/frontend:/app
       - /app/node_modules
@@ -25,4 +24,8 @@ services:
       - NODE_ENV=development
     depends_on:
       - api
-    command: "npm run start"
+    networks:
+      - internal
+
+networks:
+  internal:

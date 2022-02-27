@@ -1,33 +1,31 @@
 services:
-  api:
+  prod_api:
     build:
       context: .
       dockerfile: ./docker/prod-api.Dockerfile
-    ports:
-      - 3001:3001
-    command: npm run prod
     restart: always
     environment:
       - NODE_ENV=production
     networks:
       - internal
 
-  frontend:
+  prod_frontend:
     build:
       context: .
       dockerfile: ./docker/prod-frontend.Dockerfile
       args:
         - PUBLIC_URL=/dc/auto-refresher/
     ports:
-      - 81:80
+      - 85:8080
     depends_on:
-      - api
+      - prod_api
     restart: always
     environment:
       - NODE_ENV=production
     networks:
       - dc
       - internal
+
 networks:
   internal:
   dc:
