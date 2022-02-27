@@ -1,4 +1,5 @@
 import './App.css';
+import Header from "./components/Header";
 import DragonTR from "./components/DragonTR";
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
@@ -201,6 +202,7 @@ export default function App() {
                     rate={rate}
                     onImageChange={handleImageChange} />
             } 
+            <Header />
         </div>
     );
 }

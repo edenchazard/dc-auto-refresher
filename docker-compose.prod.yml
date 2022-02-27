@@ -1,5 +1,6 @@
 services:
   prod_api:
+    container_name: dc-ar-api
     build:
       context: .
       dockerfile: ./docker/prod-api.Dockerfile
@@ -10,6 +11,7 @@ services:
       - internal
 
   prod_frontend:
+    container_name: dc-ar-frontend
     build:
       context: .
       dockerfile: ./docker/prod-frontend.Dockerfile
