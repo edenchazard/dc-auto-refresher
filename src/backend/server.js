@@ -25,7 +25,22 @@ router.get('/check/:code', async (ctx) => {
             ctx.body = { errors: 1, message: "The dragon could not be verified." };
         }
         else{
-            ctx.body = { hoursLeft: dragon.hoursleft || -1 };
+            let isAdult = dragon.grow != 0;
+            let isDead = dragon.death != 0;
+            let isHidden = dragon.start == 0 && dragon.hatch == 0 && dragon.death == 0;
+            let isFrozen = !isAdult && !isDead && !isHidden && dragon.hoursleft == -1;
+            let justHatched = dragon.hoursleft === 168 && dragon.hatch != 0;
+
+            // ensure it's acceptable
+            if(!isAdult && !isDead && !isFrozen){
+                ctx.body = {
+                    acceptable: true,
+                    justHatched
+                };
+            }
+            else{
+                ctx.body = { acceptable: false };
+            }
         }
     }
     catch(err){

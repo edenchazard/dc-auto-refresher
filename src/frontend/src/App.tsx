@@ -96,10 +96,10 @@ export default function App() {
             return;
         }
 
-        DCAPI.getHrsLeft(code)
-        .then(age => {
+        DCAPI.checkDragon(code)
+        .then(details => {
             // not a frozen, hidden or adult dragon
-            if(age > 0){
+            if(details.acceptable){
                 toggleAutorefresh(false);
                 setListOfDragons([...listOfDragons, { code, instances }]);
             }
@@ -150,14 +150,10 @@ export default function App() {
         }
 
         // continue with SR checks
-        DCAPI.getHrsLeft(code)
-        .then(age => {
-            // hours left 168 indicates a newly laid egg
-            // or a newly hatched hatchling
-            const   justHatched = age === 168,
-                    badDragon = age < 0;
-
-            if(justHatched || badDragon){
+        DCAPI.checkDragon(code)
+        .then(details => {
+            console.log(details)
+            if(details.justHatched || !details.acceptable){
                 // console.log("SMART REMOVAL FOR "+code);
                 // confirmed to be something we should remove.
                 removeDragon(listOfDragons.findIndex((dragon) => dragon.code === code));

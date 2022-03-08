@@ -1,7 +1,7 @@
 const API_URL = process.env.PUBLIC_URL + "/api";
 
 export const DCAPI ={
-    getHrsLeft: (code: string): Promise<number> => {
+    checkDragon: (code: string): Promise<any> => {
         return new Promise(async (resolve, reject) => {
             const url = API_URL+"/check/"+code;
             try{
@@ -11,7 +11,7 @@ export const DCAPI ={
                 }
 
                 const json = await response.json();
-                resolve(json.hoursLeft);
+                resolve(json);
             }
             catch(error){
                 reject("non 200 OK response received.");
