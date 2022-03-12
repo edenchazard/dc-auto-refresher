@@ -9,9 +9,10 @@ export function validateCode(code: string): boolean{
 }
 
 // Generates a dragcave img url with a cachebust
-export function generateDragCaveImgUrl(code: string): string{
+export function generateDragCaveImgUrl(code: string, noView: boolean = false): string{
     const cacheBust = Date.now() + Math.random();
-    return `https://dragcave.net/image/${code}.gif?q=${cacheBust}`;
+    // no view disables views on the dragon
+    return `https://dragcave.net/image/${code}${noView ? '/1' : ''}.gif?q=${cacheBust}`;
 }
 
 export function makeDOMFavicon(url: string): HTMLLinkElement{

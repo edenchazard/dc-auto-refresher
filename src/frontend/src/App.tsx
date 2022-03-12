@@ -75,8 +75,8 @@ export default function App() {
         if(active){
             iconInterval.current = window.setInterval(() => {
                 curIconCycle = !listOfDragons[curIconCycle + 1] ? 0 : curIconCycle + 1;
-                replaceFavicon(generateDragCaveImgUrl(listOfDragons[curIconCycle].code));
-            }, rate);
+                replaceFavicon(generateDragCaveImgUrl(listOfDragons[curIconCycle].code, true));
+            }, 1000);
         }
         else{
             // revert favicon

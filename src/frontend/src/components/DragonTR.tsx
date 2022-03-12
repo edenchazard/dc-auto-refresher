@@ -1,7 +1,8 @@
 import DragonInstancesInput from "./DragonInstancesInput";
+import { generateDragCaveImgUrl } from "../functions";
 
 export default function DragonTR({code, instances, setInstances, rate, remove}){
-    const   imgLink = `https://dragcave.net/image/${code}.gif`,
+    const   imgLink = generateDragCaveImgUrl(code, true),
             viewLink = `https://dragcave.net/view/${code}`;
 
     return (
