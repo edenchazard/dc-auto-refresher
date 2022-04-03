@@ -13,9 +13,9 @@ Fast Auto Refreshing Tool, aka FART (yes, really!). Fart is an auto-refreshing t
 Download docker.
 
 ### Dev
-```docker-compose up```
+```docker-compose -p dc-ar_dev up```
 
 ### Production
 Change PUBLIC_URL in `docker-compose.prod.yml` to the deployment url.
 
-```docker-compose -f docker-compose.prod.yml up -d --build```
+```docker-compose -f docker-compose.prod.yml -p dc-ar_prod up -d --build```

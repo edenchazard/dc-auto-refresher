@@ -1,5 +1,6 @@
 services:
   api:
+    container_name: dc-ar-dev-api
     build:
       context: .
       dockerfile: ./docker/api.Dockerfile
@@ -10,7 +11,9 @@ services:
       - NODE_ENV=development
     networks:
       - internal
+    restart: unless-stopped
   frontend:
+    container_name: dc-ar-dev-react
     build:
       context: .
       dockerfile: ./docker/frontend.Dockerfile
@@ -26,6 +29,7 @@ services:
       - api
     networks:
       - internal
+    restart: unless-stopped
 
 networks:
   internal:
