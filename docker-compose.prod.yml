@@ -20,7 +20,7 @@ services:
     ports:
       - 85:8080
     depends_on:
-      - prod_api
+      - api
     restart: always
     environment:
       - NODE_ENV=production
