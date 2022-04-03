@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
         replaceFavicon, sizesSame } from "./functions";
 import { Dragon, Size } from "./interfaces";
-import { DCAPI } from "./dcapi";
+import DCAPI from "./dcapi";
 
 function RefresherView({dragonList, rate, onImageChange}) {
     const [refresh, setRefresh] = useState<boolean>(false);
@@ -86,7 +86,7 @@ export default function App() {
         }
     }
 
-    function handleAdd(code: string, instances: number){
+    async function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list
         if(isCodeInList(listOfDragons, code)){
             return;
@@ -95,18 +95,17 @@ export default function App() {
         if(!validateCode(code)){
             return;
         }
-
-        DCAPI.checkDragon(code)
-        .then(details => {
+        try {
+            const details = await DCAPI.checkDragon(code);
             // not a frozen, hidden or adult dragon
             if(details.acceptable){
                 toggleAutorefresh(false);
                 setListOfDragons([...listOfDragons, { code, instances }]);
             }
-        })
-        .catch((err: string) => {
-            console.log(err);
-        });
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
     function toggleAutorefresh(value: boolean){
@@ -142,26 +141,26 @@ export default function App() {
         }
     }
 
-    function handleImageChange(code: string){
+    async function handleImageChange(code: string){
         // console.log("NEW SIZE FOR "+code);
         // if SR isn't enabled, just stay as normal.
         if(!smartRemoval){
             return;
         }
 
-        // continue with SR checks
-        DCAPI.checkDragon(code)
-        .then(details => {
-            console.log(details)
+        try {
+            const details = await DCAPI.checkDragon(code);
+
+            // continue with SR checks
             if(details.justHatched || !details.acceptable){
                 // console.log("SMART REMOVAL FOR "+code);
                 // confirmed to be something we should remove.
                 removeDragon(listOfDragons.findIndex((dragon) => dragon.code === code));
             }
-        })
-        .catch(err =>{
-            console.log(err);
-        });
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
     return (
