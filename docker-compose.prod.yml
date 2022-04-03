@@ -1,5 +1,5 @@
 services:
-  prod_api:
+  api:
     container_name: dc-ar-api
     build:
       context: .
@@ -10,7 +10,7 @@ services:
     networks:
       - internal
 
-  prod_frontend:
+  frontend:
     container_name: dc-ar-frontend
     build:
       context: .
