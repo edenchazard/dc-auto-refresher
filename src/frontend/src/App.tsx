@@ -75,7 +75,9 @@ export default function App() {
         if(active){
             iconInterval.current = window.setInterval(() => {
                 curIconCycle = !listOfDragons[curIconCycle + 1] ? 0 : curIconCycle + 1;
-                replaceFavicon(generateDragCaveImgUrl(listOfDragons[curIconCycle].code, true));
+                const code = listOfDragons[curIconCycle].code;
+                replaceFavicon(generateDragCaveImgUrl(code, true));
+                document.title = code;
             }, 1000);
         }
         else{
@@ -83,6 +85,7 @@ export default function App() {
             window.clearInterval(iconInterval.current);
             curIconCycle = 0;
             replaceFavicon('./logo192.png');
+            document.title = process.env.REACT_APP_APP_TITLE;
         }
     }
 
