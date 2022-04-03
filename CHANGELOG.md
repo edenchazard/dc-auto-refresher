@@ -1,4 +1,7 @@
 # Changelog
+## 2.2.0
+- Added port redirect and gzip to nginx config. zoom zoom
+- When auto-refreshing, page title now changes to code.
 ## 2.1.1
 - Bugfix: Stopped additional views from the favicon and control panel.
 - Favicon now cycles every second, previously it would set to the selected refresh rate.
