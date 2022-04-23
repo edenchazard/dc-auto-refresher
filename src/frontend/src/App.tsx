@@ -9,6 +9,8 @@ import { isCodeInList, validateCode, generateDragCaveImgUrl,
 import { Dragon, Size } from "./interfaces";
 import DCAPI from "./dcapi";
 
+const STORAGE_KEY = 'session-data';
+
 function RefresherView({dragonList, rate, onImageChange}) {
     const [refresh, setRefresh] = useState<boolean>(false);
     const sizes = useRef<Size[]>([]);
@@ -61,14 +63,29 @@ function RefresherView({dragonList, rate, onImageChange}) {
 }
 
 export default function App() {
-    const   [listOfDragons, setListOfDragons] = useState<Dragon[]>([]),
-            [rate, setRate] = useState<number>(250),
-            [autorefresh, setAutorefresh] = useState<boolean>(false),
-            [smartRemoval, setSmartRemoval] = useState<boolean>(true);
+    // if we have session data, use that, otherwise use defaults
+    const storedData = getStoredData();
+
+    const   [listOfDragons, setListOfDragons] = useState<Dragon[]>(storedData.listOfDragons || []),
+            [rate, setRate] = useState<number>(storedData.rate || 250),
+            [autorefresh, setAutorefresh] = useState<boolean>(storedData.autorefresh || false),
+            [smartRemoval, setSmartRemoval] = useState<boolean>(storedData.smartRemoval || true);
 
     let curIconCycle = 0;
     const iconInterval = useRef<number | null>(null);
 
+    // persist our state between refreshes (missk asked for this)
+    useEffect(() => {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+            listOfDragons, rate, autorefresh, smartRemoval
+        }));
+    });
+
+    function getStoredData(){
+        const session = sessionStorage.getItem(STORAGE_KEY);
+        return session ? JSON.parse(session) : {};
+    }
+    
     // Code to cycle the favicon
     function handleIcon(active: boolean) {
         // when aring, cycle through the various dragons
