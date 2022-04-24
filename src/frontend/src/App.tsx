@@ -13,14 +13,14 @@ import useIconCycle from "./useIconCycle";
 const SESSION_KEY = 'session';
 
 function RefresherView({dragonList, rate, onImageChange}) {
-    const [, setRefresh] = useState<number>(0);
+    const [instance, setInstance] = useState<number>(1);
     const sizes = useRef<Size[]>([]);
 
     // force a re-render every rate, this works because
     // the browser thinks the images are new every time
     // with the cachebust rendering the dragons
     useEffect(() => {
-        const timeout = window.setInterval(() => setRefresh(Date.now()), rate);
+        const timeout = window.setInterval(() => setInstance((prev) => prev + 1), rate);
         return () => window.clearInterval(timeout);
     }, [rate]);
 
@@ -46,19 +46,22 @@ function RefresherView({dragonList, rate, onImageChange}) {
 
     return (
         <div className='w-full'>
-            {
-                dragonList.map((dragon: Dragon, index: number) => {
-                    return (
-                        Array.from(Array(dragon.instances), (e, it) => 
-                        <img className='inline'
-                            src={generateDragCaveImgUrl(dragon.code)}
-                            key={`${index}.${it}`}
-                            alt={dragon.code}
-                            data-code={dragon.code}
-                            onLoad={measureSize} />)
-                    )
-                })
-            }
+            <p>Refresh #{instance}</p>
+            <div>
+                {
+                    dragonList.map((dragon: Dragon, index: number) => {
+                        return (
+                            Array.from(Array(dragon.instances), (e, it) => 
+                            <img className='inline'
+                                src={generateDragCaveImgUrl(dragon.code)}
+                                key={`${index}.${it}`}
+                                alt={dragon.code}
+                                data-code={dragon.code}
+                                onLoad={measureSize} />)
+                        )
+                    })
+                }
+            </div>
         </div>
     );
 }
