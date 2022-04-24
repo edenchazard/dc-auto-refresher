@@ -1,5 +1,5 @@
 import './App.css';
-import Header from "./components/Header";
+import Footer from "./components/Footer";
 import DragonTR from "./components/DragonTR";
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
@@ -197,7 +197,7 @@ export default function App() {
                     rate={rate}
                     onImageChange={handleImageChange} />
             } 
-            <Header />
+            <Footer />
         </div>
     );
 }
