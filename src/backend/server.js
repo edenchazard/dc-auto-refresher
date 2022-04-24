@@ -10,43 +10,62 @@ function validateCode(code) {
 }
 
 const router = new Router({ prefix: config.apiPath });
+
+// Function to validate API response from dragcave
+// Only checks the fields we need.
+function validAPIDragon(responseObj){
+    let pass = true;
+    ['grow', 'death', 'start', 'hatch', 'hoursleft'].forEach((prop) => {
+        if(typeof responseObj[prop] == 'undefined'){
+            pass = false;
+        }
+    });
+
+    return pass;
+}
+
+function determineDragonDetails(dragon){
+    const
+        isAdult = dragon.grow != 0,
+        isDead = dragon.death != 0,
+        isHidden = dragon.start == 0 && dragon.hatch == 0 && dragon.death == 0,
+        isFrozen = !isAdult && !isDead && !isHidden && dragon.hoursleft == -1,
+        justHatched = dragon.hoursleft === 168 && dragon.hatch != 0;
+
+    return { isAdult, isDead, isHidden, isFrozen, justHatched };
+}
+
 router.get('/check/:code', async (ctx) => {
     try{
         const code = ctx.params.code;
 
-        if(!validateCode){
-            throw new Error();
+        if(!validateCode(code)){
+            throw new Error("The code isn't valid.");
         }
 
-        const response = await axios(config.DCAPIURL+"/view/"+code);
-        const dragon = response?.data?.dragons[code];
+        const
+            response = await axios(config.DCAPIURL+"/view/"+code),
+            dragon = response.data?.dragons?.[code];
 
         if(!dragon){
-            ctx.body = { errors: 1, message: "The dragon could not be verified." };
+            throw new Error("The code doesn't exist or there's an issue with dragcave.net.");
         }
-        else{
-            let isAdult = dragon.grow != 0;
-            let isDead = dragon.death != 0;
-            let isHidden = dragon.start == 0 && dragon.hatch == 0 && dragon.death == 0;
-            let isFrozen = !isAdult && !isDead && !isHidden && dragon.hoursleft == -1;
-            let justHatched = dragon.hoursleft === 168 && dragon.hatch != 0;
 
-            // ensure it's acceptable
-            if(!isAdult && !isDead && !isFrozen){
-                ctx.body = {
-                    acceptable: true,
-                    justHatched
-                };
-            }
-            else{
-                ctx.body = { acceptable: false };
-            }
+        if(!validAPIDragon(dragon)){
+            throw new Error("The API response from dragcave.net isn't valid.");
         }
+
+        const { isAdult, isDead, isFrozen, justHatched } = determineDragonDetails(dragon);
+
+        // ensure it's acceptable
+        ctx.body = {
+            acceptable: !isAdult && !isDead && !isFrozen,
+            justHatched
+        };
     }
     catch(err){
-        console.log(err)
         ctx.status = 500;
-        ctx.body = { errors: 1, message: "Sorry, an error has occurred." };
+        ctx.body = { errors: 1, message: err.message };
     }
 });
 
@@ -55,9 +74,9 @@ app.use(async (ctx, next) => {
         await next();
     }
     catch(err) {
-        console.log(err.status)
+        console.log(err)
         ctx.status = err.status || 500;
-        ctx.body = err.message;
+        ctx.body = { errors: 1, message: err.message };
     }
 });
 
