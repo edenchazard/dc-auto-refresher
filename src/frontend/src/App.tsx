@@ -5,9 +5,10 @@ import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
 import { useEffect, useRef, useState } from 'react';
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
-        replaceFavicon, sizesSame } from "./functions";
+        sizesSame } from "./functions";
 import { Dragon, Size } from "./interfaces";
 import DCAPI from "./dcapi";
+import useIconCycle from "./useIconCycle";
 
 const STORAGE_KEY = 'session-data';
 
@@ -71,9 +72,9 @@ export default function App() {
             [autorefresh, setAutorefresh] = useState<boolean>(storedData.autorefresh || false),
             [smartRemoval, setSmartRemoval] = useState<boolean>(storedData.smartRemoval || true);
 
-    let curIconCycle = 0;
-    const iconInterval = useRef<number | null>(null);
-
+    // handle icon changes when auto refresh is active
+    useIconCycle(autorefresh, listOfDragons);
+    
     // persist our state between refreshes (missk asked for this)
     useEffect(() => {
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -84,26 +85,6 @@ export default function App() {
     function getStoredData(){
         const session = sessionStorage.getItem(STORAGE_KEY);
         return session ? JSON.parse(session) : {};
-    }
-    
-    // Code to cycle the favicon
-    function handleIcon(active: boolean) {
-        // when aring, cycle through the various dragons
-        if(active){
-            iconInterval.current = window.setInterval(() => {
-                curIconCycle = !listOfDragons[curIconCycle + 1] ? 0 : curIconCycle + 1;
-                const code = listOfDragons[curIconCycle].code;
-                replaceFavicon(generateDragCaveImgUrl(code, true));
-                document.title = code;
-            }, 1000);
-        }
-        else{
-            // revert favicon
-            window.clearInterval(iconInterval.current);
-            curIconCycle = 0;
-            replaceFavicon('./logo192.png');
-            document.title = process.env.REACT_APP_APP_TITLE;
-        }
     }
 
     async function handleAdd(code: string, instances: number){
@@ -134,7 +115,6 @@ export default function App() {
             value = false;
         }
 
-        handleIcon(value);
         setAutorefresh(value);
     }
 
