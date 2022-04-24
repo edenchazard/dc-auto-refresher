@@ -1,4 +1,10 @@
 # Changelog
+## 2.3.0
+- Fix bug with icon cycler not acknowledging removed dragons.
+- Persist state across refreshes.
+- Docker changes.
+- Standardizing stuff across my apps.
+
 ## 2.2.0
 - Added port redirect and gzip to nginx config. zoom zoom
 - When auto-refreshing, page title now changes to code.
