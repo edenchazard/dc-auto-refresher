@@ -4,12 +4,11 @@ const Koa = require('koa');
 const Router = require('@koa/router');
 const axios = require("axios");
 const app = new Koa();
+const router = new Router({ prefix: config.apiPath });
 
 function validateCode(code) {
     return /^[a-zA-Z0-9]{5}$/.test(code);
 }
-
-const router = new Router({ prefix: config.apiPath });
 
 // Function to validate API response from dragcave
 // Only checks the fields we need.
@@ -24,6 +23,7 @@ function validAPIDragon(responseObj){
     return pass;
 }
 
+// Determines various characteristics about a dragon
 function determineDragonDetails(dragon){
     const
         isAdult = dragon.grow != 0,
@@ -36,54 +36,56 @@ function determineDragonDetails(dragon){
 }
 
 router.get('/check/:code', async (ctx) => {
-    try{
-        const code = ctx.params.code;
+    const code = ctx.params.code;
 
-        if(!validateCode(code)){
-            throw new Error("The code isn't valid.");
-        }
-
-        const
-            response = await axios(config.DCAPIURL+"/view/"+code),
-            dragon = response.data?.dragons?.[code];
-
-        if(!dragon){
-            throw new Error("The code doesn't exist or there's an issue with dragcave.net.");
-        }
-
-        if(!validAPIDragon(dragon)){
-            throw new Error("The API response from dragcave.net isn't valid.");
-        }
-
-        const { isAdult, isDead, isFrozen, justHatched } = determineDragonDetails(dragon);
-
-        // ensure it's acceptable
-        ctx.body = {
-            acceptable: !isAdult && !isDead && !isFrozen,
-            justHatched
+    if(!validateCode(code)){
+        ctx.body = { 
+            errors: true,
+            message: "The code isn't valid."
         };
+        return;
     }
-    catch(err){
-        ctx.status = 500;
-        ctx.body = { errors: 1, message: err.message };
-    }
-});
 
-app.use(async (ctx, next) => {
-    try {
-        await next();
+    const
+        response = await axios(config.DCAPIURL+"/view/"+code),
+        dragon = response.data?.dragons?.[code];
+
+    if(!dragon){
+        ctx.body = { 
+            errors: true,
+            message: "The dragon doesn't exist or there's an issue with dragcave.net."
+        };
+        return;
     }
-    catch(err) {
-        console.log(err)
-        ctx.status = err.status || 500;
-        ctx.body = { errors: 1, message: err.message };
+
+    if(!validAPIDragon(dragon)){
+        throw new Error("The API response from dragcave.net isn't valid.");
     }
+
+    // extra info about the dragon based on response
+    Object.assign(dragon, determineDragonDetails(dragon));
+
+    ctx.body = {
+        errors: false,
+        acceptable: !dragon.isAdult && !dragon.isDead && !dragon.isFrozen,
+        justHatched: dragon.justHatched
+    };
 });
 
 app
-  .use(router.routes())
-  .use(router.allowedMethods())
-  .listen(config.port);
+    .use(async (ctx, next) => {
+        try {
+            await next();
+        }
+        catch(err) {
+            console.log(err)
+            ctx.status = err.status || 500;
+            ctx.body = { errors: true, message: err.message };
+        }
+    })
+    .use(router.routes())
+    .use(router.allowedMethods())
+    .listen(config.port);
 
 process.on('unhandledRejection', (err) => {
     console.log(err);

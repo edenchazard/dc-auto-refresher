@@ -13,9 +13,12 @@ Fast Auto Refreshing Tool, aka FART (yes, really!). Fart is an auto-refreshing t
 Download docker.
 
 ### Dev
+1. Change config.example.js to config.js and insert API key.
+2. Run:
 ```docker-compose -p dc-ar_dev up```
 
 ### Production
-Change PUBLIC_URL in `docker-compose.prod.yml` to the deployment url.
-
+1. Change PUBLIC_URL in `docker-compose.prod.yml` to the deployment url.
+2. Change config.example.js to config.js and insert API key.
+3. Run:
 ```docker-compose -f docker-compose.prod.yml -p dc-ar_prod up -d --build```

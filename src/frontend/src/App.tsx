@@ -10,7 +10,7 @@ import { Dragon, Size } from "./interfaces";
 import DCAPI from "./dcapi";
 import useIconCycle from "./useIconCycle";
 
-const STORAGE_KEY = 'session-data';
+const SESSION_KEY = 'session';
 
 function RefresherView({dragonList, rate, onImageChange}) {
     const [, setRefresh] = useState<number>(0);
@@ -65,7 +65,7 @@ function RefresherView({dragonList, rate, onImageChange}) {
 
 export default function App() {
     // if we have session data, use that, otherwise use defaults
-    const storedData = getStoredData();
+    const storedData = getSessionData();
 
     const   [listOfDragons, setListOfDragons] = useState<Dragon[]>(storedData.listOfDragons || []),
             [rate, setRate] = useState<number>(storedData.rate || 250),
@@ -77,25 +77,22 @@ export default function App() {
     
     // persist our state between refreshes (missk asked for this)
     useEffect(() => {
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify({
             listOfDragons, rate, autorefresh, smartRemoval
         }));
     });
 
-    function getStoredData(){
-        const session = sessionStorage.getItem(STORAGE_KEY);
+    function getSessionData(){
+        const session = sessionStorage.getItem(SESSION_KEY);
         return session ? JSON.parse(session) : {};
     }
 
     async function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list
-        if(isCodeInList(listOfDragons, code)){
+        if(isCodeInList(listOfDragons, code) || !validateCode(code)){
             return;
         }
 
-        if(!validateCode(code)){
-            return;
-        }
         try {
             const details = await DCAPI.checkDragon(code);
             // not a frozen, hidden or adult dragon
