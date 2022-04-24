@@ -13,16 +13,16 @@ import useIconCycle from "./useIconCycle";
 const STORAGE_KEY = 'session-data';
 
 function RefresherView({dragonList, rate, onImageChange}) {
-    const [refresh, setRefresh] = useState<boolean>(false);
+    const [, setRefresh] = useState<number>(0);
     const sizes = useRef<Size[]>([]);
 
     // force a re-render every rate, this works because
     // the browser thinks the images are new every time
     // with the cachebust rendering the dragons
     useEffect(() => {
-        const timeout = window.setTimeout(() => setRefresh(!refresh), rate);
-        return () => window.clearTimeout(timeout);
-    });
+        const timeout = window.setInterval(() => setRefresh(Date.now()), rate);
+        return () => window.clearInterval(timeout);
+    }, [rate]);
 
     // we try to detect changes in the image's h/w after load
     // and assume if there's any change, that the
