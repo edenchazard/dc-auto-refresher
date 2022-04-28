@@ -1,8 +1,10 @@
 const API_URL = process.env.PUBLIC_URL + "/api";
 
 interface APIResponse {
+    errors: boolean,
     acceptable: boolean,
-    justHatched?: boolean
+    justHatched: boolean,
+    errorMessage?: string
 }
 
 const DCAPI ={
@@ -11,14 +13,15 @@ const DCAPI ={
         try{
             const response = await fetch(url);
             if(!response.ok){
-                throw new Error("non 200 OK response received.");
+                throw new Error(response.statusText);
             }
-
             const json = await response.json();
             return json;
+            
         }
         catch(error){
-            throw new Error("non 200 OK response received.");
+            console.log(error)
+            throw new Error(error.message);
         }
     }
 }

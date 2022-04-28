@@ -41,7 +41,7 @@ router.get('/check/:code', async (ctx) => {
     if(!validateCode(code)){
         ctx.body = { 
             errors: true,
-            message: "The code isn't valid."
+            errorMessage: "The code isn't valid."
         };
         return;
     }
@@ -53,7 +53,7 @@ router.get('/check/:code', async (ctx) => {
     if(!dragon){
         ctx.body = { 
             errors: true,
-            message: "The dragon doesn't exist or there's an issue with dragcave.net."
+            errorMessage: "The dragon doesn't exist or there's an issue with dragcave.net."
         };
         return;
     }
@@ -80,7 +80,7 @@ app
         catch(err) {
             console.log(err)
             ctx.status = err.status || 500;
-            ctx.body = { errors: true, message: err.message };
+            ctx.body = { errors: true, errorMessage: err.message };
         }
     })
     .use(router.routes())

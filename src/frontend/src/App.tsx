@@ -3,6 +3,7 @@ import Footer from "./components/Footer";
 import DragonTR from "./components/DragonTR";
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
+import ErrorDisplay from './components/ErrorDisplay';
 import { useEffect, useRef, useState } from 'react';
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
         sizesSame } from "./functions";
@@ -11,6 +12,14 @@ import DCAPI from "./dcapi";
 import useIconCycle from "./useIconCycle";
 
 const SESSION_KEY = 'session';
+
+// Error messages
+const
+    BADDRAGON = "Error: The selected dragon may be an adult, frozen or dead.",
+    BADCODE = "Error: The selected code isn't 5 characters or contains a character besides A-Z, a-z, 0-9.",
+    ALREADYINLIST = "Error: The code is already added.",
+    CHECKINGAPI = "Checking with TJ09...",
+    BADCONNECTION = "There was a problem contacting the server. Please try again.";
 
 function RefresherView({dragonList, rate, onImageChange}) {
     const [instance, setInstance] = useState<number>(1);
@@ -46,7 +55,7 @@ function RefresherView({dragonList, rate, onImageChange}) {
 
     return (
         <div className='w-full'>
-            <p>Refresh #{instance}</p>
+            <p>Refreshing every {rate/1000}s (#{instance})</p>
             <div>
                 {
                     dragonList.map((dragon: Dragon, index: number) => {
@@ -73,7 +82,8 @@ export default function App() {
     const   [listOfDragons, setListOfDragons] = useState<Dragon[]>(storedData.listOfDragons || []),
             [rate, setRate] = useState<number>(storedData.rate || 250),
             [autorefresh, setAutorefresh] = useState<boolean>(storedData.autorefresh || false),
-            [smartRemoval, setSmartRemoval] = useState<boolean>(storedData.smartRemoval || true);
+            [smartRemoval, setSmartRemoval] = useState<boolean>(storedData.smartRemoval || true),
+            [error, setError] = useState(null);
 
     // handle icon changes when auto refresh is active
     useIconCycle(autorefresh, listOfDragons);
@@ -92,20 +102,36 @@ export default function App() {
 
     async function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list
-        if(isCodeInList(listOfDragons, code) || !validateCode(code)){
+        if(isCodeInList(listOfDragons, code)){
+            setError({ type: 1, message: ALREADYINLIST });
+            return;
+        }
+        if(!validateCode(code)){
+            setError({ type: 1, message: BADCODE });
             return;
         }
 
         try {
+            setError({ type: 2, message: CHECKINGAPI, noHide: true });
             const details = await DCAPI.checkDragon(code);
+
+            if(details.errors){
+                setError({ type: 1, message: details.errorMessage });
+                return;
+            }
+
             // not a frozen, hidden or adult dragon
             if(details.acceptable){
                 toggleAutorefresh(false);
                 setListOfDragons([...listOfDragons, { code, instances }]);
+                setError(null);
+            }
+            else{
+                setError({ type: 1, message: BADDRAGON });
             }
         }
         catch (error) {
-            console.log(error);
+            setError({ type: 1, message: BADCONNECTION + " " + error.message});
         }
     }
 
@@ -152,14 +178,17 @@ export default function App() {
             const details = await DCAPI.checkDragon(code);
 
             // continue with SR checks
-            if(details.justHatched || !details.acceptable){
+            if(details.errors){
+                setError({ type: 1, message: details.errorMessage });
+            }
+            else if(details.justHatched || !details.acceptable){
                 // console.log("SMART REMOVAL FOR "+code);
                 // confirmed to be something we should remove.
                 removeDragon(listOfDragons.findIndex((dragon) => dragon.code === code));
             }
         }
         catch (error) {
-            console.log(error);
+            setError({ type: 1, message: BADCONNECTION + " " + error.message});
         }
     }
 
@@ -175,6 +204,10 @@ export default function App() {
                 updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
                 click={() => toggleAutorefresh(!autorefresh) }
                 updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
+            <ErrorDisplay
+                error={error}
+                done={setError}
+                />
             <div className='grid grid-cols-3 gap-4 my-2'>
                 {
                     listOfDragons.map((dragon, index) => {
