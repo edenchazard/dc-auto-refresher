@@ -1,4 +1,7 @@
 # Changelog
+## 2.4.0
+- The app now reports errors.
+- Improved header (now footer).
 ## 2.3.0
 - Fix bug with icon cycler not acknowledging removed dragons.
 - Persist state across refreshes.
