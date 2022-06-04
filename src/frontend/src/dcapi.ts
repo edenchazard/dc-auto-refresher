@@ -9,20 +9,16 @@ interface APIResponse {
 
 const DCAPI ={
     checkDragon: async (code: string): Promise<APIResponse> => {
-        const url = API_URL+"/check/"+code;
-        try{
-            const response = await fetch(url);
-            if(!response.ok){
-                throw new Error(response.statusText);
-            }
-            const json = await response.json();
-            return json;
-            
+        const
+            url = API_URL+"/check/"+code,
+            response = await fetch(url);
+
+        if(!response.ok){
+            throw new Error(response.statusText);
         }
-        catch(error){
-            console.log(error)
-            throw new Error(error.message);
-        }
+
+        const json = await response.json();
+        return json;
     }
 }
 
