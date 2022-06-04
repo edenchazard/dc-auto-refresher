@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { replaceFavicon, generateDragCaveImgUrl } from "./functions";
+import { Dragon } from './interfaces';
 
-export default function useIconCycle(autorefresh, listOfDragons){
+export default function useIconCycle(autorefresh: boolean, listOfDragons: Dragon[]){
     // handle icon changes when auto refresh is active
     useEffect(() => {
         let index = 0;
