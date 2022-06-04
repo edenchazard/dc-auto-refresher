@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 
-/*interface ErrorObj {
-    message: string,
-    type: number
+/*interface errorMsg {
+    type: errorType,
+    message: String,
+    noHide?: Boolean
 }*/
 
 enum errorType {
@@ -24,14 +25,11 @@ function determineClass(type: number){
 export default function ErrorDisplay({error, hideAfter = 5000, done}){
     const [, setVisible] = useState(false);
 
-    // hide error after x miliseconds
     useEffect(() => {
+        // hide error after x miliseconds if nohide disabled
         if(error && !error.noHide){
-            const timeout = setTimeout(() => {
-                done(null)
-            }, hideAfter);
-
             setVisible(true);
+            const timeout = setTimeout(() => done(null), hideAfter);
 
             return () => clearTimeout(timeout);
         }
