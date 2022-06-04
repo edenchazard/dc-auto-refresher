@@ -1,6 +1,20 @@
 import { useEffect } from 'react';
-import { replaceFavicon, generateDragCaveImgUrl } from "./functions";
-import { Dragon } from './interfaces';
+import { generateDragCaveImgUrl } from "../app/functions";
+import { Dragon } from '../app/interfaces';
+
+function makeDOMFavicon(url: string): HTMLLinkElement{
+    let newIcon = document.createElement('link');
+    newIcon.rel = 'icon';
+    newIcon.href = url;
+    return newIcon;
+}
+
+function replaceFavicon(url: string): HTMLLinkElement{
+    return document.head.replaceChild(
+        makeDOMFavicon(url),
+        document.head.querySelector('link[rel="icon"]')
+    );
+}
 
 export default function useIconCycle(autorefresh: boolean, listOfDragons: Dragon[]){
     // handle icon changes when auto refresh is active

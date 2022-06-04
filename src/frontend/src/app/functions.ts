@@ -15,20 +15,6 @@ export function generateDragCaveImgUrl(code: string, noView: boolean = false): s
     return `https://dragcave.net/image/${code}${noView ? '/1' : ''}.gif?q=${cacheBust}`;
 }
 
-export function makeDOMFavicon(url: string): HTMLLinkElement{
-    let newIcon = document.createElement('link');
-    newIcon.rel = 'icon';
-    newIcon.href = url;
-    return newIcon;
-}
-
-export function replaceFavicon(url: string): HTMLLinkElement{
-    return document.head.replaceChild(
-        makeDOMFavicon(url),
-        document.head.querySelector('link[rel="icon"]')
-    );
-}
-
 export function sizesSame(oldSize: Size, newSize: Size): boolean{
     return (oldSize.w === newSize.w && oldSize.h === newSize.h);
 }

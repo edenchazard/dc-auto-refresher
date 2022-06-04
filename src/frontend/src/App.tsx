@@ -6,10 +6,10 @@ import RefresherControls from './components/RefresherControls';
 import ErrorDisplay from './components/ErrorDisplay';
 import { useEffect, useRef, useState } from 'react';
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
-        sizesSame } from "./functions";
-import { Dragon, Size } from "./interfaces";
-import DCAPI from "./dcapi";
-import useIconCycle from "./useIconCycle";
+        sizesSame } from "./app/functions";
+import { Dragon, Size } from "./app/interfaces";
+import DCAPI from "./app/dcapi";
+import useIconCycle from "./hooks/useIconCycle";
 
 const SESSION_KEY = 'session';
 
@@ -20,6 +20,11 @@ const
     ALREADYINLIST = "Error: The code is already added.",
     CHECKINGAPI = "Checking with TJ09...",
     BADCONNECTION = "There was a problem contacting the server. Please try again.";
+
+function getSessionData(){
+    const session = sessionStorage.getItem(SESSION_KEY);
+    return session ? JSON.parse(session) : {};
+}
 
 function RefresherView({dragonList, rate, onImageChange}) {
     const [instance, setInstance] = useState<number>(1);
@@ -95,10 +100,6 @@ export default function App() {
         }));
     });
 
-    function getSessionData(){
-        const session = sessionStorage.getItem(SESSION_KEY);
-        return session ? JSON.parse(session) : {};
-    }
 
     async function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list

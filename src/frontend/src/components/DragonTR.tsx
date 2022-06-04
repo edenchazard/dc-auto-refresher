@@ -1,5 +1,5 @@
 import DragonInstancesInput from "./DragonInstancesInput";
-import { generateDragCaveImgUrl } from "../functions";
+import { generateDragCaveImgUrl } from "../app/functions";
 
 export default function DragonTR({code, instances, setInstances, rate, remove}){
     const   imgLink = generateDragCaveImgUrl(code, true),

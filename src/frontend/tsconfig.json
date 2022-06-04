@@ -4,6 +4,6 @@
         "jsx": "react-jsx",
         "allowSyntheticDefaultImports": true
     },
-    "include": ["./src/*.ts", "./src/*.tsx"],
+    "include": ["./src/*.ts", "./src/*.tsx", "src/app/dcapi.ts", "src/app/functions.ts", "src/app/interfaces.ts", "src/hooks/useIconCycle.ts"],
     "exclude": ["node_modules"]
 }
