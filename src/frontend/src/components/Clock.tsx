@@ -17,17 +17,17 @@ function formatTime(ms: number): string{
 }
 
 export default function Clock(){
-    const [unixTime, setUnixTime] = useState(Date.now);
+    const [time, setTime] = useState(Date.now);
 
     useEffect(() => {
         // using 100ms instead of 1000ms almost eliminates any
         // milisecond differences between this clock and the
         // client's clock
-        const interval = setInterval(() => setUnixTime(Date.now), 100);
+        const interval = setInterval(() => setTime(Date.now), 100);
 
         // clean up
         return () => clearInterval(interval);
     }, []);
 
-    return <span>{formatTime(unixTime)}</span>;
+    return <span>{formatTime(time)}</span>;
 }
