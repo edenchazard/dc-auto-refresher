@@ -1,10 +1,11 @@
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import Footer from "./components/Footer";
 import DragonTR from "./components/DragonTR";
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
 import ErrorDisplay from './components/ErrorDisplay';
-import { useEffect, useRef, useState } from 'react';
+import Clock from './components/Clock';
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
         sizesSame } from "./app/functions";
 import { Dragon, Size } from "./app/interfaces";
@@ -99,7 +100,6 @@ export default function App() {
             listOfDragons, rate, autorefresh, smartRemoval
         }));
     });
-
 
     async function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list
@@ -207,8 +207,13 @@ export default function App() {
                 updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
             <ErrorDisplay
                 error={error}
-                done={setError}
-                />
+                done={setError} />
+            <div className="flex items-center justify-between my-2">
+                <span>
+                    <label htmlFor="timer">Time:</label>
+                </span>
+                <span role="timer" id='timer'><Clock /></span>
+            </div>
             <div className='grid grid-cols-3 gap-4 my-2'>
                 {
                     listOfDragons.map((dragon, index) => {

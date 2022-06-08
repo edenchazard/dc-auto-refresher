@@ -1,4 +1,6 @@
 # Changelog
+## 2.4.1
+- Tidied up some code.
 ## 2.4.0
 - The app now reports errors.
 - Improved header (now footer).
