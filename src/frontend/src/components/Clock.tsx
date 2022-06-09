@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
 
-function formatTime(ms: number): string{
+function formatTimestamp(ms: number): string{
     const
         dateObj = new Date(ms),
         // get hours, mins and seconds
-        parts = [
+        [hours, minutes, seconds] = [
             dateObj.getHours(),
             dateObj.getMinutes(),
             dateObj.getSeconds()
-        ];
-
-        // add leading zeroes if we need to
-        const [hours, minutes, seconds] = parts.map(value => (value < 10) ? "0" + value : value);
+        ] // add leading zeroes if we need to
+            .map(value => (value < 10) ? "0" + value : value.toString());
 
     return `${hours}:${minutes}:${seconds}`;
 }
@@ -29,5 +27,5 @@ export default function Clock(){
         return () => clearInterval(interval);
     }, []);
 
-    return <span>{formatTime(time)}</span>;
+    return <span>{formatTimestamp(time)}</span>;
 }
