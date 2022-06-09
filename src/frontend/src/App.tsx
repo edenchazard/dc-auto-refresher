@@ -212,7 +212,7 @@ export default function App() {
                     listOfDragons.map((dragon, index) => {
                         return (
                             <DragonTR
-                                key={index}
+                                key={dragon.code}
                                 code={dragon.code}
                                 rate={rate}
                                 instances={dragon.instances}
