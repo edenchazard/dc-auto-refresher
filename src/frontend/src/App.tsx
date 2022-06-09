@@ -198,15 +198,15 @@ export default function App() {
                 updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
                 click={() => toggleAutorefresh(!autorefresh) }
                 updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
-            <ErrorDisplay
-                error={error}
-                done={setError} />
             <div className="flex items-center justify-between my-2">
                 <span>
                     <label htmlFor="timer">Time:</label>
                 </span>
                 <span role="timer" id='timer'><Clock /></span>
             </div>
+            <ErrorDisplay
+                error={error}
+                done={setError} />
             <div className='grid grid-cols-3 gap-4 my-2'>
                 {
                     listOfDragons.map((dragon, index) => {
