@@ -17,7 +17,7 @@ function formatTime(ms: number): string{
 }
 
 export default function Clock(){
-    const [time, setTime] = useState(Date.now);
+    const [time, setTime] = useState<number>(Date.now);
 
     useEffect(() => {
         // using 100ms instead of 1000ms almost eliminates any

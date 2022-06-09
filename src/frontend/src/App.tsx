@@ -1,26 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
-import './App.css';
 import Footer from "./components/Footer";
 import DragonTR from "./components/DragonTR";
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
 import ErrorDisplay from './components/ErrorDisplay';
 import Clock from './components/Clock';
+import useIconCycle from "./hooks/useIconCycle";
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
         sizesSame } from "./app/functions";
 import { Dragon, Size } from "./app/interfaces";
 import DCAPI from "./app/dcapi";
-import useIconCycle from "./hooks/useIconCycle";
+import errMsg from "./app/errors";
+import './App.css';
 
 const SESSION_KEY = 'session';
-
-// Error messages
-const
-    BADDRAGON = "Error: The selected dragon may be an adult, frozen or dead.",
-    BADCODE = "Error: The selected code isn't 5 characters or contains a character besides A-Z, a-z, 0-9.",
-    ALREADYINLIST = "Error: The code is already added.",
-    CHECKINGAPI = "Checking with TJ09...",
-    BADCONNECTION = "There was a problem contacting the server. Please try again.";
 
 function getSessionData(){
     const session = sessionStorage.getItem(SESSION_KEY);
@@ -35,8 +28,8 @@ function RefresherView({dragonList, rate, onImageChange}) {
     // the browser thinks the images are new every time
     // with the cachebust rendering the dragons
     useEffect(() => {
-        const timeout = window.setInterval(() => setInstance((prev) => prev + 1), rate);
-        return () => window.clearInterval(timeout);
+        const timeout = setInterval(() => setInstance((prev) => prev + 1), rate);
+        return () => clearInterval(timeout);
     }, [rate]);
 
     // we try to detect changes in the image's h/w after load
@@ -104,16 +97,16 @@ export default function App() {
     async function handleAdd(code: string, instances: number){
         // prevent people adding an already added code to the list
         if(isCodeInList(listOfDragons, code)){
-            setError({ type: 1, message: ALREADYINLIST });
+            setError({ type: 1, message: errMsg.ALREADYINLIST });
             return;
         }
         if(!validateCode(code)){
-            setError({ type: 1, message: BADCODE });
+            setError({ type: 1, message: errMsg.BADCODE });
             return;
         }
 
         try {
-            setError({ type: 2, message: CHECKINGAPI, noHide: true });
+            setError({ type: 2, message: errMsg.CHECKINGAPI, noHide: true });
             const details = await DCAPI.checkDragon(code);
 
             if(details.errors){
@@ -128,11 +121,11 @@ export default function App() {
                 setError(null);
             }
             else{
-                setError({ type: 1, message: BADDRAGON });
+                setError({ type: 1, message: errMsg.BADDRAGON });
             }
         }
         catch (error) {
-            setError({ type: 1, message: BADCONNECTION + " " + error.message});
+            setError({ type: 1, message: errMsg.BADCONNECTION + " " + error.message});
         }
     }
 
@@ -189,7 +182,7 @@ export default function App() {
             }
         }
         catch (error) {
-            setError({ type: 1, message: BADCONNECTION + " " + error.message});
+            setError({ type: 1, message: errMsg.BADCONNECTION + " " + error.message});
         }
     }
 
