@@ -4,7 +4,7 @@ import DragonTR from "./components/DragonTR";
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
 import ErrorDisplay from './components/ErrorDisplay';
-import Clock from './components/Clock';
+import { Clock } from './components/Clock';
 import useIconCycle from "./hooks/useIconCycle";
 import { isCodeInList, validateCode, generateDragCaveImgUrl, 
         sizesSame } from "./app/functions";
