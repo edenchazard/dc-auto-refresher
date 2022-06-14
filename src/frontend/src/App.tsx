@@ -94,7 +94,8 @@ export default function App() {
         }));
     });
 
-    async function handleAdd(code: string, instances: number){
+    async function handleAdd(code: string, instances: number, tod:  number|undefined){
+        console.log(tod);
         // prevent people adding an already added code to the list
         if(isCodeInList(listOfDragons, code)){
             setError({ type: 1, message: errMsg.ALREADYINLIST });
@@ -107,7 +108,7 @@ export default function App() {
 
         try {
             setError({ type: 2, message: errMsg.CHECKINGAPI, noHide: true });
-            const details = await DCAPI.checkDragon(code);
+            const details = await DCAPI.checkDragon(code, tod);
 
             if(details.errors){
                 setError({ type: 1, message: details.errorMessage });
@@ -117,7 +118,7 @@ export default function App() {
             // not a frozen, hidden or adult dragon
             if(details.acceptable){
                 toggleAutorefresh(false);
-                setListOfDragons([...listOfDragons, { code, instances }]);
+                setListOfDragons([...listOfDragons, { code, instances, tod: details.tod }]);
                 setError(null);
             }
             else{
@@ -202,7 +203,9 @@ export default function App() {
                 <span>
                     <label htmlFor="timer">Time:</label>
                 </span>
-                <span role="timer" id='timer'><Clock /></span>
+                <span role="timer" id='timer'>
+                    <Clock />
+                </span>
             </div>
             <ErrorDisplay
                 error={error}
@@ -215,6 +218,7 @@ export default function App() {
                                 key={dragon.code}
                                 code={dragon.code}
                                 rate={rate}
+                                tod={new Date(dragon.tod)}
                                 instances={dragon.instances}
                                 setInstances={(instances: number) => handleUpdateDragon(index, instances)}
                                 remove={() => handleRemove(index)} />

@@ -24,7 +24,42 @@ function validAPIDragon(responseObj){
 }
 
 // Determines various characteristics about a dragon
-function determineDragonDetails(dragon){
+function determineDragonDetails(dragon, ms){
+    const calculateTOD = (hoursLeft, userMS) => {
+        console.log("MILISECONDS XYZ", userMS)
+        if(hoursLeft == -1)
+            return null;
+        
+        // retrieve remaining hours after subtracting days
+        // dc's hours are always ceiled and not precise
+        // so we need to "add" the precision
+        // work out the date in the future by assessing hoursleft
+        // and the user specified minutes and seconds
+        const x = new Date();
+        x.setTime(userMS);
+        const userDate = new Date();
+        userDate.setUTCMinutes(x.getUTCMinutes());
+        userDate.setUTCSeconds(x.getUTCSeconds());
+
+        // if the current ms is higher than the user specified ms, then dc's
+        // 'timer' has already ticked down
+        //const remainder = hoursLeft % 6;
+        userDate.setUTCHours(userDate.getUTCHours() + hoursLeft);
+        /*if((new Date).getTime() < userDate.getTime()){
+            userDate.setUTCHours(userDate.getUTCHours() - 1);
+            console.log('yeah');
+        }
+        else{
+            const remainder = hoursLeft % 6;
+            console.log('reeee', remainder)
+            userDate.setUTCHours(userDate.getUTCHours() + remainder);
+        }*/
+
+        console.log('user specified date ' + userDate);
+
+        return userDate.getTime();
+    }
+
     const
         isAdult = dragon.grow != 0,
         isDead = dragon.death != 0,
@@ -32,11 +67,15 @@ function determineDragonDetails(dragon){
         isFrozen = !isAdult && !isDead && !isHidden && dragon.hoursleft == -1,
         justHatched = dragon.hoursleft === 168 && dragon.hatch != 0;
 
-    return { isAdult, isDead, isHidden, isFrozen, justHatched };
+        console.log("MILISECONDS", ms)
+    const tod = calculateTOD(dragon.hoursleft, ms);
+
+    return { isAdult, isDead, isHidden, isFrozen, justHatched, tod };
 }
 
-router.get('/check/:code', async (ctx) => {
+router.get('/check/:code/:tod', async (ctx) => {
     const code = ctx.params.code;
+    const userMS = ctx.params.tod;
 
     if(!validateCode(code)){
         ctx.body = { 
@@ -62,13 +101,15 @@ router.get('/check/:code', async (ctx) => {
         throw new Error("The API response from dragcave.net isn't valid.");
     }
 
+    console.log(userMS)
     // extra info about the dragon based on response
-    Object.assign(dragon, determineDragonDetails(dragon));
+    Object.assign(dragon, determineDragonDetails(dragon, userMS));
 
     ctx.body = {
         errors: false,
         acceptable: !dragon.isAdult && !dragon.isDead && !dragon.isFrozen,
-        justHatched: dragon.justHatched
+        justHatched: dragon.justHatched,
+        tod: dragon.tod
     };
 });
 

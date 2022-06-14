@@ -5,21 +5,31 @@ import { useEffect, useState } from 'react';
 // client's clock
 const updateInterval = 100;
 
-function formatTimestamp(ms: number): string {
-    const dateObj = new Date(ms);
-    // get hours, mins and seconds
-    return [ dateObj.getHours(), dateObj.getMinutes(), dateObj.getSeconds() ]
-        // add leading zeroes if we need to
+// Receives an array of 'parts' of a time and formats with leading zeroes
+const fmtTimeArray = (arr: number[]) => {
+    return arr
         .map(value => (value < 10) ? "0" + value : value.toString())
         .join(':');
 }
 
+// returns difference between two dates in ms
+function differenceBetweenTwoDates(from: Date, to: Date){
+    return to.valueOf() - from.valueOf();
+}
+
+function formatTimestamp(ms: number): string {
+    const dateObj = new Date(ms);
+    // get hours, mins and seconds
+    return fmtTimeArray([
+        dateObj.getHours(), dateObj.getMinutes(), dateObj.getSeconds()
+    ]);
+}
+
 function formatUTCTimestamp(ms: number): string{
     const dateObj = new Date(ms);
-    return [ dateObj.getUTCHours(), dateObj.getUTCMinutes(), dateObj.getUTCSeconds() ]
-    // add leading zeroes if we need to
-    .map(value => (value < 10) ? "0" + value : value.toString())
-    .join(':');
+    return fmtTimeArray([
+        dateObj.getUTCHours(), dateObj.getUTCMinutes(), dateObj.getUTCSeconds()
+    ]);
 }
 
 export function Clock(){
@@ -35,10 +45,6 @@ export function Clock(){
     return <span>{formatTimestamp(time)}</span>;
 }
 
-// returns difference between two dates in ms
-function differenceBetweenTwoDates(from: Date, to: Date){
-    return to.valueOf() - from.valueOf();
-}
 interface CountDownProps {
     to: Date,
     whenDone?: Function
@@ -63,7 +69,7 @@ export function CountDown({ to, whenDone }: CountDownProps){
         }, updateInterval);
 
         return () => clearInterval(interval);
-    }, [to]);
+    }, [to, whenDone]);
 
     return <span>{formatUTCTimestamp(time)}</span>;
 }

@@ -4,13 +4,14 @@ interface APIResponse {
     errors: boolean,
     acceptable: boolean,
     justHatched: boolean,
-    errorMessage?: string
+    errorMessage?: string,
+    tod: number
 }
 
 const DCAPI ={
-    checkDragon: async (code: string): Promise<APIResponse> => {
+    checkDragon: async (code: string, tod?: number): Promise<APIResponse> => {
         const
-            url = API_URL+"/check/"+code,
+            url = API_URL+"/check/"+code+"/"+tod,
             response = await fetch(url);
 
         if(!response.ok){

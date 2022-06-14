@@ -2,8 +2,8 @@ import DragonInstancesInput from "./DragonInstancesInput";
 import { generateDragCaveImgUrl } from "../app/functions";
 import { CountDown } from './Clock';
 
-const futureDate = new Date(Date.now() + (10 * 60000));
-export default function DragonTR({code, instances, setInstances, rate, remove}){
+//const futureDate = new Date(Date.now() + (10 * 60000));
+export default function DragonTR({code, instances, setInstances, rate, remove, tod}){
     const   imgLink = generateDragCaveImgUrl(code, true),
             viewLink = `https://dragcave.net/view/${code}`;
 
@@ -17,7 +17,7 @@ export default function DragonTR({code, instances, setInstances, rate, remove}){
             <span>
                 <abbr title="time of death">TOD</abbr>&nbsp;
                 <CountDown
-                    to={futureDate}
+                    to={tod}
                     whenDone={remove} />
             </span>
             <button

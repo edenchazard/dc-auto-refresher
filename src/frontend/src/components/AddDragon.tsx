@@ -1,13 +1,18 @@
+import TimePicker from 'react-time-picker';
+
 import { useState } from 'react';
 import DragonInstancesInput from "./DragonInstancesInput";
 
 export default function AddDragon({addToList, rate}){
     const   [code, updateNewCode] = useState<string>(""),
-            [instances, setInstances] = useState<number>(1);
+            [instances, setInstances] = useState<number>(1),
+            [tod, setTOD] = useState<string>();
 
     function handleAdd(){
         updateNewCode("");
-        addToList(code, instances);
+        const [, mins, seconds ] = tod.split(":");
+        const ms = (parseInt(mins) * 60000) + (parseInt(seconds) * 1000);
+        addToList(code, instances, ms);
     }
 
     return (
@@ -33,6 +38,15 @@ export default function AddDragon({addToList, rate}){
                 </div>
                 <div className='flex justify-between items-center'>
                     At {(60000 / rate) * instances} views per minute
+                </div>
+                <div className='flex justify-between items-center'>
+                    <label htmlFor='tod'>TOD:</label>
+                    <TimePicker
+                        id='tod'
+                        onChange={setTOD}
+                        value={tod}
+                        format="-- m:s"
+                        maxDetail='second' />
                 </div>
                 <div className='flex justify-between text-gray-400'>
                     <p>Actual rate is dependent on different factors.</p>
