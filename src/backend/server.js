@@ -53,7 +53,7 @@ function determineDragonDetails(dragon, seconds){
             tod.setUTCHours(tod.getUTCHours() + hoursLeft - 1);
         }
 
-        console.log('user specified date ' + tod);
+        // console.log('user specified date ' + tod);
 
         return tod.getTime();
     }
