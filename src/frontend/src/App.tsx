@@ -94,8 +94,7 @@ export default function App() {
         }));
     });
 
-    async function handleAdd(code: string, instances: number, tod:  number|undefined){
-        console.log(tod);
+    async function handleAdd(code: string, instances: number, tod: number|null){
         // prevent people adding an already added code to the list
         if(isCodeInList(listOfDragons, code)){
             setError({ type: 1, message: errMsg.ALREADYINLIST });
@@ -132,7 +131,8 @@ export default function App() {
 
     function toggleAutorefresh(value: boolean){
         // if there's no dragons in the list, instant false
-        if(listOfDragons.length === 0){
+        const refreshable = listOfDragons.filter(dragon => dragon.instances > 0).length;
+        if(refreshable === 0){
             value = false;
         }
 
@@ -201,7 +201,7 @@ export default function App() {
                 updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
             <div className="flex items-center justify-between my-2">
                 <span>
-                    <label htmlFor="timer">Time:</label>
+                    <label htmlFor="timer">Local time:</label>
                 </span>
                 <span role="timer" id='timer'>
                     <Clock />
@@ -218,7 +218,7 @@ export default function App() {
                                 key={dragon.code}
                                 code={dragon.code}
                                 rate={rate}
-                                tod={new Date(dragon.tod)}
+                                tod={dragon.tod}
                                 instances={dragon.instances}
                                 setInstances={(instances: number) => handleUpdateDragon(index, instances)}
                                 remove={() => handleRemove(index)} />

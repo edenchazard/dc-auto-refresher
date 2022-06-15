@@ -1,4 +1,7 @@
 # Changelog
+## 2.5.0
+- Added a TOD clock.
+- "Instances" now accepts 0 to add the dragon but not auto-refresh it.
 ## 2.4.1
 - Tidied up some code.
 - Added a local clock.

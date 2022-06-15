@@ -17,6 +17,11 @@ function differenceBetweenTwoDates(from: Date, to: Date){
     return to.valueOf() - from.valueOf();
 }
 
+function daysDifference(from: Date, to: Date){
+    const difference = differenceBetweenTwoDates(from, to);
+    return Math.ceil(difference / (1000 * 3600 * 24));
+}
+
 function formatTimestamp(ms: number): string {
     const dateObj = new Date(ms);
     // get hours, mins and seconds
@@ -25,11 +30,18 @@ function formatTimestamp(ms: number): string {
     ]);
 }
 
-function formatUTCTimestamp(ms: number): string{
+function formatUTCTimestamp(ms: number): string {
     const dateObj = new Date(ms);
     return fmtTimeArray([
         dateObj.getUTCHours(), dateObj.getUTCMinutes(), dateObj.getUTCSeconds()
     ]);
+}
+
+function formatForCountdown(tod: Date, ms: number): string {
+    const timeString = formatUTCTimestamp(ms);
+    const days = daysDifference(new Date(), tod) - 1;
+    const dayString = days > 0 ? days + "d ": "";
+    return dayString + timeString;
 }
 
 export function Clock(){
@@ -71,5 +83,5 @@ export function CountDown({ to, whenDone }: CountDownProps){
         return () => clearInterval(interval);
     }, [to, whenDone]);
 
-    return <span>{formatUTCTimestamp(time)}</span>;
+    return <span title={to.toLocaleString()}>{formatForCountdown(to, time)}</span>;
 }

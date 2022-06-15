@@ -19,13 +19,19 @@ function replaceFavicon(url: string): HTMLLinkElement{
 export default function useIconCycle(autorefresh: boolean, listOfDragons: Dragon[]){
     // handle icon changes when auto refresh is active
     useEffect(() => {
-        let index = 0;
-        let iconInterval = null;
+        // we only want to show dragons that have at least one instance
+        // this avoids showing dragons we've set up but don't want to 
+        // AR yet
+        const refreshableDragons = listOfDragons.filter(dragon => dragon.instances > 0);
+
+        let
+            index = 0,
+            iconInterval = null;
 
         if(autorefresh){
             iconInterval = window.setInterval(() => {
-                index = !listOfDragons[index + 1] ? 0 : index + 1;
-                const code = listOfDragons[index].code;
+                index = !refreshableDragons[index + 1] ? 0 : index + 1;
+                const code = refreshableDragons[index].code;
                 replaceFavicon(generateDragCaveImgUrl(code, true));
                 document.title = code;
             }, 1000);

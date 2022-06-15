@@ -5,13 +5,13 @@ interface APIResponse {
     acceptable: boolean,
     justHatched: boolean,
     errorMessage?: string,
-    tod: number
+    tod: number|null
 }
 
 const DCAPI ={
-    checkDragon: async (code: string, tod?: number): Promise<APIResponse> => {
+    checkDragon: async (code: string, tod: number|null = null): Promise<APIResponse> => {
         const
-            url = API_URL+"/check/"+code+"/"+tod,
+            url = API_URL + "/check/" + code + "?tod=" + tod,
             response = await fetch(url);
 
         if(!response.ok){

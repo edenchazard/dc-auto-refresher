@@ -3,7 +3,7 @@ export default function DragonInstancesInput({instances, setInstances}){
         <input
             type='number'
             value={instances}
-            min="1"
+            min="0"
             max="10"
             size={2}
             onChange={(e) => setInstances(parseInt(e.target.value))}

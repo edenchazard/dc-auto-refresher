@@ -4,15 +4,24 @@ import { useState } from 'react';
 import DragonInstancesInput from "./DragonInstancesInput";
 
 export default function AddDragon({addToList, rate}){
-    const   [code, updateNewCode] = useState<string>(""),
+    const   [code, setCode] = useState<string>(""),
             [instances, setInstances] = useState<number>(1),
-            [tod, setTOD] = useState<string>();
+            [tod, setTOD] = useState<string>(null);
 
     function handleAdd(){
-        updateNewCode("");
-        const [, mins, seconds ] = tod.split(":");
-        const ms = (parseInt(mins) * 60000) + (parseInt(seconds) * 1000);
-        addToList(code, instances, ms);
+        // by default don't specify a tod, only send the clock value
+        // if it's been modified
+        let s = null;
+        if(tod){
+            const [, mins, seconds ] = tod.split(":");
+            s = (parseInt(mins) * 60) + (parseInt(seconds));
+        }
+
+        addToList(code, instances, s);
+
+        // reset things
+        setCode("");
+        setTOD(null);
     }
 
     return (
@@ -28,7 +37,7 @@ export default function AddDragon({addToList, rate}){
                         size={5}
                         minLength={4}
                         maxLength={5}
-                        onChange={(e) => updateNewCode(e.target.value)}/>
+                        onChange={(e) => setCode(e.target.value)}/>
                 </div>
                 <div className='flex justify-between items-center'>
                     <label htmlFor='instances'>Instances:</label>
@@ -39,17 +48,21 @@ export default function AddDragon({addToList, rate}){
                 <div className='flex justify-between items-center'>
                     At {(60000 / rate) * instances} views per minute
                 </div>
+                <div className='flex justify-between text-gray-400'>
+                    <p>Actual rate depends on different factors. Specify '0' to add the dragon but not auto-refresh it.</p>
+                </div>
                 <div className='flex justify-between items-center'>
                     <label htmlFor='tod'>TOD:</label>
                     <TimePicker
                         id='tod'
                         onChange={setTOD}
                         value={tod}
-                        format="-- m:s"
-                        maxDetail='second' />
+                        format="xx:mm:ss"
+                        maxDetail='second'
+                        disableClock={true} />
                 </div>
                 <div className='flex justify-between text-gray-400'>
-                    <p>Actual rate is dependent on different factors.</p>
+                    <p>(Experimental!) Specify the minute and second the "will die if... " changes and FART will provide a TOD countdown. Dragon must be unfogged.</p>
                 </div>
                 <div className='flex items-end flex-col'>
                     <button className="rounded bg-indigo-500 px-2 py-1 hover:bg-indigo-700" onClick={handleAdd}>Add</button>

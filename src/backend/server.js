@@ -24,40 +24,38 @@ function validAPIDragon(responseObj){
 }
 
 // Determines various characteristics about a dragon
-function determineDragonDetails(dragon, ms){
-    const calculateTOD = (hoursLeft, userMS) => {
-        console.log("MILISECONDS XYZ", userMS)
-        if(hoursLeft == -1)
-            return null;
+function determineDragonDetails(dragon, seconds){
+    const calculateTOD = (hoursLeft, seconds) => {
+        if(hoursLeft == -1) return null;
         
         // retrieve remaining hours after subtracting days
         // dc's hours are always ceiled and not precise
         // so we need to "add" the precision
         // work out the date in the future by assessing hoursleft
         // and the user specified minutes and seconds
-        const x = new Date();
-        x.setTime(userMS);
-        const userDate = new Date();
-        userDate.setUTCMinutes(x.getUTCMinutes());
-        userDate.setUTCSeconds(x.getUTCSeconds());
+        const specifiedMinsSeconds = new Date(seconds * 1000);
 
-        // if the current ms is higher than the user specified ms, then dc's
-        // 'timer' has already ticked down
+        const now = new Date();
+        const a = (now.getUTCMinutes() * 60) + (now.getUTCSeconds());
+
+        // create the date in the future
+        const tod = new Date(now);
+        tod.setUTCMinutes(specifiedMinsSeconds.getUTCMinutes());
+        tod.setUTCSeconds(specifiedMinsSeconds.getUTCSeconds());
+
+        // if the current seconds are higher than the user specified seconds, then dc's
+        // 'timer' has already ticked down so we need to round the hours
+        if(a >= seconds){
         //const remainder = hoursLeft % 6;
-        userDate.setUTCHours(userDate.getUTCHours() + hoursLeft);
-        /*if((new Date).getTime() < userDate.getTime()){
-            userDate.setUTCHours(userDate.getUTCHours() - 1);
-            console.log('yeah');
+            tod.setUTCHours(tod.getUTCHours() + hoursLeft);
         }
         else{
-            const remainder = hoursLeft % 6;
-            console.log('reeee', remainder)
-            userDate.setUTCHours(userDate.getUTCHours() + remainder);
-        }*/
+            tod.setUTCHours(tod.getUTCHours() + hoursLeft - 1);
+        }
 
-        console.log('user specified date ' + userDate);
+        console.log('user specified date ' + tod);
 
-        return userDate.getTime();
+        return tod.getTime();
     }
 
     const
@@ -67,15 +65,16 @@ function determineDragonDetails(dragon, ms){
         isFrozen = !isAdult && !isDead && !isHidden && dragon.hoursleft == -1,
         justHatched = dragon.hoursleft === 168 && dragon.hatch != 0;
 
-        console.log("MILISECONDS", ms)
-    const tod = calculateTOD(dragon.hoursleft, ms);
+    const tod = (seconds !== null ? calculateTOD(dragon.hoursleft, seconds) : null);
 
     return { isAdult, isDead, isHidden, isFrozen, justHatched, tod };
 }
 
-router.get('/check/:code/:tod', async (ctx) => {
+router.get('/check/:code', async (ctx) => {
     const code = ctx.params.code;
-    const userMS = ctx.params.tod;
+
+    // force a number or make it null
+    const seconds = parseInt(ctx.query.tod) || null; 
 
     if(!validateCode(code)){
         ctx.body = { 
@@ -101,9 +100,8 @@ router.get('/check/:code/:tod', async (ctx) => {
         throw new Error("The API response from dragcave.net isn't valid.");
     }
 
-    console.log(userMS)
     // extra info about the dragon based on response
-    Object.assign(dragon, determineDragonDetails(dragon, userMS));
+    Object.assign(dragon, determineDragonDetails(dragon, seconds));
 
     ctx.body = {
         errors: false,
