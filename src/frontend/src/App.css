@@ -1,3 +1,10 @@
 body{
     background: #15202b;
 }
+.react-time-picker--enabled{
+  background: #fff;
+  color: #000;
+}
+.react-time-picker__wrapper{
+  border:0px none;
+}
