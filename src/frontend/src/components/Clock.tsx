@@ -84,5 +84,5 @@ export function CountDown({ to, whenDone }: CountDownProps){
         return () => clearInterval(interval);
     }, [to, whenDone]);
 
-    return <span title={to.toLocaleString()}>{formatForCountdown(to)}</span>;
+    return <span>{formatForCountdown(to)}</span>;
 }

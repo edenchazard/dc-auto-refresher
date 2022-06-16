@@ -52,12 +52,12 @@ export default function AddDragon({addToList, rate}){
                     <p>Actual rate depends on different factors. Specify '0' to add the dragon but not auto-refresh it.</p>
                 </div>
                 <div className='flex justify-between items-center'>
-                    <label htmlFor='tod'>TOD:</label>
+                    <label htmlFor='tod'>Dies at:</label>
                     <TimePicker
                         id='tod'
                         onChange={setTOD}
                         value={tod}
-                        format="xx:mm:ss"
+                        format="mm:ss"
                         maxDetail='second'
                         disableClock={true} />
                 </div>

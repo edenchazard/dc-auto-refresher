@@ -8,3 +8,7 @@ body{
 .react-time-picker__wrapper{
   border:0px none;
 }
+/* fixes bug with page stretching on mobile because of timepicker */
+#root{
+  overflow-x: hidden;
+}
