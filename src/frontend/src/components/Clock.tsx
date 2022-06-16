@@ -37,9 +37,10 @@ function formatUTCTimestamp(ms: number): string {
     ]);
 }
 
-function formatForCountdown(tod: Date, ms: number): string {
-    const timeString = formatUTCTimestamp(ms);
-    const days = daysDifference(new Date(), tod) - 1;
+function formatForCountdown(tod: Date): string {
+    const today = new Date();
+    const timeString = formatUTCTimestamp(differenceBetweenTwoDates(today, tod));
+    const days = daysDifference(today, tod) - 1;
     const dayString = days > 0 ? days + "d ": "";
     return dayString + timeString;
 }
@@ -83,5 +84,5 @@ export function CountDown({ to, whenDone }: CountDownProps){
         return () => clearInterval(interval);
     }, [to, whenDone]);
 
-    return <span title={to.toLocaleString()}>{formatForCountdown(to, time)}</span>;
+    return <span title={to.toLocaleString()}>{formatForCountdown(to)}</span>;
 }

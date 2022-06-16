@@ -85,7 +85,7 @@ export default function App() {
             [error, setError] = useState(null);
 
     // handle icon changes when auto refresh is active
-    useIconCycle(autorefresh, listOfDragons);
+    useIconCycle(autorefresh, listOfDragons.filter(({instances}) => instances > 0));
     
     // persist our state between refreshes (missk asked for this)
     useEffect(() => {
