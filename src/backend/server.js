@@ -25,35 +25,24 @@ function validAPIDragon(responseObj){
 
 // Determines various characteristics about a dragon
 function determineDragonDetails(dragon, seconds){
+    // We need to compare the current seconds passed this hour with that of
+    // what the user inputted, then we set the tod to the current date +
+    // the hours, mins and seconds of the dragon remaining
     const calculateTOD = (hoursLeft, seconds) => {
         if(hoursLeft == -1) return null;
-        
-        // retrieve remaining hours after subtracting days
-        // dc's hours are always ceiled and not precise
-        // so we need to "add" the precision
-        // work out the date in the future by assessing hoursleft
-        // and the user specified minutes and seconds
-        const specifiedMinsSeconds = new Date(seconds * 1000);
 
         const now = new Date();
         const a = (now.getUTCMinutes() * 60) + (now.getUTCSeconds());
 
+        // is hoursleft rounded? let's find out
+        const hours = now.getUTCHours() + hoursLeft;
+        const roundedHours = a >= seconds ? hours : hours - 1;
+
         // create the date in the future
-        const tod = new Date(now);
-        tod.setUTCMinutes(specifiedMinsSeconds.getUTCMinutes());
-        tod.setUTCSeconds(specifiedMinsSeconds.getUTCSeconds());
+        const tod = new Date();
+        tod.setUTCHours(roundedHours, Math.floor(seconds / 60), seconds % 60);
 
-        // if the current seconds are higher than the user specified seconds, then dc's
-        // 'timer' has already ticked down so we need to round the hours
-        if(a >= seconds){
-        //const remainder = hoursLeft % 6;
-            tod.setUTCHours(tod.getUTCHours() + hoursLeft);
-        }
-        else{
-            tod.setUTCHours(tod.getUTCHours() + hoursLeft - 1);
-        }
-
-        // console.log('user specified date ' + tod);
+        //console.log('user specified date ' + tod);
 
         return tod.getTime();
     }
