@@ -1,4 +1,10 @@
 # Changelog
+## 2.5.2
+- Small code cleanup.
+## 2.5.1
+- Bug fix: page stretching due to timepicker
+- Some presentation changes.
+- Some code cleanup.
 ## 2.5.0
 - Added a TOD clock.
 - "Instances" now accepts 0 to add the dragon but not auto-refresh it.
