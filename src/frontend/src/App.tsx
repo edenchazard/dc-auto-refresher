@@ -20,6 +20,10 @@ function getSessionData(){
     return session ? JSON.parse(session) : {};
 }
 
+function hasRefreshableDragons(listOfDragons: Dragon[]){
+    return listOfDragons.findIndex(dragon => dragon.instances > 0) > -1;
+}
+
 function RefresherView({dragonList, rate, onImageChange}) {
     const [instance, setInstance] = useState<number>(1);
     const sizes = useRef<Size[]>([]);
@@ -85,7 +89,7 @@ export default function App() {
             [error, setError] = useState(null);
 
     // handle icon changes when auto refresh is active
-    useIconCycle(autorefresh, listOfDragons.filter(({instances}) => instances > 0));
+    useIconCycle(autorefresh, listOfDragons);
     
     // persist our state between refreshes (missk asked for this)
     useEffect(() => {
@@ -93,6 +97,14 @@ export default function App() {
             listOfDragons, rate, autorefresh, smartRemoval
         }));
     });
+
+    // If we have no dragons to refresh, auto-refresh should always be false
+    // This also prevents cases such as the auto-refresher removing hatched dragons
+    // but undesirably continuing to auto-refresh
+    useEffect(() => {
+        if(!hasRefreshableDragons(listOfDragons))
+            setAutorefresh(false);
+    }, [listOfDragons])
 
     async function handleAdd(code: string, instances: number, tod: number|null){
         // prevent people adding an already added code to the list
@@ -131,8 +143,7 @@ export default function App() {
 
     function toggleAutorefresh(value: boolean){
         // if there's no dragons in the list, instant false
-        const refreshable = listOfDragons.filter(dragon => dragon.instances > 0).length;
-        if(refreshable === 0){
+        if(!hasRefreshableDragons(listOfDragons)){
             value = false;
         }
 
@@ -155,11 +166,6 @@ export default function App() {
     function removeDragon(index: number){
         listOfDragons.splice(index, 1);
         setListOfDragons([...listOfDragons]);
-
-        // if no more dragons ARing, then disable AR
-        if(listOfDragons.length === 0){
-            toggleAutorefresh(false);
-        }
     }
 
     async function handleImageChange(code: string){

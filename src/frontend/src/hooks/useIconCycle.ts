@@ -24,9 +24,11 @@ export default function useIconCycle(autorefresh: boolean, listOfDragons: Dragon
             iconInterval = null;
 
         if(autorefresh){
+            const refreshableDragons = listOfDragons.filter(({instances}) => instances > 0);
+
             iconInterval = window.setInterval(() => {
-                index = !listOfDragons[index + 1] ? 0 : index + 1;
-                const code = listOfDragons[index].code;
+                index = !refreshableDragons[index + 1] ? 0 : index + 1;
+                const code = refreshableDragons[index].code;
                 replaceFavicon(generateDragCaveImgUrl(code, true));
                 document.title = code;
             }, 1000);
