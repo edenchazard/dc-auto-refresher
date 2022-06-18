@@ -3,7 +3,7 @@ import { generateDragCaveImgUrl } from "../app/functions";
 import { Dragon } from '../app/interfaces';
 
 function makeDOMFavicon(url: string): HTMLLinkElement{
-    let newIcon = document.createElement('link');
+    const newIcon = document.createElement('link');
     newIcon.rel = 'icon';
     newIcon.href = url;
     return newIcon;
