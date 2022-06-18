@@ -26,14 +26,21 @@ function hasRefreshableDragons(listOfDragons: Dragon[]){
     return listOfDragons.findIndex(dragon => dragon.instances > 0) > -1;
 }
 
+// checks the session storage for the specified key
+// and returns the value, otherwise returns the 
+// default value
+function get(session: object, key: string, defaultValue: any){
+    return key in session ? session[key] : defaultValue;
+}
+
 export default function App() {
     // if we have session data, use that, otherwise use defaults
     const storedData = getSessionData();
 
-    const   [listOfDragons, setListOfDragons] = useState<Dragon[]>(storedData.listOfDragons || []),
-            [rate, setRate] = useState<number>(storedData.rate || 250),
-            [autorefresh, setAutorefresh] = useState<boolean>(storedData.autorefresh || false),
-            [smartRemoval, setSmartRemoval] = useState<boolean>(storedData.smartRemoval || true),
+    const   [listOfDragons, setListOfDragons] = useState<Dragon[]>(get(storedData, 'listOfDragons',  [])),
+            [rate, setRate] = useState<number>(get(storedData, 'rate', 250)),
+            [autorefresh, setAutorefresh] = useState<boolean>(get(storedData, 'autorefresh', false)),
+            [smartRemoval, setSmartRemoval] = useState<boolean>(get(storedData, 'smartRemoval', true)),
             [error, setError] = useState(null);
 
     // handle icon changes when auto refresh is active
