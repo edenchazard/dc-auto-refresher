@@ -25,13 +25,17 @@ export default function useIconCycle(autorefresh: boolean, listOfDragons: Dragon
 
         if(autorefresh){
             const refreshableDragons = listOfDragons.filter(({instances}) => instances > 0);
-
-            iconInterval = window.setInterval(() => {
+            const cycle = () => {
                 index = !refreshableDragons[index + 1] ? 0 : index + 1;
                 const code = refreshableDragons[index].code;
                 replaceFavicon(generateDragCaveImgUrl(code, true));
                 document.title = code;
-            }, 1000);
+            };
+
+            // call cycler immediately and start up the interval,
+            // this removes the one second 'lag' at the beginning
+            cycle();
+            iconInterval = window.setInterval(cycle, 1000);
         }
         
         // clean up
