@@ -1,6 +1,10 @@
 # Changelog
 ## 2.5.2
-- Small code cleanup.
+- Bug fix: exclude dragons with 0 instances from icon cycler and stop AR when no refreshable dragons are available.
+- Bug fix: 'falsey' session values would use the default values. In other worse things like smart removal wouldn't persist across refreshes.
+- Some code refactorings.
+- Cleaner handling of TOD calculations.
+- Make icon cycler more seamless by removing one second lag at the beginning.
 ## 2.5.1
 - Bug fix: page stretching due to timepicker
 - Some presentation changes.
