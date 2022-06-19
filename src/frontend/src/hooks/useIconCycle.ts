@@ -19,13 +19,16 @@ function replaceFavicon(url: string): HTMLLinkElement{
 export default function useIconCycle(autorefresh: boolean, listOfDragons: Dragon[]){
     // handle icon changes when auto refresh is active
     useEffect(() => {
+        const refreshableDragons = listOfDragons.filter(({instances}) => instances > 0);
         let
             index = 0,
             iconInterval = null;
 
         if(autorefresh){
-            const refreshableDragons = listOfDragons.filter(({instances}) => instances > 0);
             const cycle = () => {
+                if(refreshableDragons.length === 0)
+                   return clearInterval(iconInterval);
+
                 index = !refreshableDragons[index + 1] ? 0 : index + 1;
                 const code = refreshableDragons[index].code;
                 replaceFavicon(generateDragCaveImgUrl(code, true));
@@ -35,12 +38,12 @@ export default function useIconCycle(autorefresh: boolean, listOfDragons: Dragon
             // call cycler immediately and start up the interval,
             // this removes the one second 'lag' at the beginning
             cycle();
-            iconInterval = window.setInterval(cycle, 1000);
+            iconInterval = setInterval(cycle, 1000);
         }
         
         // clean up
         return () => {
-            window.clearInterval(iconInterval);
+            clearInterval(iconInterval);
             replaceFavicon('./logo192.png');
             document.title = process.env.REACT_APP_APP_TITLE;
         }

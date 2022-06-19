@@ -17,6 +17,9 @@ import './App.css';
 
 const SESSION_KEY = 'session';
 
+// if we have session data, use that, otherwise use defaults
+const storedData = getSessionData();
+
 function getSessionData(){
     const session = sessionStorage.getItem(SESSION_KEY);
     return session ? JSON.parse(session) : {};
@@ -34,9 +37,6 @@ function get(session: object, key: string, defaultValue: any){
 }
 
 export default function App() {
-    // if we have session data, use that, otherwise use defaults
-    const storedData = getSessionData();
-
     const   [listOfDragons, setListOfDragons] = useState<Dragon[]>(get(storedData, 'listOfDragons',  [])),
             [rate, setRate] = useState<number>(get(storedData, 'rate', 250)),
             [autorefresh, setAutorefresh] = useState<boolean>(get(storedData, 'autorefresh', false)),
