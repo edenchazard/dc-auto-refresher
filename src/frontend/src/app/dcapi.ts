@@ -8,19 +8,14 @@ interface APIResponse {
     tod: number|null
 }
 
-const DCAPI ={
-    checkDragon: async (code: string, tod: number|null = null): Promise<APIResponse> => {
-        const
-            url = API_URL + "/check/" + code + "?tod=" + tod,
-            response = await fetch(url);
+export async function checkDragon (code: string, tod: number|null = null): Promise<APIResponse>{
+    const
+        url = API_URL + "/check/" + code + (tod ? "?tod="+tod : ''),
+        response = await fetch(url);
 
-        if(!response.ok){
-            throw new Error(response.statusText);
-        }
+    if(!response.ok)
+        throw new Error(response.statusText);
 
-        const json = await response.json();
-        return json;
-    }
+    const json = await response.json();
+    return json;
 }
-
-export default DCAPI;

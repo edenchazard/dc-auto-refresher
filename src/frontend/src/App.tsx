@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Dragon } from "./app/interfaces";
 import errMsg from "./app/errors";
-import DCAPI from "./app/dcapi";
+import * as DCAPI from "./app/dcapi";
 import { isCodeInList, validateCode } from "./app/functions";
 import useIconCycle from "./hooks/useIconCycle";
 import Footer from "./components/Footer";
