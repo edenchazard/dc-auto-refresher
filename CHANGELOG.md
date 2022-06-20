@@ -1,4 +1,6 @@
 # Changelog
+## 2.5.3
+- Got rid of the undesirable ?tod=null from query string when not used.
 ## 2.5.2
 - Bug fix: exclude dragons with 0 instances from icon cycler and stop AR when no refreshable dragons are available.
 - Bug fix: 'falsey' session values would use the default values. In other worse things like smart removal wouldn't persist across refreshes.
