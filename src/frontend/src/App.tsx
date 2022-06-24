@@ -84,7 +84,13 @@ export default function App() {
             // not a frozen, hidden or adult dragon
             if(details.acceptable){
                 toggleAutorefresh(false);
-                setListOfDragons([...listOfDragons, { code, instances, tod: details.tod }]);
+                const orderedList = [...listOfDragons, { code, instances, tod: details.tod }];
+                // https://stackoverflow.com/a/58748962
+                orderedList.sort(({tod: a}, {tod: b}) => 
+                    (a != null ? a : Infinity) - (b != null ? b : Infinity)
+                );
+
+                setListOfDragons(orderedList);
                 setError(null);
             }
             else{
