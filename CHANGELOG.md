@@ -1,4 +1,6 @@
 # Changelog
+## 2.6.0
+- Dragons with a TOD specified will sort first. Multiple TODs will sort by the dragon dying soonest.
 ## 2.5.3
 - Got rid of the undesirable ?tod=null from query string when not used.
 ## 2.5.2
