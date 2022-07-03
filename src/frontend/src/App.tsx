@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Dragon } from "./app/interfaces";
 import errMsg from "./app/errors";
 import * as DCAPI from "./app/dcapi";
-import { isCodeInList, validateCode } from "./app/functions";
+import { isCodeInList, validateCode, getListFromQS } from "./app/functions";
 import useIconCycle from "./hooks/useIconCycle";
 import Footer from "./components/Footer";
 import DragonTR from "./components/DragonTR";
@@ -11,6 +11,7 @@ import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
 import RefresherView from './components/RefresherView';
 import ErrorDisplay from './components/ErrorDisplay';
+import ShareLink from './components/ShareLink';
 import { Clock } from './components/Clock';
 
 import './App.css';
@@ -19,6 +20,9 @@ const SESSION_KEY = 'session';
 
 // if we have session data, use that, otherwise use defaults
 const storedData = getSessionData();
+
+// If supplied with a preset list, use that.
+const preSet = getListFromQS();
 
 function getSessionData(){
     const session = sessionStorage.getItem(SESSION_KEY);
@@ -37,7 +41,7 @@ function get(session: object, key: string, defaultValue: any){
 }
 
 export default function App() {
-    const   [listOfDragons, setListOfDragons] = useState<Dragon[]>(get(storedData, 'listOfDragons',  [])),
+    const   [listOfDragons, setListOfDragons] = useState<Dragon[]>(preSet || get(storedData, 'listOfDragons',  [])),
             [rate, setRate] = useState<number>(get(storedData, 'rate', 250)),
             [autorefresh, setAutorefresh] = useState<boolean>(get(storedData, 'autorefresh', false)),
             [smartRemoval, setSmartRemoval] = useState<boolean>(get(storedData, 'smartRemoval', true)),
@@ -166,6 +170,7 @@ export default function App() {
                 updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
                 click={() => toggleAutorefresh(!autorefresh) }
                 updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
+            <ShareLink list={listOfDragons} />
             <div className="flex items-center justify-between my-2">
                 <span>
                     <label htmlFor="timer">Local time:</label>
