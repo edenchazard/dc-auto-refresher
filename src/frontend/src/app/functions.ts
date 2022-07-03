@@ -36,7 +36,7 @@ export function getListFromQS(url: string = window.location.search){
             unserialize.push({ code, instances, tod });
         }
 
-        window.history.replaceState({list: ''}, '');
+        window.history.replaceState({list: ''}, '', '/dc/auto-refresher/');
     }
 
     return (unserialize.length > 0 ? unserialize : null);
