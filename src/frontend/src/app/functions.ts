@@ -36,7 +36,7 @@ export function getListFromQS(url: string = window.location.search): Dragon[] | 
                 tod = (Date.now() > parseInt(data[2]) || isNaN(data[2] as any) ? null : parseInt(data[2]));
             
             // skip if not valid code 
-            if(validateCode && !isCodeInList(unserialize, code))
+            if(validateCode(code) && !isCodeInList(unserialize, code))
                 unserialize.push({ code, instances, tod });
         }
     }
