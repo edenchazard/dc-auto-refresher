@@ -19,7 +19,7 @@ export function sizesSame(oldSize: Size, newSize: Size): boolean{
     return (oldSize.w === newSize.w && oldSize.h === newSize.h);
 }
 
-export function getListFromQS(url: string = window.location.search){
+export function getListFromQS(url: string = window.location.search): Dragon[] | null {
     const query = new URLSearchParams(url);
     const unserialize: Dragon[] = [];
 
@@ -39,8 +39,6 @@ export function getListFromQS(url: string = window.location.search){
             if(validateCode && !isCodeInList(unserialize, code))
                 unserialize.push({ code, instances, tod });
         }
-
-        window.history.replaceState({list: ''}, '', window.location.pathname);
     }
 
     return (unserialize.length > 0 ? unserialize : null);

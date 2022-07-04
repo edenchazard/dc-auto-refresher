@@ -20,7 +20,12 @@ const SESSION_KEY = 'session';
 const storedData = getSessionData();
 
 // If supplied with a preset list, use that.
-const preSet = getListFromQS();
+const preSet = (() => {
+    const list = getListFromQS();
+    if(list !== null)
+        window.history.replaceState({list: ''}, '', window.location.pathname);
+    return list;
+})();
 
 function getSessionData(){
     const session = sessionStorage.getItem(SESSION_KEY);
