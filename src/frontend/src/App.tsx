@@ -11,8 +11,6 @@ import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
 import RefresherView from './components/RefresherView';
 import ErrorDisplay from './components/ErrorDisplay';
-import ShareLink from './components/ShareLink';
-import { Clock } from './components/Clock';
 
 import './App.css';
 
@@ -164,21 +162,13 @@ export default function App() {
                 rate={rate}
                 addToList={handleAdd} />
             <RefresherControls
+                list={listOfDragons}
                 rate={rate}
                 smartRemoval={smartRemoval}
                 autorefresh={autorefresh}
                 updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
                 click={() => toggleAutorefresh(!autorefresh) }
                 updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
-            <ShareLink list={listOfDragons} />
-            <div className="flex items-center justify-between my-2">
-                <span>
-                    <label htmlFor="timer">Local time:</label>
-                </span>
-                <span role="timer" id='timer'>
-                    <Clock />
-                </span>
-            </div>
             <ErrorDisplay
                 error={error}
                 done={setError} />
@@ -204,7 +194,7 @@ export default function App() {
                     dragonList={listOfDragons}
                     rate={rate}
                     onImageChange={handleImageChange} />
-            } 
+            }
             <Footer />
         </div>
     );
