@@ -15,7 +15,9 @@ export default function DragonTR({code, instances, setInstances, rate, remove, t
                     setInstances={setInstances} />
             <span>~{((60000 / rate) * instances) || 0} <abbr title="views per minute">V/M</abbr></span>
             {(tod
-                ?   <span title={"TOD: " + diesOn.toLocaleString()}>
+                ?   <span
+                        data-tip={"TOD: " + diesOn.toLocaleString()}
+                        data-event='click'>
                         <CountDown to={diesOn} />
                     </span>
                 : "-----"

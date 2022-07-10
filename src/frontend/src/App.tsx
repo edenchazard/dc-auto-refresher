@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import ReactTooltip from 'react-tooltip';
+
 import { Dragon } from "./app/interfaces";
 import errMsg from "./app/errors";
 import * as DCAPI from "./app/dcapi";
@@ -99,6 +101,9 @@ export default function App() {
 
                 setListOfDragons(orderedList);
                 setError(null);
+
+                // fixes problem that stops the tooltip for TOD appearing
+                ReactTooltip.rebuild();
             }
             else{
                 setError({ type: 1, message: errMsg.BADDRAGON });
@@ -163,6 +168,10 @@ export default function App() {
 
     return (
         <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto p-5 text-white min-h-screen">
+            <ReactTooltip
+                globalEventOff="click"
+                place="top"
+                effect="solid" />
             <AddDragon
                 rate={rate}
                 addToList={handleAdd} />
