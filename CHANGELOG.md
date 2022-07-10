@@ -1,4 +1,11 @@
 # Changelog
+## 2.8.0
+- Tooltip to inform user the link has been copied.
+- Tooltip appears when you click the TOD clock showing exact date and time.
+## 2.7.1
+- Fixed time selection stacking issue.
+- Added validation and santisation to ?list parsing.
+- Reorganised some structure.
 ## 2.6.0
 - Dragons with a TOD specified will sort first. Multiple TODs will sort by the dragon dying soonest.
 ## 2.5.3
