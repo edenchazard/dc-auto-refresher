@@ -1,3 +1,5 @@
+import ReactTooltip from 'react-tooltip';
+
 import { Dragon } from "../app/interfaces";
 import { createShareLinkFromList } from "../app/functions";
 
@@ -10,6 +12,11 @@ export default function ShareLink({ list }: { list: Dragon[] }){
 
     return (
         <div>
+            <ReactTooltip
+                globalEventOff='click'
+                delayShow={100}
+                place="top"
+                effect="solid" />
             <div className="flex items-center justify-between my-2">
                 <span>
                     <label htmlFor="share">Share Link:</label>
@@ -20,7 +27,10 @@ export default function ShareLink({ list }: { list: Dragon[] }){
                         type='text'
                         value={shareLink}
                         readOnly />
-                    <button className="ml-2 rounded bg-indigo-500 px-2 py-1 hover:bg-indigo-700"
+                    <button
+                        className="ml-2 rounded bg-indigo-500 px-2 py-1 hover:bg-indigo-700"
+                        data-tip='Copied!'
+                        data-event='click focus'
                         type='button'
                         onClick={copy}>Copy</button>
                 </span>
