@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Size, Dragon } from "../app/interfaces";
 import { generateDragCaveImgUrl, sizesSame } from "../app/functions";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 
 interface RefresherViewProps {
     dragonList: Dragon[],
@@ -62,13 +64,16 @@ export default function RefresherView({ dragonList, rate, onImageChange }: Refre
 
     return (
         <div className='w-full'>
+            <p>
+                <FontAwesomeIcon icon={faRefresh} className='spin' />
             {
                 (rate > 0
-                    ? <p>Refreshing every {rate/1000}s (cycle #{instance})</p>
-                    : <p>Refreshing at device rate</p>
+                    ? ` Refreshing every ${rate/1000}s (cycle #${instance})`
+                    : " Refreshing at device rate"
                 )
             }
-            
+                
+            </p>
             <div>
                 {
                     dragonList.map((dragon: Dragon, index: number) => {
