@@ -3,16 +3,16 @@ import { generateDragCaveImgUrl } from "../app/functions";
 import { CountDown } from './Clock';
 
 const RateCalculator = ({ rate, instances }) => {
-    const calculated = ((60000 / rate) * instances) || 0;
     let text;
 
-    if(calculated === 0){
-        text = <span>None</span>;
-    }
-    if(calculated > 0){
+    if(rate > 0 && instances > 0){
+        const calculated = ((60000 / rate) * instances) || 0;
         text = <span>~{calculated} <abbr title="views per minute">V/M</abbr></span>;
     }
-    if(rate === 0){
+    else if(instances === 0){
+        text = <span>None</span>;
+    }
+    else{
         text = <span>Variable</span>;
     }
 
