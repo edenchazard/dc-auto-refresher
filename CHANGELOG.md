@@ -1,4 +1,10 @@
 # Changelog
+## 2.9.1
+- Fix V/M display issue.
+## 2.9.0
+- Add new speed option: "Adaptive". Each image is reloaded as soon as the current image is finished, independent of any refresh cycle.
+- Add a cool rotating refresh icon when ARing.
+- Removed experimental warning for TOD counter.
 ## 2.8.0
 - Tooltip to inform user the link has been copied.
 - Tooltip appears when you click the TOD clock showing exact date and time.
