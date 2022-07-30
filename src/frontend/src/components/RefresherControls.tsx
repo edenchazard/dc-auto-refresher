@@ -2,16 +2,20 @@ import { Clock } from "./Clock";
 import ShareLink from "./ShareLink";
 
 const Select = ({onChange, value}) =>{
-    let options: number[] = [250, 500, 1000, 2000, 4000];
+    const options = [250, 500, 1000, 2000, 4000].map(
+        opt => ({ label: (opt / 1000) + "s", value: opt}));
+
+    options.push({ label: "Adaptive", value: 0 });
+
     return (
         <select
             id='rate'
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => onChange(parseInt(e.target.value))}
             className='text-black'>
             {
                 options.map((opt, index) =>{
-                    return <option key={index} value={opt}>{opt / 1000}s</option>
+                    return <option key={index} value={opt.value}>{opt.label}</option>
                 })
             }
         </select>

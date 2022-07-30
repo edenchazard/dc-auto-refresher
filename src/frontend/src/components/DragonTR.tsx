@@ -2,6 +2,23 @@ import DragonInstancesInput from "./DragonInstancesInput";
 import { generateDragCaveImgUrl } from "../app/functions";
 import { CountDown } from './Clock';
 
+const RateCalculator = ({ rate, instances }) => {
+    const calculated = ((60000 / rate) * instances) || 0;
+    let text;
+
+    if(calculated === 0){
+        text = <span>None</span>;
+    }
+    if(calculated > 0){
+        text = <span>~{calculated} <abbr title="views per minute">V/M</abbr></span>;
+    }
+    if(rate === 0){
+        text = <span>Variable</span>;
+    }
+
+    return text;
+}
+
 export default function DragonTR({code, instances, setInstances, rate, remove, tod}){
     const   imgLink = generateDragCaveImgUrl(code, true),
             viewLink = `https://dragcave.net/view/${code}`,
@@ -13,7 +30,7 @@ export default function DragonTR({code, instances, setInstances, rate, remove, t
             <DragonInstancesInput
                     instances={instances}
                     setInstances={setInstances} />
-            <span>~{((60000 / rate) * instances) || 0} <abbr title="views per minute">V/M</abbr></span>
+            <RateCalculator rate={rate} instances={instances} />
             {(tod
                 ?   <span
                         data-tip={"TOD: " + diesOn.toLocaleString()}

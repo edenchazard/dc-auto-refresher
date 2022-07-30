@@ -45,11 +45,15 @@ export default function AddDragon({addToList, rate}){
                         instances={instances}
                         setInstances={setInstances} />
                 </div>
-                <div className='flex justify-between items-center'>
-                    At {(60000 / rate) * instances} views per minute
-                </div>
                 <div className='flex justify-between text-gray-400'>
-                    <p>Actual rate depends on different factors. Specify '0' to add the dragon but not auto-refresh it.</p>
+                    <p>
+                        {
+                        (rate === 0
+                            ? "Variable: Each image will reload as soon as it has loaded."
+                            : `~${(60000 / rate) * instances} views per minute: Actual rate depends on different factors.`
+                         )+ " Specify '0' to add the dragon but not auto-refresh it."
+                        }
+                    </p>
                 </div>
                 <div className='flex justify-between items-center'>
                     <label htmlFor='tod'>Dies at:</label>
