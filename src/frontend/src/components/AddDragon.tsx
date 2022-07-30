@@ -66,7 +66,7 @@ export default function AddDragon({addToList, rate}){
                         disableClock={true} />
                 </div>
                 <div className='flex justify-between text-gray-400'>
-                    <p>(Experimental!) Specify the minute and second the "will die if... " changes and FART will provide a TOD countdown. Dragon must be unfogged.</p>
+                    <p>Specify the minute and second the "will die if... " changes and FART will provide a TOD countdown. Dragon must be unfogged.</p>
                 </div>
                 <div className='flex items-end flex-col'>
                     <button className="rounded bg-indigo-500 px-2 py-1 hover:bg-indigo-700" onClick={handleAdd}>Add</button>
