@@ -46,18 +46,32 @@ export default function RefresherView({ dragonList, rate, onImageChange }: Refre
         sizes.current[code] = newSize;
     }
 
+    function updateImage(img: HTMLImageElement){
+        const code: string = img.dataset.code;
+
+        // immediately replace the src with a new one
+        img.src = generateDragCaveImgUrl(code);
+    }
+
     function handleLoad(event){
-        const
-            img: HTMLImageElement = event.target,
-            code: string = img.dataset.code;
+        const img: HTMLImageElement = event.target;
 
         // run size measuring for smart removal, if enabled
         onImageChange && measureSize(img);
 
-        // we only run this if the rate is 0, "performance" mode
+        // we only run this if the rate is in adaptive mode
         if(rate === 0){
-            // immediately replace the src with a new one
-            img.src = generateDragCaveImgUrl(code);
+            updateImage(img);
+        }
+    }
+
+    // handle image failures in adaptive mode
+    function handleError(event){
+        if(rate === 0){
+            const img: HTMLImageElement = event.target;
+
+            // try again in 2s
+            setTimeout(() => updateImage(img), 2000);
         }
     }
 
@@ -83,7 +97,8 @@ export default function RefresherView({ dragonList, rate, onImageChange }: Refre
                                 key={`${index}.${it}`}
                                 alt={dragon.code}
                                 data-code={dragon.code}
-                                onLoad={handleLoad} />)
+                                onLoad={handleLoad}
+                                onError={handleError} />)
                         )
                     })
                 }
