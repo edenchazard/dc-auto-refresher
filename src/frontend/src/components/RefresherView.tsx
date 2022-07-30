@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { Size, Dragon } from "../app/interfaces";
-import { generateDragCaveImgUrl, sizesSame } from "../app/functions";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
+
+import { Size, Dragon } from "../app/interfaces";
+import { generateDragCaveImgUrl, sizesSame } from "../app/functions";
 
 interface RefresherViewProps {
     dragonList: Dragon[],
@@ -54,9 +55,7 @@ export default function RefresherView({ dragonList, rate, onImageChange }: Refre
         onImageChange && measureSize(img);
 
         // we only run this if the rate is 0, "performance" mode
-        console.log(rate)
         if(rate === 0){
-            console.log('test')
             // immediately replace the src with a new one
             img.src = generateDragCaveImgUrl(code);
         }
