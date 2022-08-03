@@ -1,6 +1,6 @@
 export default function Footer(){
     return (
-        <div className='pt-2'>
+        <div className='p-2 mt-2 text-white text-center'>
             <h1>FART</h1>
             <div>
                 Part of <a

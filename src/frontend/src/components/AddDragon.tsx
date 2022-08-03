@@ -26,10 +26,11 @@ export default function AddDragon({addToList, rate}){
     }
 
     return (
-            <div className='space-y-1 my-1'>
-                <form
-                    onSubmit={handleAdd}>
-                    <div className='flex justify-between items-center space-y-1'>
+        <form onSubmit={handleAdd}>
+            <div
+                className='bg-slate-800 p-5 max:rounded-lg '>
+                <div className='my-2'>
+                    <div className='flex justify-between items-center'>
                         <label htmlFor='code'>Code:</label>
                         <input
                             id="code"
@@ -42,13 +43,15 @@ export default function AddDragon({addToList, rate}){
                             maxLength={5}
                             onChange={(e) => setCode(e.target.value)}/>
                     </div>
-                    <div className='flex justify-between items-center space-y-1'>
+                </div>
+                <div className='my-2'>
+                    <div className='flex justify-between items-center'>
                         <label htmlFor='instances'>Instances:</label>
                         <DragonInstancesInput
                             instances={instances}
                             setInstances={setInstances} />
-                    </div>
-                    <div className='flex justify-between text-gray-400 space-y-1'>
+                        </div>
+                    <div className='text-gray-400'>
                         <p>
                             {
                             (rate === 0
@@ -58,6 +61,8 @@ export default function AddDragon({addToList, rate}){
                             }
                         </p>
                     </div>
+                </div>
+                <div className='my-2'>
                     <div className='flex justify-between items-center'>
                         <label htmlFor='tod'>Dies at:</label>
                         <TimePicker
@@ -68,15 +73,16 @@ export default function AddDragon({addToList, rate}){
                             maxDetail='second'
                             disableClock={true} />
                     </div>
-                    <div className='flex justify-between text-gray-400'>
+                    <div className='text-gray-400'>
                         <p>Specify the minute and second the "will die if... " changes and FART will provide a TOD countdown. Dragon must be unfogged.</p>
                     </div>
-                    <div className='flex items-end flex-col'>
-                        <button
-                            className="rounded bg-indigo-500 px-2 py-1 hover:bg-indigo-700"
-                            type="submit">Add</button>
-                    </div>
-                </form>
+                </div>
             </div>
+            <div className='flex items-end flex-col mt-2 mx-5 max:mx-0'>
+                <button
+                    className="rounded bg-indigo-500 px-2 py-1 hover:bg-indigo-700"
+                    type="submit">Add</button>
+            </div>
+        </form>
     );
 }

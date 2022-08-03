@@ -167,49 +167,57 @@ export default function App() {
     }
 
     return (
-        <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto p-5 text-white min-h-screen">
+        <div className='flex flex-col min-h-screen'>
+        <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto text-white grow">
             <ReactTooltip
                 globalEventOff="click"
                 place="top"
                 effect="solid" />
-            <AddDragon
-                rate={rate}
-                addToList={handleAdd} />
-            <RefresherControls
-                list={listOfDragons}
-                rate={rate}
-                smartRemoval={smartRemoval}
-                autorefresh={autorefresh}
-                updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
-                click={() => toggleAutorefresh(!autorefresh) }
-                updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
-            <ErrorDisplay
-                error={error}
-                done={setError} />
-            <div className='grid grid-cols-3 gap-4 my-2'>
-                {
-                    listOfDragons.map((dragon, index) => {
-                        return (
-                            <DragonTR
-                                key={dragon.code}
-                                code={dragon.code}
-                                rate={rate}
-                                tod={dragon.tod}
-                                instances={dragon.instances}
-                                setInstances={(instances: number) => handleUpdateDragon(index, instances)}
-                                remove={() => handleRemove(index)} />
-                        )
-                    })
-                }
+            <div className='max:pt-3'>
+                <div className='max:px-5'>
+                    <AddDragon
+                        rate={rate}
+                        addToList={handleAdd} />
+                </div>
+                <div className='px-5 my-3'>
+                    <RefresherControls
+                        list={listOfDragons}
+                        rate={rate}
+                        smartRemoval={smartRemoval}
+                        autorefresh={autorefresh}
+                        updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
+                        click={() => toggleAutorefresh(!autorefresh) }
+                        updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
+                    <ErrorDisplay
+                        error={error}
+                        done={setError} />
+                    <div className='grid grid-cols-3 gap-4 my-2'>
+                        {
+                            listOfDragons.map((dragon, index) => {
+                                return (
+                                    <DragonTR
+                                        key={dragon.code}
+                                        code={dragon.code}
+                                        rate={rate}
+                                        tod={dragon.tod}
+                                        instances={dragon.instances}
+                                        setInstances={(instances: number) => handleUpdateDragon(index, instances)}
+                                        remove={() => handleRemove(index)} />
+                                )
+                            })
+                        }
+                    </div>
+                    {
+                        autorefresh &&
+                        <RefresherView
+                            dragonList={listOfDragons}
+                            rate={rate}
+                            onImageChange={handleImageChange} />
+                    }
+                </div>
             </div>
-            {
-                autorefresh &&
-                <RefresherView
-                    dragonList={listOfDragons}
-                    rate={rate}
-                    onImageChange={handleImageChange} />
-            }
-            <Footer />
+        </div>
+        <Footer />
         </div>
     );
 }

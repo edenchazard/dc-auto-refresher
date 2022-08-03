@@ -6,8 +6,8 @@ export default function ShareLink({ list }: { list: Dragon[] }){
     const shareLink = createShareLinkFromList(list);
 
     return (
-        <div>
-            <div className="flex items-center justify-between my-2">
+        <>
+            <div className="flex items-center justify-between">
                 <span>
                     <label htmlFor="share">Share Link:</label>
                 </span>
@@ -23,9 +23,9 @@ export default function ShareLink({ list }: { list: Dragon[] }){
                         copyText={shareLink}/>
                 </span>
             </div>
-            <div className='flex justify-between text-gray-400'>
+            <div className='text-gray-400'>
                 <p>Share this setup with other users.</p>
             </div>
-        </div>
+        </>
     );
 }

@@ -5,7 +5,20 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 
 import { Size, Dragon } from "../app/interfaces";
 import { generateDragCaveImgUrl, sizesSame } from "../app/functions";
+/*
 
+// The number of images we are expecting to load
+// usememo so we don't recalculate it unless the list changes
+const imagesToLoad = useMemo(() => calculateNumberOfImages(dragonList), [ dragonList ]);
+
+
+    
+function calculateNumberOfImages(listOfDragons: Dragon[]): number {
+    let value = 0;
+    listOfDragons.forEach(({ instances }) => value += instances);
+    return value;
+}
+*/
 interface RefresherViewProps {
     dragonList: Dragon[],
     rate: number,
