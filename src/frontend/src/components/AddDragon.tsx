@@ -74,7 +74,7 @@ export default function AddDragon({addToList, rate}){
                             disableClock={true} />
                     </div>
                     <div className='text-gray-400'>
-                        <p>Specify the minute and second the "will die if... " changes and FART will provide a TOD countdown. Dragon must be unfogged.</p>
+                        <p>(Optional) Specify the minute and second the "will die if... " changes and FART will provide a TOD countdown. Dragon must be unfogged.</p>
                     </div>
                 </div>
             </div>
