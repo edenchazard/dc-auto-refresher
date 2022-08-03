@@ -210,7 +210,7 @@ export default function App() {
                     </section>
                     {
                         autorefresh &&
-                        <section>
+                        <section className='px-5 my-3'>
                             <RefresherView
                                 dragonList={listOfDragons}
                                 rate={rate}
