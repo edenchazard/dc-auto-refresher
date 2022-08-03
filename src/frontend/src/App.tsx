@@ -168,56 +168,58 @@ export default function App() {
 
     return (
         <div className='flex flex-col min-h-screen'>
-        <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto text-white grow">
             <ReactTooltip
                 globalEventOff="click"
                 place="top"
                 effect="solid" />
-            <div className='max:pt-3'>
-                <div className='max:px-5'>
-                    <AddDragon
-                        rate={rate}
-                        addToList={handleAdd} />
-                </div>
-                <div className='px-5 my-3'>
-                    <RefresherControls
-                        list={listOfDragons}
-                        rate={rate}
-                        smartRemoval={smartRemoval}
-                        autorefresh={autorefresh}
-                        updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
-                        click={() => toggleAutorefresh(!autorefresh) }
-                        updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
-                    <ErrorDisplay
-                        error={error}
-                        done={setError} />
-                    <div className='grid grid-cols-3 gap-4 my-2'>
-                        {
-                            listOfDragons.map((dragon, index) => {
-                                return (
-                                    <DragonTR
-                                        key={dragon.code}
-                                        code={dragon.code}
-                                        rate={rate}
-                                        tod={dragon.tod}
-                                        instances={dragon.instances}
-                                        setInstances={(instances: number) => handleUpdateDragon(index, instances)}
-                                        remove={() => handleRemove(index)} />
-                                )
-                            })
-                        }
-                    </div>
-                    {
-                        autorefresh &&
-                        <RefresherView
-                            dragonList={listOfDragons}
+            <main className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto text-white grow">
+                <div className='max:pt-3'>
+                    <section className='max:px-5'>
+                        <AddDragon
                             rate={rate}
-                            onImageChange={handleImageChange} />
-                    }
+                            addToList={handleAdd} />
+                    </section>
+                    <section className='px-5 my-3'>
+                        <RefresherControls
+                            list={listOfDragons}
+                            rate={rate}
+                            smartRemoval={smartRemoval}
+                            autorefresh={autorefresh}
+                            updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
+                            click={() => toggleAutorefresh(!autorefresh) }
+                            updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
+                        <ErrorDisplay
+                            error={error}
+                            done={setError} />
+                        <div className='grid grid-cols-3 gap-4 my-2'>
+                            {
+                                listOfDragons.map((dragon, index) => {
+                                    return (
+                                        <DragonTR
+                                            key={dragon.code}
+                                            code={dragon.code}
+                                            rate={rate}
+                                            tod={dragon.tod}
+                                            instances={dragon.instances}
+                                            setInstances={(instances: number) => handleUpdateDragon(index, instances)}
+                                            remove={() => handleRemove(index)} />
+                                    )
+                                })
+                            }
+                        </div>
+                    </section>
+                    <section>
+                        {
+                            autorefresh &&
+                            <RefresherView
+                                dragonList={listOfDragons}
+                                rate={rate}
+                                onImageChange={handleImageChange} />
+                        }
+                    </section>
                 </div>
-            </div>
-        </div>
-        <Footer />
+            </main>
+            <Footer />
         </div>
     );
 }
