@@ -90,16 +90,17 @@ export default function RefresherView({ dragonList, rate, onImageChange }: Refre
 
     return (
         <div className='w-full'>
-            <p>
+            <div className="flex items-center justify-between my-2">
+                <p>
+                    {
+                        (rate > 0
+                            ? ` Refreshing every ${rate/1000}s (cycle #${instance})`
+                            : " Refreshing at device rate"
+                        )
+                    }
+                </p>
                 <FontAwesomeIcon icon={faRefresh} className='spin' />
-            {
-                (rate > 0
-                    ? ` Refreshing every ${rate/1000}s (cycle #${instance})`
-                    : " Refreshing at device rate"
-                )
-            }
-                
-            </p>
+            </div>
             <div>
                 {
                     dragonList.map((dragon: Dragon, index: number) => {
