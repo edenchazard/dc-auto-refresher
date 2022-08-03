@@ -66,8 +66,9 @@ export default function App() {
     // This also prevents cases such as the auto-refresher removing hatched dragons
     // but undesirably continuing to auto-refresh
     useEffect(() => {
-        if(!hasRefreshableDragons(listOfDragons))
+        if(!hasRefreshableDragons(listOfDragons)){
             setAutorefresh(false);
+        }
     }, [listOfDragons])
 
     async function handleAdd(code: string, instances: number, tod: number|null){
@@ -92,7 +93,6 @@ export default function App() {
 
             // not a frozen, hidden or adult dragon
             if(details.acceptable){
-                toggleAutorefresh(false);
                 const orderedList = [...listOfDragons, { code, instances, tod: details.tod }];
                 // https://stackoverflow.com/a/58748962
                 orderedList.sort(({tod: a}, {tod: b}) => 
@@ -101,6 +101,7 @@ export default function App() {
 
                 setListOfDragons(orderedList);
                 setError(null);
+                setAutorefresh(false);
 
                 // fixes problem that stops the tooltip for TOD appearing
                 ReactTooltip.rebuild();
@@ -118,6 +119,11 @@ export default function App() {
         // if there's no dragons in the list, instant false
         if(!hasRefreshableDragons(listOfDragons)){
             value = false;
+
+            if(listOfDragons.length > 0)
+                setError({ type: 1, message: errMsg.NOINSTANCES });
+            else
+                setError({ type: 1, message: errMsg.NODRAGONS });
         }
 
         setAutorefresh(value);
@@ -128,7 +134,7 @@ export default function App() {
             ...listOfDragons[index],
             instances: val
         };
-        toggleAutorefresh(false);
+        setAutorefresh(false);
         setListOfDragons([...listOfDragons]);
     }
 
@@ -185,8 +191,8 @@ export default function App() {
                             rate={rate}
                             smartRemoval={smartRemoval}
                             autorefresh={autorefresh}
-                            updateRate={(rate: number) => {toggleAutorefresh(false); setRate(rate)}}
-                            click={() => toggleAutorefresh(!autorefresh) }
+                            updateRate={(rate: number) => {setAutorefresh(false); setRate(rate)}}
+                            click={() => toggleAutorefresh(!autorefresh)}
                             updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
                         <ErrorDisplay
                             error={error}
