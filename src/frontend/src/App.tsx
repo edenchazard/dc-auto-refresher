@@ -208,15 +208,15 @@ export default function App() {
                             }
                         </div>
                     </section>
-                    <section>
-                        {
-                            autorefresh &&
+                    {
+                        autorefresh &&
+                        <section>
                             <RefresherView
                                 dragonList={listOfDragons}
                                 rate={rate}
                                 onImageChange={handleImageChange} />
-                        }
-                    </section>
+                        </section>
+                    }
                 </div>
             </main>
             <Footer />
