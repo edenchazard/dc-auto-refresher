@@ -63,8 +63,8 @@ export default function RefresherControls({list, rate, updateRate, click, autore
                     <div>
                     {
                         //AR enabled
-                        (autorefresh ? <button onClick={click} className="rounded bg-blue-600 px-2 py-1 hover:bg-blue-400">Turn off autorefresh</button>
-                                    : <button onClick={click} className="rounded bg-blue-300 px-2 py-1 hover:bg-blue-500">Turn on autorefresh</button>)
+                        (autorefresh ? <button onClick={click} className="rounded bg-blue-600 px-2 py-1 hover:bg-blue-400">Stop</button>
+                                    : <button onClick={click} className="rounded bg-blue-300 px-2 py-1 hover:bg-blue-500">Start</button>)
                     }
                     </div>
                 </div>
