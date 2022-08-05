@@ -25,16 +25,23 @@ const Select = ({onChange, value}) =>{
 export default function RefresherControls({list, rate, updateRate, click, autorefresh, smartRemoval, updateSmartRemoval}) {
     return (
         <div>
-            <div className="my-2">
+            <div
+                className="my-2"
+                onClick={() => updateSmartRemoval(!smartRemoval)}>
                 <div className={`${smartRemoval ? 'text-white' : 'text-gray-400' } flex justify-between items-center`}>
-                    <label htmlFor='smartRemoval'>Smart removal:</label>
+                    <label
+                        htmlFor='smartRemoval'
+                        // Prevent label from "doubling up" our check behaviour
+                        onClick={(e) => e.preventDefault() }>Smart removal:</label>
                     <input
                         type='checkbox'
                         id='smartRemoval'
                         checked={smartRemoval}
                         onChange={(e) => updateSmartRemoval(e.target.checked)} />
                 </div>
-                <div id="smart-removal" className={`${smartRemoval ? 'text-gray-400' : 'text-gray-600' }`}>
+                <div
+                    className={`${smartRemoval ? 'text-gray-400' : 'text-gray-600' }`}
+                    id="smart-removal">
                     <p>Smart removal will try to detect changes for each dragon and remove freshly hatched eggs or newly grown adults however with some breeds this may not be accurate.</p>
                 </div>
             </div>
