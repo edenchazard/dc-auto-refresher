@@ -50,6 +50,7 @@ export default function App() {
             [rate, setRate] = useState<number>(get(storedData, 'rate', 250)),
             [autorefresh, setAutorefresh] = useState<boolean>(get(storedData, 'autorefresh', false)),
             [smartRemoval, setSmartRemoval] = useState<boolean>(get(storedData, 'smartRemoval', true)),
+            [noView, setNoView] = useState<boolean>(get(storedData, 'noView', false)),
             [error, setError] = useState(null);
 
     // handle icon changes when auto refresh is active
@@ -58,7 +59,7 @@ export default function App() {
     // persist our state between refreshes (missk asked for this)
     useEffect(() => {
         sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-            listOfDragons, rate, autorefresh, smartRemoval
+            listOfDragons, rate, autorefresh, smartRemoval, noView
         }));
     });
 
@@ -193,7 +194,9 @@ export default function App() {
                             autorefresh={autorefresh}
                             updateRate={(rate: number) => {setAutorefresh(false); setRate(rate)}}
                             click={() => toggleAutorefresh(!autorefresh)}
-                            updateSmartRemoval={(value: boolean) => setSmartRemoval(value) } />
+                            updateSmartRemoval={(value: boolean) => setSmartRemoval(value) }
+                            noView={noView}
+                            updateNoView={(value: boolean) => setNoView(value)} />
                         <ErrorDisplay
                             error={error}
                             done={setError} />
@@ -220,7 +223,8 @@ export default function App() {
                             <RefresherView
                                 dragonList={listOfDragons}
                                 rate={rate}
-                                onImageChange={handleImageChange} />
+                                onImageChange={handleImageChange}
+                                disableViews={noView} />
                         </section>
                     }
                 </div>

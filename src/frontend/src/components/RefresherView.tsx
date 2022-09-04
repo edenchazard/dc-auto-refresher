@@ -22,10 +22,11 @@ function calculateNumberOfImages(listOfDragons: Dragon[]): number {
 interface RefresherViewProps {
     dragonList: Dragon[],
     rate: number,
+    disableViews: boolean,
     onImageChange?: Function
 }
 
-export default function RefresherView({ dragonList, rate, onImageChange }: RefresherViewProps) {
+export default function RefresherView({ dragonList, rate, disableViews, onImageChange }: RefresherViewProps) {
     const [instance, setInstance] = useState<number>(1);
     const sizes = useRef<Size[]>([]);
 
@@ -63,7 +64,7 @@ export default function RefresherView({ dragonList, rate, onImageChange }: Refre
         const code: string = img.dataset.code;
 
         // immediately replace the src with a new one
-        img.src = generateDragCaveImgUrl(code);
+        img.src = generateDragCaveImgUrl(code, disableViews);
     }
 
     function handleLoad(event){
@@ -107,7 +108,7 @@ export default function RefresherView({ dragonList, rate, onImageChange }: Refre
                         return (
                             Array.from(Array(dragon.instances), (e, it) => 
                             <img className='inline'
-                                src={generateDragCaveImgUrl(dragon.code)}
+                                src={generateDragCaveImgUrl(dragon.code, disableViews)}
                                 key={`${index}.${it}`}
                                 alt={dragon.code}
                                 data-code={dragon.code}

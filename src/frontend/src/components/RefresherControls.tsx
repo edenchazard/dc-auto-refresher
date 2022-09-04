@@ -22,7 +22,9 @@ const Select = ({onChange, value}) =>{
     );
 };
 
-export default function RefresherControls({list, rate, updateRate, click, autorefresh, smartRemoval, updateSmartRemoval}) {
+export default function RefresherControls({
+    list, rate, updateRate, click, autorefresh,
+    smartRemoval, updateSmartRemoval, noView, updateNoView}) {
     return (
         <div>
             <div
@@ -40,9 +42,27 @@ export default function RefresherControls({list, rate, updateRate, click, autore
                         onChange={(e) => updateSmartRemoval(e.target.checked)} />
                 </div>
                 <div
-                    className={`${smartRemoval ? 'text-gray-400' : 'text-gray-600' }`}
-                    id="smart-removal">
-                    <p>Smart removal will try to detect changes for each dragon and remove freshly hatched eggs or newly grown adults however with some breeds this may not be accurate.</p>
+                    className={`${smartRemoval ? 'text-gray-400' : 'text-gray-600' }`}>
+                    <p>If enabled, Smart removal will try to detect changes for each dragon and remove freshly hatched eggs or newly grown adults however with some breeds this may not be accurate.</p>
+                </div>
+            </div>
+            <div
+                className="my-2"
+                onClick={() => updateNoView(!noView)}>
+                <div className={`${noView ? 'text-white' : 'text-gray-400' } flex justify-between items-center`}>
+                    <label
+                        htmlFor='noView'
+                        // Prevent label from "doubling up" our check behaviour
+                        onClick={(e) => e.preventDefault() }>Disable views:</label>
+                    <input
+                        type='checkbox'
+                        id='noView'
+                        checked={noView}
+                        onChange={(e) => updateNoView(e.target.checked)} />
+                </div>
+                <div
+                    className={`${noView ? 'text-gray-400' : 'text-gray-600' }`}>
+                    <p>If enabled, views will be prevented from accumulating but dragons will still auto-refresh.</p>
                 </div>
             </div>
             {
