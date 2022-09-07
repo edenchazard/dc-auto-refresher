@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 
-// using 100ms instead of 1000ms almost eliminates any
-// milisecond differences between this clock and the
-// client's clock
-const updateInterval = 100;
+import TimingService from "../app/timing-handler";
 
 // Receives an array of 'parts' of a time and formats with leading zeroes
 const fmtTimeArray = (arr: number[]) => {
@@ -49,10 +46,10 @@ export function Clock(){
     const [time, setTime] = useState<number>(Date.now);
 
     useEffect(() => {
-        const interval = setInterval(() => setTime(Date.now), updateInterval);
+        const subscription = TimingService.subscribe(() => setTime(Date.now));
 
         // clean up
-        return () => clearInterval(interval);
+        return () => TimingService.unsubscribe(subscription);
     }, []);
 
     return <span>{formatTime(time)}</span>;
@@ -66,12 +63,12 @@ export function CountDown({ to, whenDone }: CountDownProps){
     const [, setTime] = useState<number>(differenceBetweenTwoDates(new Date(), to));
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const subscription = TimingService.subscribe(() => {
             const difference = differenceBetweenTwoDates(new Date(), to);
 
             if(difference <= 0){
-                // end the timer
-                clearInterval(interval);
+                // end the subscription
+                TimingService.unsubscribe(subscription);
 
                 // if specified, call a function when the countdown reaches 0
                 whenDone && whenDone();
@@ -79,9 +76,9 @@ export function CountDown({ to, whenDone }: CountDownProps){
             }
     
             setTime(difference);
-        }, updateInterval);
+        });
 
-        return () => clearInterval(interval);
+        return () => TimingService.unsubscribe(subscription);
     }, [to, whenDone]);
 
     return <span>{formatForCountdown(to)}</span>;

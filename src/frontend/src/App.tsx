@@ -5,6 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import { Dragon } from "./app/interfaces";
 import errMsg from "./app/errors";
 import * as DCAPI from "./app/dcapi";
+import TimingService from "./app/timing-handler";
 import { isCodeInList, validateCode, getListFromQS } from "./app/functions";
 import useIconCycle from "./hooks/useIconCycle";
 import Footer from "./components/Footer";
@@ -15,6 +16,8 @@ import RefresherView from './components/RefresherView';
 import ErrorDisplay from './components/ErrorDisplay';
 
 import './App.css';
+
+TimingService.start(1000);
 
 const SESSION_KEY = 'session';
 
