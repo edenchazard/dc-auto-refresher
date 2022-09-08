@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import TimingService from "../app/timing-handler";
+import TimingService from "../app/timing-service";
 
 // Receives an array of 'parts' of a time and formats with leading zeroes
 const fmtTimeArray = (arr: number[]) => {
@@ -46,7 +46,8 @@ export function Clock(){
     const [time, setTime] = useState<number>(Date.now);
 
     useEffect(() => {
-        const subscription = TimingService.subscribe(() => setTime(Date.now));
+        const subscription = function clockSub(){ setTime(Date.now) };
+        TimingService.subscribe(subscription);
 
         // clean up
         return () => TimingService.unsubscribe(subscription);
@@ -63,7 +64,7 @@ export function CountDown({ to, whenDone }: CountDownProps){
     const [, setTime] = useState<number>(differenceBetweenTwoDates(new Date(), to));
 
     useEffect(() => {
-        const subscription = TimingService.subscribe(() => {
+        const subscription = function countdownSub(){
             const difference = differenceBetweenTwoDates(new Date(), to);
 
             if(difference <= 0){
@@ -76,7 +77,9 @@ export function CountDown({ to, whenDone }: CountDownProps){
             }
     
             setTime(difference);
-        });
+        };
+        
+        TimingService.subscribe(subscription);
 
         return () => TimingService.unsubscribe(subscription);
     }, [to, whenDone]);

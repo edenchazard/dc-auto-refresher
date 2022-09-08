@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import { Dragon } from "./app/interfaces";
 import errMsg from "./app/errors";
 import * as DCAPI from "./app/dcapi";
-import TimingService from "./app/timing-handler";
+import TimingService from "./app/timing-service";
 import { isCodeInList, validateCode, getListFromQS } from "./app/functions";
 import useIconCycle from "./hooks/useIconCycle";
 import Footer from "./components/Footer";
