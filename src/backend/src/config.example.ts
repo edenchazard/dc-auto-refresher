@@ -1,7 +1,12 @@
-const API_KEY = 'API_KEY';
+import { ConfigFile } from "./types";
 
-export default {
+const API_KEY = 'YOUR API KEY HERE';
+
+const config: ConfigFile = {
     port: 80,
     apiPath: "/api",
-    DCAPIURL: `https://dragcave.net/api/${API_KEY}/json`
-}
+    DCAPIURL: `https://dragcave.net/api/${API_KEY}/json`,
+    defaultError: { status: 2, message: "Sorry, an error has occurred." },
+};
+
+export default config;
