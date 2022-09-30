@@ -1,3 +1,4 @@
+name: "dc-ar_prod"
 services:
   api:
     container_name: dc-ar-api
@@ -5,8 +6,6 @@ services:
       context: .
       dockerfile: ./docker/prod-api.Dockerfile
     restart: always
-    environment:
-      - NODE_ENV=production
     networks:
       - internal
 
@@ -22,8 +21,6 @@ services:
     depends_on:
       - api
     restart: always
-    environment:
-      - NODE_ENV=production
     networks:
       - dc
       - internal

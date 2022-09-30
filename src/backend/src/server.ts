@@ -1,34 +1,35 @@
 // normally I would refactor this script but it's sooooo small
-const config = require('./config.js');
-const Koa = require('koa');
-const Router = require('@koa/router');
-const axios = require("axios");
+import config from './config';
+import Koa from 'koa';
+import Router from '@koa/router';
+import axios from "axios";
+import { APIDragon, Dragon, DragonInferredDetails } from './types';
+
 const app = new Koa();
 const router = new Router({ prefix: config.apiPath });
 
-function validateCode(code) {
+function validateCode(code: string) {
     return /^[a-zA-Z0-9]{5}$/.test(code);
 }
 
 // Function to validate API response from dragcave
 // Only checks the fields we need.
-function validAPIDragon(responseObj){
+function validAPIDragon(responseObj: APIDragon){
     let pass = true;
     ['grow', 'death', 'start', 'hatch', 'hoursleft'].forEach((prop) => {
-        if(typeof responseObj[prop] == 'undefined'){
+        if(prop in responseObj === false)
             pass = false;
-        }
     });
 
     return pass;
 }
 
 // Determines various characteristics about a dragon
-function determineDragonDetails(dragon, seconds){
+function determineDragonDetails(dragon: APIDragon, seconds: number){
     // We need to compare the current seconds passed this hour with that of
     // what the user inputted, then we set the tod to the current date +
     // the hours, mins and seconds of the dragon remaining
-    const calculateTOD = (hoursLeft, seconds) => {
+    const calculateTOD = (hoursLeft: number, seconds: number) => {
         if(hoursLeft == -1) return null;
 
         const now = new Date();
@@ -49,21 +50,22 @@ function determineDragonDetails(dragon, seconds){
 
     const
         isAdult = dragon.grow != 0,
-        isDead = dragon.death != 0,
-        isHidden = dragon.start == 0 && dragon.hatch == 0 && dragon.death == 0,
+        isDead = dragon.death !== "0",
+        isHidden = dragon.start === "0" && dragon.hatch === "0" && dragon.death === "0",
         isFrozen = !isAdult && !isDead && !isHidden && dragon.hoursleft == -1,
-        justHatched = dragon.hoursleft === 168 && dragon.hatch != 0;
+        justHatched = dragon.hoursleft === 168 && dragon.hatch !== "0";
 
     const tod = (seconds !== null ? calculateTOD(dragon.hoursleft, seconds) : null);
 
-    return { isAdult, isDead, isHidden, isFrozen, justHatched, tod };
+    const inferred: DragonInferredDetails = { isAdult, isDead, isHidden, isFrozen, justHatched, tod };
+    return inferred;
 }
 
 router.get('/check/:code', async (ctx) => {
-    const code = ctx.params.code;
+    const code: string = ctx.params.code;
 
     // force a number or make it null
-    const seconds = parseInt(ctx.query.tod) || null; 
+    const seconds = Number(ctx.query.tod); 
 
     if(!validateCode(code)){
         ctx.body = { 
@@ -73,11 +75,10 @@ router.get('/check/:code', async (ctx) => {
         return;
     }
 
-    const
-        response = await axios(config.DCAPIURL+"/view/"+code),
-        dragon = response.data?.dragons?.[code];
+    const dcAPI = await axios(config.DCAPIURL+"/view/"+code);
+    const response: APIDragon = dcAPI.data?.dragons?.[code];
 
-    if(!dragon){
+    if(!response){
         ctx.body = { 
             errors: true,
             errorMessage: "The dragon doesn't exist or there's an issue with dragcave.net."
@@ -85,13 +86,11 @@ router.get('/check/:code', async (ctx) => {
         return;
     }
 
-    if(!validAPIDragon(dragon)){
+    if(!validAPIDragon(response))
         throw new Error("The API response from dragcave.net isn't valid.");
-    }
 
     // extra info about the dragon based on response
-    Object.assign(dragon, determineDragonDetails(dragon, seconds));
-
+    const dragon: Dragon = { ...response, ...determineDragonDetails(response, seconds) };
     ctx.body = {
         errors: false,
         acceptable: !dragon.isAdult && !dragon.isDead && !dragon.isFrozen,
@@ -105,7 +104,8 @@ app
         try {
             await next();
         }
-        catch(err) {
+        // TODO: I don't like the any but ts complains if it isn't
+        catch(err: any) {
             console.log(err)
             ctx.status = err.status || 500;
             ctx.body = { errors: true, errorMessage: err.message };
