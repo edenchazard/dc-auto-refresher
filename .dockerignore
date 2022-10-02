@@ -11,3 +11,4 @@
 **/.vs
 **/.vscode
 #**/.env*
+**/src/config.example.ts

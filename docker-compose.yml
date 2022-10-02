@@ -1,10 +1,10 @@
-name: "dc-ar_dev"
+name: dc-ar_dev
 services:
   api:
     container_name: dc-ar-dev-api
     build:
-      context: .
-      dockerfile: ./docker/api.Dockerfile
+      context: ./src/backend
+      dockerfile: ./df.Dockerfile
     volumes:
       - ./src/backend:/app
       - /app/node_modules
@@ -14,8 +14,8 @@ services:
   frontend:
     container_name: dc-ar-dev-react
     build:
-      context: .
-      dockerfile: ./docker/frontend.Dockerfile
+      context: ./src/frontend
+      dockerfile: ./df.Dockerfile
     volumes:
       - ./src/frontend:/app
       - /app/node_modules

@@ -3,6 +3,8 @@ EXPOSE 80
 WORKDIR /app
 ENV CHOKIDAR_USEPOLLING=true
 ENV NODE_ENV=development
-COPY /src/frontend/package.json .
+ENV PUBLIC_URL=/
+COPY ./package.json .
 RUN npm install
+
 ENTRYPOINT [ "npm", "run", "start" ]

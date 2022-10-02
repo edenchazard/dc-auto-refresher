@@ -1,5 +1,7 @@
 # DC Fast Auto-Refresher Tool (aka FART)
+
 Fast Auto Refreshing Tool, aka FART (yes, really!). Fart is an open-source auto-refreshing tool with the following features:
+
 - AR multiple dragons at varying rates through instances per refresh in a simple control-panel style format.
 - Control refresh speed.
 - A small icon of the dragon you're ARing in the page tab. If you've got multiple dragons it even cycles through them. ;)
@@ -11,15 +13,24 @@ Fast Auto Refreshing Tool, aka FART (yes, really!). Fart is an open-source auto-
 - TOD countdown - Tell FART when the dragon's timer changes and FART will give you a TOD countdown.
 
 ## Running the project
+
 Download docker.
 
 ### Dev
-1. Change config.example.js to config.js and insert API key.
+
+1. Rename `/src/backend/src/config.example.ts` to `config.ts` and insert API key.
 2. Run:
-```docker-compose up```
+
+```sh
+docker-compose up
+```
 
 ### Production
-1. Change PUBLIC_URL in `docker-compose.prod.yml` to the deployment url.
-2. Change config.example.js to config.js and insert API key.
+
+1. Change MOUNT_PATH in `docker-compose.prod.yml` to the deployment url.
+2. Rename `/src/backend/src/config.example.ts` to `config.ts` and insert API key.
 3. Run:
-```docker-compose -f docker-compose.prod.yml up -d --build```
+
+```sh
+docker-compose -f docker-compose.prod.yml up -d --build
+```

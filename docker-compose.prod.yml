@@ -1,10 +1,10 @@
-name: "dc-ar_prod"
+name: dc-ar
 services:
   api:
     container_name: dc-ar-api
     build:
-      context: .
-      dockerfile: ./docker/prod-api.Dockerfile
+      context: ./src/backend
+      dockerfile: ./df-prod.Dockerfile
     restart: always
     networks:
       - internal
@@ -12,10 +12,10 @@ services:
   frontend:
     container_name: dc-ar-frontend
     build:
-      context: .
-      dockerfile: ./docker/prod-frontend.Dockerfile
+      context: ./src/frontend
+      dockerfile: ./df-prod.Dockerfile
       args:
-        - PUBLIC_URL=/dc/auto-refresher/
+        - MOUNT_PATH=/dc/auto-refresher/
     ports:
       - 85:8080
     depends_on:
