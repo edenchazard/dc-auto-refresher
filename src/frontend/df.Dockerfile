@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.14
+FROM node:lts-alpine
 EXPOSE 80
 WORKDIR /app
 ENV CHOKIDAR_USEPOLLING=true

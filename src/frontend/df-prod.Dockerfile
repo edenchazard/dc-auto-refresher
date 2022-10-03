@@ -1,5 +1,5 @@
 # Build in intermediate container
-FROM node:lts-alpine3.14 as build
+FROM node:lts-alpine as build
 WORKDIR /app
 ENV NODE_ENV=production
 ARG MOUNT_PATH

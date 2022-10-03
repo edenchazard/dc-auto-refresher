@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "ES6",
         "jsx": "react-jsx",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "Node"
     },
     "include": ["./src/*.ts", "./src/*.tsx", "src/app/dcapi.ts", "src/app/functions.ts", "src/app/interfaces.ts", "src/hooks/useIconCycle.ts"],
     "exclude": ["node_modules"]
