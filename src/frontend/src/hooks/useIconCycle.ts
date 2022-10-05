@@ -45,7 +45,7 @@ export default function useIconCycle(autorefresh: boolean, listOfDragons: Dragon
         return () => {
             clearInterval(iconInterval);
             replaceFavicon('./logo192.png');
-            document.title = process.env.REACT_APP_APP_TITLE;
+            document.title = "FART";
         }
     }, [autorefresh, listOfDragons]);
 }

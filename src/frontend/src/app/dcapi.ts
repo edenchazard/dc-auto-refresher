@@ -1,4 +1,4 @@
-const API_URL = process.env.PUBLIC_URL + "/api";
+const API_URL = import.meta.env.BASE_URL + "./api";
 
 interface APIResponse {
     errors: boolean,

@@ -30,7 +30,7 @@ export default function Footer(){
                             className='underline'
                             href='/dc/tools'>Chazza's DC Tools</a>
                     </div>
-                    <div>v{process.env.REACT_APP_VERSION} &copy; eden chazard</div>
+                    <div>v{import.meta.env.VITE_APP_VERSION} &copy; eden chazard</div>
                 </div>
             </footer>
         </div>

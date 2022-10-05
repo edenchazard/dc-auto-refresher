@@ -1,9 +1,8 @@
 # Build in intermediate container
 FROM node:lts-alpine as build
 WORKDIR /app
-ENV NODE_ENV=production
 ARG MOUNT_PATH
-ENV PUBLIC_URL=$MOUNT_PATH
+ENV VITE_APP_URL=$MOUNT_PATH
 COPY ./ ./
 RUN npm ci && npm run build
 
