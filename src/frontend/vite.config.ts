@@ -6,6 +6,14 @@ export default ({ mode }) => {
 
   return defineConfig({
     base: env.VITE_APP_URL,
+    server: {
+      proxy: {
+        '^/api': {
+            target: 'http://api',
+            changeOrigin: true
+        }
+      }
+    },
     plugins: [react()],
     build: {
       outDir: "./build"
