@@ -67,7 +67,7 @@ export default function AddDragon({addToList, rate}){
                         <label htmlFor='tod'>Dies at:</label>
                         <TimePicker
                             id='tod'
-                            onChange={setTOD}
+                            onChange={(value) => setTOD(value.toString())}
                             value={tod}
                             format="mm:ss"
                             maxDetail='second'
