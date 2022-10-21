@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.12.0
-
+- Synchronise all timers (local time, TOD countdown etc) so they change at the same time.
 - Add github and ko-fi links to footer.
 - Change instances max from 10 to 50.
 - Migrate from CRA to Vite
