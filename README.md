@@ -1,6 +1,10 @@
 # DC Fast Auto-Refresher Tool (aka FART)
 
-Fast Auto Refreshing Tool, aka FART (yes, really!). Fart is an open-source auto-refreshing tool with the following features:
+Fast Auto Refreshing Tool, aka FART (yes, really!). Fart is an open-source auto-refreshing tool for [dragcave.net](https://dragcave.net).
+
+![screenshot](https://i.imgur.com/gPYMhME.png)
+
+## Features
 
 - AR multiple dragons at varying rates through instances per refresh in a simple control-panel style format.
 - Control refresh speed.
@@ -14,12 +18,25 @@ Fast Auto Refreshing Tool, aka FART (yes, really!). Fart is an open-source auto-
 
 ## Running the project
 
-Download docker.
+The project is dockerized, so all you need is docker, docker-compose, a clone of the repository and access to the DC API. You can then choose to run the development or production compose files.
+
+```sh
+# clone repo
+git clone https://github.com/edenchazard/dc-auto-refresher.git
+
+cd dc-auto-refresher
+
+# add the config file
+cp ./src/backend/config.example.json ./src/backend/config.json
+
+# edit with your favorite text editor
+# and put in your API key.
+nano ./src/backend/config.json
+```
 
 ### Dev
 
-1. Rename `/src/backend/src/config.example.ts` to `config.ts` and insert API key.
-2. Run:
+From the project root, run the command:
 
 ```sh
 docker-compose up
@@ -27,9 +44,8 @@ docker-compose up
 
 ### Production
 
-1. Change MOUNT_PATH in `docker-compose.prod.yml` to the deployment url.
-2. Rename `/src/backend/src/config.example.ts` to `config.ts` and insert API key.
-3. Run:
+1. Change MOUNT_PATH in docker-compose.prod.yml to the deployment url. e.g. If you want it to be available at example.org/fart, you'd use "/fart".
+2. From the project root, run the command:
 
 ```sh
 docker-compose -f docker-compose.prod.yml up -d --build
