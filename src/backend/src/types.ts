@@ -26,7 +26,7 @@ interface DragonInferredDetails {
 
 type Dragon = APIDragon & DragonInferredDetails;
 
-interface ConfigFile {
+interface AppConfig {
     port: number,
     apiPath: string,
     DCAPIURL: string,
@@ -37,5 +37,5 @@ export {
     APIDragon,
     DragonInferredDetails,
     Dragon,
-    ConfigFile
+    AppConfig
 }

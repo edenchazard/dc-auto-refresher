@@ -1,5 +1,5 @@
 // normally I would refactor this script but it's sooooo small
-import config from './config';
+import config from './appConfig';
 import Koa from 'koa';
 import Router from '@koa/router';
 import axios from "axios";
