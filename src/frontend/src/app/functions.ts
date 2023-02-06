@@ -12,7 +12,7 @@ export function validateCode(code: string): boolean{
 export function generateDragCaveImgUrl(code: string, noView: boolean = false): string{
     const cacheBust = Date.now() + Math.random();
     // no view disables views on the dragon
-    return `https://dragcave.net/image/${code}${noView ? '/1' : ''}.gif?q=${cacheBust}`;
+    return `https://dragcave.net/image/${code}${noView ? '/1' : ''}?q=${cacheBust}`;
 }
 
 export function sizesSame(oldSize: Size, newSize: Size): boolean{
