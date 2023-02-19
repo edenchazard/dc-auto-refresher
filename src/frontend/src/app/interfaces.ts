@@ -1,9 +1,9 @@
 export interface Dragon {
-    code: string
-    instances: number,
-    tod: number
+  code: string;
+  instances: number;
+  tod: number;
 }
 export interface Size {
-    w: number,
-    h: number
+  w: number;
+  h: number;
 }
