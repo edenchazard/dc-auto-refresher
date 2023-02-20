@@ -64,7 +64,7 @@ router.get('/check/:code', async (ctx) => {
       justHatched: dragon.justHatched,
       tod: dragon.tod,
     };
-  } catch (ex: any) {
+  } catch (ex: unknown) {
     // we always know the information in these errors are safe
     // to show, so we can allow these to appear in the response.
     if (ex instanceof DragCaveAPIError) {

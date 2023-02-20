@@ -8,7 +8,7 @@ app
   .use(async (ctx, next) => {
     try {
       await next();
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Handle errors so we don't break our node process
       ctx.body = {
         errors: ['Sorry, an error has occurred.'],
