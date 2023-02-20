@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import TimePicker from 'react-time-picker';
+import { useSessionStorage } from 'usehooks-ts';
 
 import type { Dragon } from '../app/interfaces';
 import DragonInstancesInput from './DragonInstancesInput';
@@ -10,7 +11,7 @@ interface AddDragonProps {
 }
 export default function AddDragon({ addToList, rate }: AddDragonProps) {
   const [code, setCode] = useState<string>('');
-  const [instances, setInstances] = useState<number>(1);
+  const [instances, setInstances] = useSessionStorage('addInstances', 1);
   const [tod, setTOD] = useState<string | null>(null);
 
   function handleAdd(e: React.FormEvent<HTMLFormElement>) {
