@@ -1,45 +1,63 @@
 import DragonInstancesInput from './DragonInstancesInput';
 import { generateDragCaveImgUrl } from '../app/functions';
 import { CountDown } from './Clock';
+import type { Dragon } from '../app/interfaces';
 
-const RateCalculator = ({ rate, instances }) => {
-  let text;
-
+interface RateCalculatorProps {
+  rate: number;
+  instances: number;
+}
+const RateCalculator = ({ rate, instances }: RateCalculatorProps) => {
   if (rate > 0 && instances > 0) {
-    const calculated = (60000 / rate) * instances || 0;
-    text = (
+    const calc = (60000 / rate) * instances;
+
+    // set to 0 if for some reason it isn't a number
+    const calculatedRate = Number.isNaN(calc) ? 0 : calc;
+
+    return (
       <span>
-        ~{calculated} <abbr title="views per minute">V/M</abbr>
+        ~{calculatedRate} <abbr title="views per minute">V/M</abbr>
       </span>
     );
   } else if (instances === 0) {
-    text = <span>None</span>;
+    return <span>None</span>;
   } else {
-    text = <span>Variable</span>;
+    return <span>Variable</span>;
   }
-
-  return text;
 };
 
+interface DragonTRProps {
+  dragon: Dragon;
+  setInstances: (value: number) => void;
+  rate: number;
+  remove: () => void;
+}
 export default function DragonTR({
-  code,
-  instances,
   setInstances,
   rate,
   remove,
-  tod,
-}) {
-  const imgLink = generateDragCaveImgUrl(code, true),
-    viewLink = `https://dragcave.net/view/${code}`,
-    diesOn = new Date(tod);
+  dragon,
+}: DragonTRProps) {
+  const imgLink = generateDragCaveImgUrl(dragon.code, true);
+  const viewLink = `https://dragcave.net/view/${dragon.code}`;
+  const diesOn = new Date(dragon.tod);
 
   return (
     <div className="flex flex-col items-center">
-      <i>({code})</i>
-      <DragonInstancesInput instances={instances} setInstances={setInstances} />
-      <RateCalculator rate={rate} instances={instances} />
-      {tod ? (
-        <span data-tip={'TOD: ' + diesOn.toLocaleString()} data-event="click">
+      <i>({dragon.code})</i>
+      <DragonInstancesInput
+        instances={dragon.instances}
+        setInstances={setInstances}
+      />
+      <RateCalculator
+        rate={rate}
+        instances={dragon.instances}
+      />
+      {dragon.tod !== null ? (
+        <span
+          data-tip={'TOD: ' + diesOn.toLocaleString()}
+          data-event="click"
+        >
           <CountDown to={diesOn} />
         </span>
       ) : (
@@ -51,8 +69,15 @@ export default function DragonTR({
       >
         Delete
       </button>
-      <a href={viewLink} target="_blank" rel="noopener noreferrer">
-        <img alt="dragon" src={imgLink} />
+      <a
+        href={viewLink}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          alt="dragon"
+          src={imgLink}
+        />
       </a>
     </div>
   );

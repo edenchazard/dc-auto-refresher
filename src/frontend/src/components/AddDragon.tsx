@@ -1,24 +1,35 @@
+import { useState } from 'react';
 import TimePicker from 'react-time-picker';
 
-import { useState } from 'react';
+import type { Dragon } from '../app/interfaces';
 import DragonInstancesInput from './DragonInstancesInput';
 
-export default function AddDragon({ addToList, rate }) {
-  const [code, setCode] = useState<string>(''),
-    [instances, setInstances] = useState<number>(1),
-    [tod, setTOD] = useState<string>(null);
+interface AddDragonProps {
+  addToList: (dragon: Dragon) => void;
+  rate: number;
+}
+export default function AddDragon({ addToList, rate }: AddDragonProps) {
+  const [code, setCode] = useState<string>('');
+  const [instances, setInstances] = useState<number>(1);
+  const [tod, setTOD] = useState<string | null>(null);
 
   function handleAdd(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     // by default don't specify a tod, only send the clock value
     // if it's been modified
-    let s = null;
-    if (tod) {
+    let secondsInTOD: null | number = null;
+
+    if (typeof tod === 'string') {
       const [, mins, seconds] = tod.split(':');
-      s = parseInt(mins) * 60 + parseInt(seconds);
+      secondsInTOD = parseInt(mins) * 60 + parseInt(seconds);
     }
 
-    addToList(code, instances, s);
+    addToList({
+      code,
+      instances,
+      tod: secondsInTOD,
+    });
 
     // reset things
     setCode('');
@@ -40,7 +51,9 @@ export default function AddDragon({ addToList, rate }) {
               size={5}
               minLength={4}
               maxLength={5}
-              onChange={(e) => setCode(e.target.value)}
+              onChange={(e) => {
+                setCode(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -77,9 +90,8 @@ export default function AddDragon({ addToList, rate }) {
           </div>
           <div className="text-gray-400">
             <p>
-              (Optional) Specify the minute and second the "will die if... "
-              changes and FART will provide a TOD countdown. Dragon must be
-              unfogged.
+              (Optional) Specify the minute and second the timer changes and
+              FART will provide a TOD countdown. Dragon must be unfogged.
             </p>
           </div>
         </div>

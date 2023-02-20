@@ -1,144 +1,114 @@
 import { useEffect, useState } from 'react';
-
+import { useSessionStorage } from 'usehooks-ts';
 import ReactTooltip from 'react-tooltip';
 
-import { Dragon } from './app/interfaces';
+import type { Dragon } from './app/interfaces';
 import errMsg from './app/errors';
 import * as DCAPI from './app/dcapi';
-import TimingService from './app/timing-service';
-import { isCodeInList, validateCode, getListFromQS } from './app/functions';
+import { isCodeInList, validateCode } from './app/functions';
 import useIconCycle from './hooks/useIconCycle';
+import useParseListPreset from './hooks/useParseListPreset';
 import Footer from './components/Footer';
 import DragonTR from './components/DragonTR';
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
 import RefresherView from './components/RefresherView';
-import ErrorDisplay from './components/ErrorDisplay';
-
+import { ErrorDisplay } from './components/ErrorDisplay';
+import type { ErrorMessage } from './components/ErrorDisplay';
 import './App.css';
-
-TimingService.start(1000);
-
-const SESSION_KEY = 'session';
-
-// if we have session data, use that, otherwise use defaults
-const storedData = getSessionData();
-
-// If supplied with a preset list, use that.
-const preSet = (() => {
-  const list = getListFromQS();
-  if (list !== null)
-    window.history.replaceState({ list: '' }, '', window.location.pathname);
-  return list;
-})();
-
-function getSessionData() {
-  const session = sessionStorage.getItem(SESSION_KEY);
-  return session ? JSON.parse(session) : {};
-}
 
 function hasRefreshableDragons(listOfDragons: Dragon[]) {
   return listOfDragons.findIndex((dragon) => dragon.instances > 0) > -1;
 }
 
-// checks the session storage for the specified key
-// and returns the value, otherwise returns the
-// default value
-function get(session: object, key: string, defaultValue: any) {
-  return key in session ? session[key] : defaultValue;
-}
-
 export default function App() {
-  const [listOfDragons, setListOfDragons] = useState<Dragon[]>(
-      preSet || get(storedData, 'listOfDragons', []),
-    ),
-    [rate, setRate] = useState<number>(get(storedData, 'rate', 250)),
-    [autorefresh, setAutorefresh] = useState<boolean>(
-      get(storedData, 'autorefresh', false),
-    ),
-    [smartRemoval, setSmartRemoval] = useState<boolean>(
-      get(storedData, 'smartRemoval', true),
-    ),
-    [noView, setNoView] = useState<boolean>(get(storedData, 'noView', false)),
-    [error, setError] = useState(null);
+  const [listOfDragons, setListOfDragons] = useSessionStorage<Dragon[]>(
+    'listOfDragons',
+    [],
+  );
+  const [rate, setRate] = useSessionStorage('rate', 250);
+  const [autorefresh, setAutorefresh] = useSessionStorage('autorefresh', false);
+  const [smartRemoval, setSmartRemoval] = useSessionStorage(
+    'smartRemoval',
+    true,
+  );
+  const [noView, setNoView] = useSessionStorage('noView', false);
+  const [error, setError] = useState<ErrorMessage>(null);
 
   // handle icon changes when auto refresh is active
-  useIconCycle(autorefresh, listOfDragons);
+  useIconCycle(autorefresh, listOfDragons, 'FART', './logo192.png');
 
-  // persist our state between refreshes (missk asked for this)
-  useEffect(() => {
-    sessionStorage.setItem(
-      SESSION_KEY,
-      JSON.stringify({
-        listOfDragons,
-        rate,
-        autorefresh,
-        smartRemoval,
-        noView,
-      }),
-    );
-  });
+  // Was a preset list param specified?
+  useParseListPreset(setListOfDragons, true);
 
-  // If we have no dragons to refresh, auto-refresh should always be false
+  // If we have no dragons to refresh, auto-refresh should always be false.
   // This also prevents cases such as the auto-refresher removing hatched dragons
   // but undesirably continuing to auto-refresh
+  // We also have to check the autorefresh state isn't already false,
+  // or we create a depth stack problem because of the usesessionstorage
+  // hook
   useEffect(() => {
-    if (!hasRefreshableDragons(listOfDragons)) {
+    if (autorefresh && !hasRefreshableDragons(listOfDragons)) {
       setAutorefresh(false);
     }
-  }, [listOfDragons]);
+  }, [listOfDragons, autorefresh, setAutorefresh]);
 
-  async function handleAdd(
-    code: string,
-    instances: number,
-    tod: number | null,
-  ) {
-    // prevent people adding an already added code to the list
-    if (isCodeInList(listOfDragons, code)) {
-      setError({ type: 1, message: errMsg.ALREADYINLIST });
-      return;
-    }
-    if (!validateCode(code)) {
-      setError({ type: 1, message: errMsg.BADCODE });
-      return;
-    }
-
-    try {
-      setError({ type: 2, message: errMsg.CHECKINGAPI, noHide: true });
-      const details = await DCAPI.checkDragon(code, tod);
-
-      if (details.errors) {
-        setError({ type: 1, message: details.errorMessage });
+  function handleAdd(dragon: Dragon) {
+    const add = async () => {
+      // prevent people adding an already added code to the list
+      if (isCodeInList(listOfDragons, dragon.code)) {
+        setError({ type: 1, message: errMsg.ALREADYINLIST });
         return;
       }
-
-      // not a frozen, hidden or adult dragon
-      if (details.acceptable) {
-        const orderedList = [
-          ...listOfDragons,
-          { code, instances, tod: details.tod },
-        ];
-        // https://stackoverflow.com/a/58748962
-        orderedList.sort(
-          ({ tod: a }, { tod: b }) =>
-            (a != null ? a : Infinity) - (b != null ? b : Infinity),
+      if (!validateCode(dragon.code)) {
+        setError({ type: 1, message: errMsg.BADCODE });
+        return;
+      }
+      try {
+        setError({ type: 2, message: errMsg.CHECKINGAPI, noHide: true });
+        const { errors, data } = await DCAPI.checkDragon(
+          dragon.code,
+          dragon.tod,
         );
 
-        setListOfDragons(orderedList);
-        setError(null);
-        setAutorefresh(false);
+        if (errors.length > 0) {
+          setError({ type: 1, message: errors.join(' ') });
+          return;
+        }
 
-        // fixes problem that stops the tooltip for TOD appearing
-        ReactTooltip.rebuild();
-      } else {
-        setError({ type: 1, message: errMsg.BADDRAGON });
+        // not a frozen, hidden or adult dragon
+        if (data.acceptable) {
+          const orderedList = [
+            ...listOfDragons,
+            { code: dragon.code, instances: dragon.instances, tod: data.tod },
+          ];
+
+          // https://stackoverflow.com/a/58748962
+          orderedList.sort(
+            ({ tod: a }, { tod: b }) =>
+              (a !== null ? a : Infinity) - (b !== null ? b : Infinity),
+          );
+
+          setListOfDragons(orderedList);
+          setError(null);
+          setAutorefresh(false);
+
+          // fixes problem that stops the tooltip for TOD appearing
+          ReactTooltip.rebuild();
+        } else {
+          setError({ type: 1, message: errMsg.BADDRAGON });
+        }
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError({
+            type: 1,
+            message: `${errMsg.BADCONNECTION} ${error.message}`,
+          });
+        }
       }
-    } catch (error) {
-      setError({
-        type: 1,
-        message: errMsg.BADCONNECTION + ' ' + error.message,
-      });
-    }
+    };
+
+    void add();
   }
 
   function toggleAutorefresh(value: boolean) {
@@ -172,39 +142,54 @@ export default function App() {
     setListOfDragons([...listOfDragons]);
   }
 
-  async function handleImageChange(code: string) {
-    // console.log("NEW SIZE FOR "+code);
-    // if SR isn't enabled, just stay as normal.
-    if (!smartRemoval) {
-      return;
-    }
-
-    try {
-      const details = await DCAPI.checkDragon(code);
-
-      // continue with SR checks
-      if (details.errors) {
-        setError({ type: 1, message: details.errorMessage });
-      } else if (details.justHatched || !details.acceptable) {
-        // console.log("SMART REMOVAL FOR "+code);
-        // confirmed to be something we should remove.
-        removeDragon(listOfDragons.findIndex((dragon) => dragon.code === code));
+  function handleImageChange(code: string) {
+    const handle = async () => {
+      // console.log("NEW SIZE FOR "+code);
+      // if SR isn't enabled, just stay as normal.
+      if (!smartRemoval) {
+        return;
       }
-    } catch (error) {
-      setError({
-        type: 1,
-        message: errMsg.BADCONNECTION + ' ' + error.message,
-      });
-    }
+
+      try {
+        const { errors, data } = await DCAPI.checkDragon(code);
+
+        // continue with SR checks
+        if (errors.length > 0) {
+          setError({ type: 1, message: errors.join(' ') });
+        } else if (data.justHatched || !data.acceptable) {
+          // console.log("SMART REMOVAL FOR "+code);
+          // confirmed to be something we should remove.
+          removeDragon(
+            listOfDragons.findIndex((dragon) => dragon.code === code),
+          );
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          setError({
+            type: 1,
+            message: `${errMsg.BADCONNECTION} ${error.message}`,
+          });
+        }
+      }
+    };
+
+    void handle();
   }
 
   return (
     <div className="flex flex-col min-h-screen">
-      <ReactTooltip globalEventOff="click" place="top" effect="solid" />
+      <ReactTooltip
+        globalEventOff="click"
+        place="top"
+        effect="solid"
+      />
       <main className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto text-white grow">
         <div className="max:pt-3">
           <section className="max:px-5">
-            <AddDragon rate={rate} addToList={handleAdd} />
+            <AddDragon
+              rate={rate}
+              addToList={handleAdd}
+            />
           </section>
           <section className="px-5 my-3">
             <RefresherControls
@@ -216,25 +201,34 @@ export default function App() {
                 setAutorefresh(false);
                 setRate(rate);
               }}
-              click={() => toggleAutorefresh(!autorefresh)}
-              updateSmartRemoval={(value: boolean) => setSmartRemoval(value)}
+              click={() => {
+                toggleAutorefresh(!autorefresh);
+              }}
+              updateSmartRemoval={(value: boolean) => {
+                setSmartRemoval(value);
+              }}
               noView={noView}
-              updateNoView={(value: boolean) => setNoView(value)}
+              updateNoView={(value: boolean) => {
+                setNoView(value);
+              }}
             />
-            <ErrorDisplay error={error} done={setError} />
+            <ErrorDisplay
+              error={error}
+              done={setError}
+            />
             <div className="grid grid-cols-2 gap-4 my-2 threecol:grid-cols-3">
               {listOfDragons.map((dragon, index) => {
                 return (
                   <DragonTR
+                    dragon={dragon}
                     key={dragon.code}
-                    code={dragon.code}
                     rate={rate}
-                    tod={dragon.tod}
-                    instances={dragon.instances}
-                    setInstances={(instances: number) =>
-                      handleUpdateDragon(index, instances)
-                    }
-                    remove={() => handleRemove(index)}
+                    setInstances={(instances: number) => {
+                      handleUpdateDragon(index, instances);
+                    }}
+                    remove={() => {
+                      handleRemove(index);
+                    }}
                   />
                 );
               })}

@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { type IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faMugHot } from '@fortawesome/free-solid-svg-icons';
 
 export default function Footer() {
@@ -13,14 +13,20 @@ export default function Footer() {
             href="https://github.com/edenchazard/dc-auto-refresher/"
             title="Github"
           >
-            <FontAwesomeIcon size="2x" icon={faGithub as IconProp} />
+            <FontAwesomeIcon
+              size="2x"
+              icon={faGithub as IconProp}
+            />
           </a>
           <a
             className="mx-2"
             href="https://ko-fi.com/dctools"
             title="Buy me a ko-fi"
           >
-            <FontAwesomeIcon size="2x" icon={faMugHot as IconProp} />
+            <FontAwesomeIcon
+              size="2x"
+              icon={faMugHot as IconProp}
+            />
           </a>
         </div>
         <div className="m-2">
@@ -28,7 +34,10 @@ export default function Footer() {
             <span>FART</span>
             <br />
             Part of{' '}
-            <a className="underline" href="/dc/tools">
+            <a
+              className="underline"
+              href="/dc/tools"
+            >
               Chazza's DC Tools
             </a>
           </div>

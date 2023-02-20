@@ -1,7 +1,7 @@
-import { Dragon, Size } from './interfaces';
+import { type Dragon, type Size } from './interfaces';
 
 export function isCodeInList(listOfDragons: Dragon[], code: string): boolean {
-  return !!listOfDragons.find((dragon) => dragon.code === code);
+  return listOfDragons.find((dragon) => dragon.code === code) !== undefined;
 }
 
 export function validateCode(code: string): boolean {
@@ -24,40 +24,44 @@ export function sizesSame(oldSize: Size, newSize: Size): boolean {
   return oldSize.w === newSize.w && oldSize.h === newSize.h;
 }
 
-export function getListFromQS(
-  url: string = window.location.search,
-): Dragon[] | null {
-  const query = new URLSearchParams(url);
+export function getListFromString(str: string): Dragon[] | null {
   const unserialize: Dragon[] = [];
+  const list = str.split(';');
 
-  if (query.has('list')) {
-    const dragons = query.get('list').split(';');
-    for (const dragon of dragons) {
-      const data = dragon.split(','),
-        code = data[0],
-        // defaults to 0 if not valid or floors if float
-        instances = ~~data[1],
-        // check if tod has passed and null it if so
-        // or a 'bad' value
-        tod =
-          Date.now() > parseInt(data[2]) || isNaN(data[2] as any)
-            ? null
-            : parseInt(data[2]);
+  const dragonStringToDragon = (str: string): Dragon => {
+    const data = str.split(',');
+    const code = data[0];
+    // defaults to 0 if not valid or floors if float
+    const instances = ~~data[1];
+    // check if tod has passed and null it if so
+    // or a 'bad' value
+    const tod =
+      Date.now() > parseInt(data[2]) || isNaN(data[2] as any)
+        ? null
+        : parseInt(data[2]);
 
-      // skip if not valid code
-      if (validateCode(code) && !isCodeInList(unserialize, code))
-        unserialize.push({ code, instances, tod });
-    }
+    return { code, instances, tod };
+  };
+
+  for (const item of list) {
+    const dragon = dragonStringToDragon(item);
+
+    // skip if not valid code
+    if (validateCode(dragon.code) && !isCodeInList(unserialize, dragon.code))
+      unserialize.push(dragon);
   }
 
   return unserialize.length > 0 ? unserialize : null;
 }
 
 export function createShareLinkFromList(list: Dragon[]) {
-  const map = ({ code, instances, tod }) =>
-    `${code},${instances},${isNaN(tod) ? 'null' : tod}`;
-
   const { origin, pathname } = window.location;
 
-  return `${origin}${pathname}?list=` + list.map(map).join(';');
+  // TODO: We'll keep null in the string to ensure backwards compatibility
+  // but may change this later.
+  const values = list
+    .map((d) => `${d.code},${d.instances},${d.tod === null ? 'null' : d.tod}`)
+    .join(';');
+
+  return `${origin}${pathname}?list=${values}`;
 }

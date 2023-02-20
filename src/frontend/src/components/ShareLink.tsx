@@ -1,4 +1,4 @@
-import { Dragon } from '../app/interfaces';
+import { type Dragon } from '../app/interfaces';
 import CopyButton from './CopyButton';
 import { createShareLinkFromList } from '../app/functions';
 

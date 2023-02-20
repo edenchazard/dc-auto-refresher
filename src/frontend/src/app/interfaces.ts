@@ -1,7 +1,7 @@
 export interface Dragon {
   code: string;
   instances: number;
-  tod: number;
+  tod: number | null;
 }
 export interface Size {
   w: number;

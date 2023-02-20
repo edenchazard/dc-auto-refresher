@@ -1,9 +1,14 @@
+import type { Dragon } from '../app/interfaces';
 import { Clock } from './Clock';
 import ShareLink from './ShareLink';
 
-const Select = ({ onChange, value }) => {
+interface SelectProps {
+  value: number;
+  onChange: (value: number) => void;
+}
+const Select = ({ onChange, value }: SelectProps) => {
   const options = [250, 500, 1000, 2000, 4000].map((opt) => ({
-    label: opt / 1000 + 's',
+    label: `${opt / 1000}s`,
     value: opt,
   }));
 
@@ -13,12 +18,17 @@ const Select = ({ onChange, value }) => {
     <select
       id="rate"
       value={value}
-      onChange={(e) => onChange(parseInt(e.target.value))}
+      onChange={(e) => {
+        onChange(parseInt(e.target.value));
+      }}
       className="text-black"
     >
       {options.map((opt, index) => {
         return (
-          <option key={index} value={opt.value}>
+          <option
+            key={index}
+            value={opt.value}
+          >
             {opt.label}
           </option>
         );
@@ -27,6 +37,17 @@ const Select = ({ onChange, value }) => {
   );
 };
 
+interface RefresherControlsProps {
+  list: Dragon[];
+  rate: number;
+  updateRate: (value: number) => void;
+  click: () => void;
+  autorefresh: boolean;
+  smartRemoval: boolean;
+  updateSmartRemoval: (value: boolean) => void;
+  noView: boolean;
+  updateNoView: (value: boolean) => void;
+}
 export default function RefresherControls({
   list,
   rate,
@@ -37,10 +58,15 @@ export default function RefresherControls({
   updateSmartRemoval,
   noView,
   updateNoView,
-}) {
+}: RefresherControlsProps) {
   return (
     <div>
-      <div className="my-2" onClick={() => updateSmartRemoval(!smartRemoval)}>
+      <div
+        className="my-2"
+        onClick={() => {
+          updateSmartRemoval(!smartRemoval);
+        }}
+      >
         <div
           className={`${
             smartRemoval ? 'text-white' : 'text-gray-400'
@@ -49,7 +75,9 @@ export default function RefresherControls({
           <label
             htmlFor="smartRemoval"
             // Prevent label from "doubling up" our check behaviour
-            onClick={(e) => e.preventDefault()}
+            onClick={(e) => {
+              e.preventDefault();
+            }}
           >
             Smart removal:
           </label>
@@ -57,7 +85,9 @@ export default function RefresherControls({
             type="checkbox"
             id="smartRemoval"
             checked={smartRemoval}
-            onChange={(e) => updateSmartRemoval(e.target.checked)}
+            onChange={(e) => {
+              updateSmartRemoval(e.target.checked);
+            }}
           />
         </div>
         <div className={`${smartRemoval ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -68,7 +98,12 @@ export default function RefresherControls({
           </p>
         </div>
       </div>
-      <div className="my-2" onClick={() => updateNoView(!noView)}>
+      <div
+        className="my-2"
+        onClick={() => {
+          updateNoView(!noView);
+        }}
+      >
         <div
           className={`${
             noView ? 'text-white' : 'text-gray-400'
@@ -77,7 +112,9 @@ export default function RefresherControls({
           <label
             htmlFor="noView"
             // Prevent label from "doubling up" our check behaviour
-            onClick={(e) => e.preventDefault()}
+            onClick={(e) => {
+              e.preventDefault();
+            }}
           >
             Disable views:
           </label>
@@ -85,10 +122,12 @@ export default function RefresherControls({
             type="checkbox"
             id="noView"
             checked={noView}
-            onChange={(e) => updateNoView(e.target.checked)}
+            onChange={(e) => {
+              updateNoView(e.target.checked);
+            }}
           />
         </div>
-        <div className={`${noView ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className={noView ? 'text-gray-400' : 'text-gray-600'}>
           <p>
             If enabled, views will be prevented from accumulating but dragons
             will still auto-refresh.
@@ -105,7 +144,10 @@ export default function RefresherControls({
           <span>
             <label htmlFor="timer">Local time:</label>
           </span>
-          <span role="timer" id="timer">
+          <span
+            role="timer"
+            id="timer"
+          >
             <Clock />
           </span>
         </div>
@@ -114,11 +156,14 @@ export default function RefresherControls({
         <div className="flex items-center justify-between">
           <div>
             <label htmlFor="rate">Rate: </label>
-            <Select value={rate} onChange={updateRate} />
+            <Select
+              value={rate}
+              onChange={updateRate}
+            />
           </div>
           <div>
             {
-              //AR enabled
+              // AR enabled
               autorefresh ? (
                 <button
                   onClick={click}

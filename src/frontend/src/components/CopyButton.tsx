@@ -1,3 +1,4 @@
+import type React from 'react';
 import { useRef } from 'react';
 
 import ReactTooltip from 'react-tooltip';
@@ -13,18 +14,24 @@ export default function CopyButton({
   text,
   ...buttonProps
 }: copyButtonProps) {
-  const button = useRef(null);
+  const button = useRef<HTMLButtonElement & { dataset: { tip: string } }>(null);
 
-  async function copy(event) {
-    const el: HTMLButtonElement = event.target;
-    try {
-      await navigator.clipboard.writeText(copyText);
-      el.dataset.tip = 'Copied!';
-      ReactTooltip.show(button.current);
-    } catch (ex) {
-      el.dataset.tip = 'Error copying';
-      ReactTooltip.show(button.current);
-    }
+  function copyToClipboard() {
+    const copy = async () => {
+      // button hasn't been initialised
+      if (button.current === null) return;
+
+      try {
+        await navigator.clipboard.writeText(copyText);
+        button.current.dataset.tip = 'Copied!';
+        ReactTooltip.show(button.current);
+      } catch (ex) {
+        button.current.dataset.tip = 'Error copying';
+        ReactTooltip.show(button.current);
+      }
+    };
+
+    void copy();
   }
 
   return (
@@ -33,7 +40,7 @@ export default function CopyButton({
       ref={button}
       data-event="click"
       type="button"
-      onClick={copy}
+      onClick={copyToClipboard}
     >
       {text}
     </button>

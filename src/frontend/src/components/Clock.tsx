@@ -5,7 +5,7 @@ import TimingService from '../app/timing-service';
 // Receives an array of 'parts' of a time and formats with leading zeroes
 const fmtTimeArray = (arr: number[]) => {
   return arr
-    .map((value) => (value < 10 ? '0' + value : value.toString()))
+    .map((value) => (value < 10 ? `0${value}` : value.toString()))
     .join(':');
 };
 
@@ -41,7 +41,7 @@ function formatTimeUTC(ms: number): string {
 function formatForCountdown(tod: Date): string {
   const today = new Date();
   const days = daysDifference(today, tod) - 1;
-  const dayString = days > 0 ? days + 'd ' : '';
+  const dayString = days > 0 ? `${days}d ` : '';
   const timeString = formatTimeUTC(differenceBetweenTwoDates(today, tod));
   return dayString + timeString;
 }
@@ -56,7 +56,9 @@ export function Clock() {
     TimingService.subscribe(subscription);
 
     // clean up
-    return () => TimingService.unsubscribe(subscription);
+    return () => {
+      TimingService.unsubscribe(subscription);
+    };
   }, []);
 
   return <span>{formatTime(time)}</span>;
@@ -64,7 +66,7 @@ export function Clock() {
 
 interface CountDownProps {
   to: Date;
-  whenDone?: Function;
+  whenDone?: () => void;
 }
 export function CountDown({ to, whenDone }: CountDownProps) {
   const [, setTime] = useState<number>(
@@ -80,7 +82,7 @@ export function CountDown({ to, whenDone }: CountDownProps) {
         TimingService.unsubscribe(subscription);
 
         // if specified, call a function when the countdown reaches 0
-        whenDone && whenDone();
+        whenDone?.();
         return;
       }
 
@@ -89,7 +91,9 @@ export function CountDown({ to, whenDone }: CountDownProps) {
 
     TimingService.subscribe(subscription);
 
-    return () => TimingService.unsubscribe(subscription);
+    return () => {
+      TimingService.unsubscribe(subscription);
+    };
   }, [to, whenDone]);
 
   return <span>{formatForCountdown(to)}</span>;
