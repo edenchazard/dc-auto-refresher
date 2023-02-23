@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import TimePicker from 'react-time-picker';
+import type { TimePickerValue } from 'react-time-picker';
 import { useSessionStorage } from 'usehooks-ts';
 
 import type { Dragon } from '../app/interfaces';
@@ -12,7 +13,7 @@ interface AddDragonProps {
 export default function AddDragon({ addToList, rate }: AddDragonProps) {
   const [code, setCode] = useState<string>('');
   const [instances, setInstances] = useSessionStorage('addInstances', 1);
-  const [tod, setTOD] = useState<string | null>(null);
+  const [tod, setTOD] = useState<TimePickerValue>('');
 
   function handleAdd(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -21,7 +22,10 @@ export default function AddDragon({ addToList, rate }: AddDragonProps) {
     // if it's been modified
     let secondsInTOD: null | number = null;
 
-    if (typeof tod === 'string') {
+    // The types are not entirely accurate
+    // as the timepicker value can be null if the input isn't
+    // filled out completely.
+    if (typeof tod === 'string' && tod !== '') {
       const [, mins, seconds] = tod.split(':');
       secondsInTOD = parseInt(mins) * 60 + parseInt(seconds);
     }
@@ -34,7 +38,7 @@ export default function AddDragon({ addToList, rate }: AddDragonProps) {
 
     // reset things
     setCode('');
-    setTOD(null);
+    setTOD('');
   }
 
   return (
@@ -81,7 +85,6 @@ export default function AddDragon({ addToList, rate }: AddDragonProps) {
           <div className="flex justify-between items-center">
             <label htmlFor="tod">Dies at:</label>
             <TimePicker
-              id="tod"
               onChange={setTOD}
               value={tod}
               format="mm:ss"
