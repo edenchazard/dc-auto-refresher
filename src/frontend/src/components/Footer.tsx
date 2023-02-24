@@ -33,12 +33,12 @@ export default function Footer() {
           <div>
             <span>FART</span>
             <br />
-            Part of{' '}
+            Part of&nbsp;
             <a
               className="underline"
               href="/dc/tools"
             >
-              Chazza's DC Tools
+              Chazza&#39;s DC Tools
             </a>
           </div>
           <div>v{import.meta.env.VITE_APP_VERSION} &copy; eden chazard</div>
