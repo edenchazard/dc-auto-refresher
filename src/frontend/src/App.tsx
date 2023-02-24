@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSessionStorage } from 'usehooks-ts';
+import { useLocalStorage, useSessionStorage } from 'usehooks-ts';
 import ReactTooltip from 'react-tooltip';
 
 import type { Dragon } from './app/interfaces';
@@ -26,7 +26,7 @@ export default function App() {
     'listOfDragons',
     [],
   );
-  const [rate, setRate] = useSessionStorage('rate', 250);
+  const [rate, setRate] = useLocalStorage('rate', 250);
   const [autorefresh, setAutorefresh] = useSessionStorage('autorefresh', false);
   const [smartRemoval, setSmartRemoval] = useSessionStorage(
     'smartRemoval',
