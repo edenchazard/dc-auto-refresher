@@ -38,9 +38,8 @@ export default function DragonTR({
   remove,
   dragon,
 }: DragonTRProps) {
-  const imgLink = generateDragCaveImgUrl(dragon.code, true);
-  const viewLink = `https://dragcave.net/view/${dragon.code}`;
-  const diesOn = new Date(dragon.tod);
+  // keep null or transform our tod into a future date
+  const diesOn = dragon.tod === null ? null : new Date(dragon.tod);
 
   return (
     <div className="flex flex-col items-center">
@@ -53,7 +52,7 @@ export default function DragonTR({
         rate={rate}
         instances={dragon.instances}
       />
-      {dragon.tod !== null ? (
+      {diesOn !== null ? (
         <span
           data-tip={'TOD: ' + diesOn.toLocaleString()}
           data-event="click"
@@ -70,13 +69,13 @@ export default function DragonTR({
         Delete
       </button>
       <a
-        href={viewLink}
+        href={`https://dragcave.net/view/${dragon.code}`}
         target="_blank"
         rel="noopener noreferrer"
       >
         <img
           alt="dragon"
-          src={imgLink}
+          src={generateDragCaveImgUrl(dragon.code, true)}
         />
       </a>
     </div>
