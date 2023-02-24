@@ -1,51 +1,60 @@
 import { useEffect } from 'react';
-import { generateDragCaveImgUrl } from "../app/functions";
-import { Dragon } from '../app/interfaces';
+import { generateDragCaveImgUrl } from '../app/functions';
+import type { Dragon } from '../app/interfaces';
 
-function makeDOMFavicon(url: string): HTMLLinkElement{
-    const newIcon = document.createElement('link');
-    newIcon.rel = 'icon';
-    newIcon.href = url;
-    return newIcon;
+function makeDOMFavicon(url: string): HTMLLinkElement {
+  const newIcon = document.createElement('link');
+  newIcon.rel = 'icon';
+  newIcon.href = url;
+  return newIcon;
 }
 
-function replaceFavicon(url: string): HTMLLinkElement{
-    return document.head.replaceChild(
-        makeDOMFavicon(url),
-        document.head.querySelector('link[rel="icon"]')
+function replaceFavicon(url: string) {
+  const link = document.head.querySelector('link[rel="icon"]');
+  if (link !== null) document.head.replaceChild(makeDOMFavicon(url), link);
+}
+
+export default function useIconCycle(
+  autorefresh: boolean,
+  listOfDragons: Dragon[],
+  title: string,
+  defaultIconPath: string,
+  interval = 1000,
+) {
+  // handle icon changes when auto refresh is active
+  useEffect(() => {
+    const refreshableDragons = listOfDragons.filter(
+      ({ instances }) => instances > 0,
     );
-}
+    let index = 0;
+    let iconInterval: ReturnType<typeof setInterval>;
 
-export default function useIconCycle(autorefresh: boolean, listOfDragons: Dragon[]){
-    // handle icon changes when auto refresh is active
-    useEffect(() => {
-        const refreshableDragons = listOfDragons.filter(({instances}) => instances > 0);
-        let
-            index = 0,
-            iconInterval = null;
-
-        if(autorefresh){
-            const cycle = () => {
-                if(refreshableDragons.length === 0)
-                   return clearInterval(iconInterval);
-
-                index = !refreshableDragons[index + 1] ? 0 : index + 1;
-                const code = refreshableDragons[index].code;
-                replaceFavicon(generateDragCaveImgUrl(code, true));
-                document.title = code;
-            };
-
-            // call cycler immediately and start up the interval,
-            // this removes the one second 'lag' at the beginning
-            cycle();
-            iconInterval = setInterval(cycle, 1000);
+    // If the autorefresher is turned on, we should cycle the favicon.
+    if (autorefresh) {
+      const cycle = () => {
+        if (refreshableDragons.length === 0) {
+          clearInterval(iconInterval);
+          return;
         }
-        
-        // clean up
-        return () => {
-            clearInterval(iconInterval);
-            replaceFavicon('./logo192.png');
-            document.title = "FART";
-        }
-    }, [autorefresh, listOfDragons]);
+
+        // go back to the beginning
+        index = index + 1 === refreshableDragons.length ? 0 : index + 1;
+        const code = refreshableDragons[index].code;
+        replaceFavicon(generateDragCaveImgUrl(code, true));
+        document.title = code;
+      };
+
+      // call cycler immediately and start up the interval,
+      // this removes the one second 'lag' at the beginning
+      cycle();
+      iconInterval = setInterval(cycle, interval);
+    }
+
+    // clean up
+    return () => {
+      clearInterval(iconInterval);
+      replaceFavicon(defaultIconPath);
+      document.title = title;
+    };
+  }, [autorefresh, listOfDragons, title, defaultIconPath, interval]);
 }
