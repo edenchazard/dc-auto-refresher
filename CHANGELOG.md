@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.13.0
+
+- Set TypeScript to strict and rewrite portions of the code to meet the new standards I expect of my code.
+- Instances field in the add dragon form now preserves state across refreshes.
+- Rate field will now retain its value even after the webpage has been closed by saving it in localstorage instead.
+- Add Prettier.
+- Add ESLint.
+- Rewrite DragCave API handling.
+
 ## 2.12.2
 
 - Patch: Fixes an issue with uBlock origin preventing image downloads.
