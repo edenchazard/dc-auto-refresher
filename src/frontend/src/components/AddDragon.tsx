@@ -2,6 +2,8 @@ import { useState } from 'react';
 import TimePicker from 'react-time-picker';
 import type { TimePickerValue } from 'react-time-picker';
 import { useSessionStorage } from 'usehooks-ts';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 import type { Dragon } from '../app/interfaces';
 import DragonInstancesInput from './DragonInstancesInput';
@@ -79,6 +81,16 @@ export default function AddDragon({ addToList, rate }: AddDragonProps) {
                   } views per minute: Actual rate depends on different factors.`) +
                 " Specify '0' to add the dragon but not auto-refresh it."}
             </p>
+            <aside
+              className="italic"
+              aria-label="information about views and unique views ratio"
+              title="A dragon with 10 UVs will be limited to 150 Vs."
+            >
+              <p>
+                <FontAwesomeIcon icon={faCircleInfo} />
+                &nbsp;Dragon Cave limits views to 15x its unique views.
+              </p>
+            </aside>
           </div>
         </div>
         <div className="my-2">

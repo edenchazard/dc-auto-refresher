@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.14.0
+
+- Add notice about V & UV ratio.
+
 ## 2.13.0
 
 - Set TypeScript to strict and rewrite portions of the code to meet the new standards I expect of my code.
