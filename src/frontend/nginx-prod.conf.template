@@ -1,5 +1,5 @@
 server {
-    listen 8080;
+    listen ${FRONTEND_PORT};
     index index.html;
     server_name dc-auto-refresher.local;
     error_log  /var/log/nginx/error.log;
@@ -42,6 +42,6 @@ server {
     }
 
     location /api {
-        proxy_pass http://api:80;
+        proxy_pass http://api:${API_PORT};
     }
 }

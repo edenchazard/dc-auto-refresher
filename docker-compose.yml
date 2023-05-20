@@ -1,7 +1,6 @@
 name: dc-ar_dev
 services:
   api:
-    container_name: dc-ar-dev-api
     build:
       context: ./src/backend
       dockerfile: ./df.Dockerfile
@@ -11,8 +10,8 @@ services:
     networks:
       - internal
     restart: unless-stopped
+
   frontend:
-    container_name: dc-ar-dev-react
     build:
       context: ./src/frontend
       dockerfile: ./df.Dockerfile
@@ -20,7 +19,11 @@ services:
       - ./src/frontend:/app
       - /app/node_modules
     ports:
-      - 5173:5173
+      - 5173:${VITE_PORT}
+    environment:
+      - VITE_APP_VERSION=${APP_VERSION}
+      - VITE_PORT=${VITE_PORT}
+      - API_PORT=${API_PORT}
     depends_on:
       - api
     networks:

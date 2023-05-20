@@ -7,11 +7,17 @@ RUN npm install && npm run build
 
 # move our built files with ts stripped out
 FROM node:lts-alpine as production
-EXPOSE 80
-WORKDIR /app
+ARG USER="node"
+ARG GROUP="node"
 ENV NODE_ENV=production
-COPY --from=build --chown=node:node /app/package*.json /app/build ./
-RUN npm ci
-USER node
+WORKDIR /app
 
+COPY --from=build /app/package*.json /app/build ./
+RUN npm ci
+
+RUN  chown -R ${USER}:${GROUP} . && \
+     chmod -R u=rx,g=rx,o= .
+
+EXPOSE ${API_PORT}
+USER ${USER}
 ENTRYPOINT ["npm", "run", "prod"]

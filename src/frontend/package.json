@@ -21,7 +21,6 @@
     "lint": "eslint **/*.{js,ts,tsx,cjs}",
     "format": "prettier --write ."
   },
-  "proxy": "http://api:80",
   "browserslist": {
     "production": [
       ">0.2%",

@@ -10,5 +10,4 @@
 **/compose*
 **/.vs
 **/.vscode
-#**/.env*
-**/src/config.example.ts
+src/backend/src/config.example.json

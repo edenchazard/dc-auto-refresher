@@ -1,26 +1,27 @@
 name: dc-ar
 services:
   api:
-    container_name: dc-ar-api
     build:
       context: ./src/backend
       dockerfile: ./df-prod.Dockerfile
-    restart: always
+    restart: unless-stopped
     networks:
       - internal
 
-  frontend:
-    container_name: dc-ar-frontend
+  fart:
     build:
       context: ./src/frontend
       dockerfile: ./df-prod.Dockerfile
       args:
         - MOUNT_PATH=/dc/auto-refresher/
     ports:
-      - 85:8080
+      - 127.0.0.1:85:${FRONTEND_PORT}
     depends_on:
       - api
-    restart: always
+    restart: unless-stopped
+    environment:
+      - API_PORT=${API_PORT}
+      - FRONTEND_PORT=${FRONTEND_PORT}
     networks:
       - dc
       - internal
