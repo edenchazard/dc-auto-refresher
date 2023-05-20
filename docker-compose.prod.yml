@@ -13,6 +13,8 @@ services:
       context: ./src/frontend
       dockerfile: ./df-prod.Dockerfile
       args:
+        - MOUNT_PATH=/
+        - APP_VERSION=${APP_VERSION}
         - MOUNT_PATH=/dc/auto-refresher/
     ports:
       - 127.0.0.1:85:${FRONTEND_PORT}

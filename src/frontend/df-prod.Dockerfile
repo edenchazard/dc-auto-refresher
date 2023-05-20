@@ -2,7 +2,9 @@
 FROM node:lts-alpine as build
 WORKDIR /app
 ARG MOUNT_PATH
+ARG APP_VERSION
 ENV VITE_APP_URL=$MOUNT_PATH
+ENV VITE_APP_VERSION=${APP_VERSION}
 COPY ./ ./
 RUN npm ci && npm run build
 
