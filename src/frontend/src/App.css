@@ -14,9 +14,30 @@ body {
 }
 /* fixes bug with page stretching on mobile because of timepicker */
 #root {
-  overflow-x: hidden;
+  @apply overflow-x-hidden;
+}
+/* apply defaults */
+input,
+select,
+textarea,
+.react-time-picker {
+  @apply p-1 rounded-sm text-black;
+}
+.button-purple {
+  @apply bg-indigo-300 text-indigo-950
+  hover:bg-indigo-700 hover:text-white
+  disabled:bg-slate-300 disabled:text-black
+  focus:bg-blue-800 focus:text-white;
 }
 
+.button-purple[aria-pressed='true'] {
+  @apply text-white bg-violet-950 ring-2 ring-purple-500 ring-offset-1 ring-offset-slate-900;
+}
+.button-green {
+  @apply bg-teal-700 text-white
+  hover:bg-teal-900 hover:text-white
+  focus:bg-emerald-950 focus:text-white;
+}
 @-webkit-keyframes rotating /* Safari and Chrome */ {
   from {
     -webkit-transform: rotate(0deg);

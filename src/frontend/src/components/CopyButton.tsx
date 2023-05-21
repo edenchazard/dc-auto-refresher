@@ -1,48 +1,75 @@
 import type React from 'react';
-import { useRef } from 'react';
-
-import ReactTooltip from 'react-tooltip';
+import { useEffect, useRef, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { Button } from './Buttons';
 
 interface copyButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string;
   copyText: string;
+  text?: React.ReactNode;
 }
 
 export default function CopyButton({
-  copyText,
   text,
-  ...buttonProps
+  copyText,
+  ...props
 }: copyButtonProps) {
-  const button = useRef<HTMLButtonElement & { dataset: { tip: string } }>(null);
+  const origlabel = text ?? (
+    <>
+      <FontAwesomeIcon icon={faCopy} /> Copy
+    </>
+  );
+  const [tempLabel, setTempLabel] = useState<null | string>(null);
+
+  // re-renders will cause this to reset to null.
+  // we need to protect against when we cause a re-render by changing the label.
+  let timeout = useRef<ReturnType<null | typeof window.setTimeout>>(null);
+
+  useEffect(() => {
+    return () => window.clearTimeout(timeout.current);
+  }, [timeout]);
+
+  /**
+   * Sets the temporary label for the specifed time, which updates the button
+   * label, before unsetting it.
+   * @param label Temporary label
+   * @param original The label to return to after @param time miliseconds.
+   */
+  function updateLabel(label: string, time = 5000) {
+    // clear if there's already an interval
+    window.clearTimeout(timeout.current);
+
+    setTempLabel(label);
+    timeout.current = window.setTimeout(() => {
+      setTempLabel(null);
+    }, time);
+  }
+
+  function updateButton(label: string) {
+    updateLabel(label, 3000);
+  }
 
   function copyToClipboard() {
-    const copy = async () => {
-      // button hasn't been initialised
-      if (button.current === null) return;
-
+    (async () => {
       try {
         await navigator.clipboard.writeText(copyText);
-        button.current.dataset.tip = 'Copied!';
-        ReactTooltip.show(button.current);
+        updateButton('Copied!');
       } catch (ex) {
-        button.current.dataset.tip = 'Error copying';
-        ReactTooltip.show(button.current);
+        updateButton('Error :(');
       }
-    };
-
-    void copy();
+    })();
   }
 
   return (
-    <button
-      {...buttonProps}
-      ref={button}
-      data-event="click"
+    <Button
       type="button"
+      title="Copy share link"
+      {...props}
       onClick={copyToClipboard}
+      className={props.className}
     >
-      {text}
-    </button>
+      {tempLabel ?? origlabel}
+    </Button>
   );
 }

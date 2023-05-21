@@ -1,3 +1,4 @@
+import React from 'react';
 import { type Dragon, type Size } from './interfaces';
 
 export function isCodeInList(listOfDragons: Dragon[], code: string): boolean {
@@ -54,7 +55,7 @@ export function getListFromString(str: string): Dragon[] | null {
   return unserialize.length > 0 ? unserialize : null;
 }
 
-export function createShareLinkFromList(list: Dragon[]) {
+export function createShareLinkFromList(list: Dragon[]): string {
   const { origin, pathname } = window.location;
 
   // TODO: We'll keep null in the string to ensure backwards compatibility
@@ -64,4 +65,8 @@ export function createShareLinkFromList(list: Dragon[]) {
     .join(';');
 
   return `${origin}${pathname}?list=${values}`;
+}
+
+export function hasRefreshableDragons(listOfDragons: Dragon[]): boolean {
+  return listOfDragons.findIndex((dragon) => dragon.instances > 0) > -1;
 }

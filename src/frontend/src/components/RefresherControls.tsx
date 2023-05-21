@@ -1,41 +1,10 @@
 import type { Dragon } from '../app/interfaces';
 import { Clock } from './Clock';
-import ShareLink from './ShareLink';
-
-interface SelectProps {
-  value: number;
-  onChange: (value: number) => void;
-}
-const Select = ({ onChange, value }: SelectProps) => {
-  const options = [250, 500, 1000, 2000, 4000].map((opt) => ({
-    label: `${opt / 1000}s`,
-    value: opt,
-  }));
-
-  options.push({ label: 'Adaptive', value: 0 });
-
-  return (
-    <select
-      id="rate"
-      value={value}
-      onChange={(e) => {
-        onChange(parseInt(e.target.value));
-      }}
-      className="text-black"
-    >
-      {options.map((opt, index) => {
-        return (
-          <option
-            key={index}
-            value={opt.value}
-          >
-            {opt.label}
-          </option>
-        );
-      })}
-    </select>
-  );
-};
+import Label from './Label';
+import ShareSetup from './ShareSetup';
+import RefreshRateSelect from './RefreshRateSelect';
+import { ToggleButton } from './Buttons';
+import { hasRefreshableDragons } from '../app/functions';
 
 interface RefresherControlsProps {
   list: Dragon[];
@@ -59,39 +28,36 @@ export default function RefresherControls({
   noView,
   updateNoView,
 }: RefresherControlsProps) {
+  const disabled = !hasRefreshableDragons(list);
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <div
-        className="my-2"
+        className={smartRemoval ? '' : 'opacity-70'}
         onClick={() => {
           updateSmartRemoval(!smartRemoval);
         }}
       >
-        <div
-          className={`${
-            smartRemoval ? 'text-white' : 'text-gray-400'
-          } flex justify-between items-center`}
-        >
-          <label
-            htmlFor="smartRemoval"
+        <div className={`text-white flex justify-between items-center`}>
+          <Label
+            id="smartRemoval"
             // Prevent label from "doubling up" our check behaviour
             onClick={(e) => {
               e.preventDefault();
             }}
-          >
-            Smart removal:
-          </label>
+            text="Smart removal"
+          />
           <input
             type="checkbox"
             id="smartRemoval"
+            aria-describedby="smart-removal-description"
             checked={smartRemoval}
             onChange={(e) => {
               updateSmartRemoval(e.target.checked);
             }}
           />
         </div>
-        <div className={`${smartRemoval ? 'text-gray-400' : 'text-gray-600'}`}>
-          <p>
+        <div className="text-stone-400">
+          <p id="smart-removal-description">
             If enabled, Smart removal will try to detect changes for each dragon
             and remove freshly hatched eggs or newly grown adults however with
             some breeds this may not be accurate.
@@ -99,89 +65,83 @@ export default function RefresherControls({
         </div>
       </div>
       <div
-        className="my-2"
+        className={noView ? '' : 'opacity-70'}
         onClick={() => {
           updateNoView(!noView);
         }}
       >
-        <div
-          className={`${
-            noView ? 'text-white' : 'text-gray-400'
-          } flex justify-between items-center`}
-        >
-          <label
-            htmlFor="noView"
+        <div className={`text-white flex justify-between items-center`}>
+          <Label
+            id="no-views"
+            text="Disable views"
             // Prevent label from "doubling up" our check behaviour
             onClick={(e) => {
               e.preventDefault();
             }}
-          >
-            Disable views:
-          </label>
+          />
           <input
             type="checkbox"
-            id="noView"
+            id="no-views"
+            aria-describedby="no-views-description"
             checked={noView}
             onChange={(e) => {
               updateNoView(e.target.checked);
             }}
           />
         </div>
-        <div className={noView ? 'text-gray-400' : 'text-gray-600'}>
-          <p>
+        <div className="text-stone-400">
+          <p id="no-views-description">
             If enabled, views will be prevented from accumulating but dragons
             will still auto-refresh.
           </p>
         </div>
       </div>
       {list.length > 0 && (
-        <div className="my-2">
-          <ShareLink list={list} />
+        <div>
+          <ShareSetup list={list} />
         </div>
       )}
-      <div className="my-2">
-        <div className="flex items-center justify-between">
-          <span>
-            <label htmlFor="timer">Local time:</label>
-          </span>
-          <span
-            role="timer"
-            id="timer"
-          >
-            <Clock />
-          </span>
-        </div>
+      <div className="flex items-center justify-between">
+        <Label
+          id="timer"
+          text="Your local time"
+        />
+        <time
+          id="timer"
+          role="timer"
+        >
+          <Clock />
+        </time>
       </div>
-      <div className="my-2">
-        <div className="flex items-center justify-between">
-          <div>
-            <label htmlFor="rate">Rate: </label>
-            <Select
-              value={rate}
-              onChange={updateRate}
-            />
-          </div>
-          <div>
-            {
-              // AR enabled
-              autorefresh ? (
-                <button
-                  onClick={click}
-                  className="rounded bg-blue-600 px-2 py-1 hover:bg-blue-400"
-                >
-                  Stop
-                </button>
-              ) : (
-                <button
-                  onClick={click}
-                  className="rounded bg-blue-300 px-2 py-1 hover:bg-blue-500"
-                >
-                  Start
-                </button>
-              )
+      <div className="flex flex-col gap-y-2 gap-x-3 flex-wrap items-stretch xxs:flex-row xxs:items-center">
+        <Label
+          id="rate"
+          text="Refresh Interval"
+        />
+        <RefreshRateSelect
+          className="text-black flex-1 "
+          id="rate"
+          value={rate}
+          onChanged={updateRate}
+        />
+        {
+          // AR enabled
+          <ToggleButton
+            className="button-purple flex-1 min-w-[9rem]"
+            onClick={click}
+            disabled={disabled}
+            pressed={autorefresh}
+            title={
+              disabled
+                ? 'No dragons to auto-refresh'
+                : autorefresh
+                ? 'Stop auto-refresher'
+                : 'Start auto-refresher'
             }
-          </div>
-        </div>
+          >
+            {disabled ? 'No dragons' : autorefresh ? 'Stop' : 'Start'}
+          </ToggleButton>
+        }
       </div>
     </div>
   );

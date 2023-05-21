@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocalStorage, useSessionStorage } from 'usehooks-ts';
 import ReactTooltip from 'react-tooltip';
 
 import type { Dragon } from './app/interfaces';
 import errMsg from './app/errors';
 import * as DCAPI from './app/dcapi';
-import { isCodeInList, validateCode } from './app/functions';
+import {
+  hasRefreshableDragons,
+  isCodeInList,
+  validateCode,
+} from './app/functions';
 import useIconCycle from './hooks/useIconCycle';
 import useParseListPreset from './hooks/useParseListPreset';
-import Footer from './components/Footer';
+import Header from './components/Header';
 import DragonTR from './components/DragonTR';
 import AddDragon from './components/AddDragon';
 import RefresherControls from './components/RefresherControls';
@@ -17,8 +21,14 @@ import { ErrorDisplay } from './components/ErrorDisplay';
 import type { ErrorMessage } from './components/ErrorDisplay';
 import './App.css';
 
-function hasRefreshableDragons(listOfDragons: Dragon[]) {
-  return listOfDragons.findIndex((dragon) => dragon.instances > 0) > -1;
+function Heading({ children }: { children: React.ReactNode }) {
+  return (
+    //<div className="relative flex items-center gap-5">
+    //  <div className="flex-grow border-t border-gray-400"></div>
+    <h2 className="text-center">{children}</h2>
+    //   <div className="flex-grow border-t border-gray-400"></div>
+    // </div>
+  );
 }
 
 export default function App() {
@@ -176,22 +186,36 @@ export default function App() {
     void handle();
   }
 
+  const gridClass = `items-center flex-1 grid gap-1 grid-cols-[5rem_6rem_1fr_4rem]`;
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen font-sans font-normal font-base">
       <ReactTooltip
         globalEventOff="click"
         place="top"
         effect="solid"
       />
-      <main className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto text-white grow">
-        <div className="max:pt-3">
-          <section className="max:px-5">
+      <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto text-white">
+        <Header />
+        <main className="p-0 flex flex-col gap-3 [&>section:not(#add-dragon)]:m-2 max:p-3">
+          <section id="add-dragon">
             <AddDragon
               rate={rate}
               addToList={handleAdd}
+              top={<Heading>Add a dragon</Heading>}
+              bottom={
+                <ErrorDisplay
+                  className="my-2 text-center"
+                  error={error}
+                  done={setError}
+                />
+              }
             />
           </section>
-          <section className="px-5 my-3">
+          <section
+            id="controls"
+            className=""
+          >
+            <Heading>Settings</Heading>
             <RefresherControls
               list={listOfDragons}
               rate={rate}
@@ -212,14 +236,14 @@ export default function App() {
                 setNoView(value);
               }}
             />
-            <ErrorDisplay
-              error={error}
-              done={setError}
-            />
-            <div className="grid grid-cols-2 gap-4 my-2 threecol:grid-cols-3">
+          </section>
+          <section>
+            <Heading>Dragons</Heading>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-4 items-stretch">
               {listOfDragons.map((dragon, index) => {
                 return (
                   <DragonTR
+                    className={'flex flex-col text-center gap-1'}
                     dragon={dragon}
                     key={dragon.code}
                     rate={rate}
@@ -235,7 +259,8 @@ export default function App() {
             </div>
           </section>
           {autorefresh && (
-            <section className="px-5 my-3">
+            <section>
+              <Heading>Refresher</Heading>
               <RefresherView
                 dragonList={listOfDragons}
                 rate={rate}
@@ -244,9 +269,8 @@ export default function App() {
               />
             </section>
           )}
-        </div>
-      </main>
-      <Footer />
+        </main>
+      </div>
     </div>
   );
 }

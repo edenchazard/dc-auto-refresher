@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactChildren, ReactElement, useState } from 'react';
 import TimePicker from 'react-time-picker';
 import type { TimePickerValue } from 'react-time-picker';
 import { useSessionStorage } from 'usehooks-ts';
@@ -7,12 +7,21 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 import type { Dragon } from '../app/interfaces';
 import DragonInstancesInput from './DragonInstancesInput';
+import Label from './Label';
+import { Button } from './Buttons';
 
 interface AddDragonProps {
   addToList: (dragon: Dragon) => void;
   rate: number;
+  top?: ReactElement;
+  bottom?: ReactElement;
 }
-export default function AddDragon({ addToList, rate }: AddDragonProps) {
+export default function AddDragon({
+  addToList,
+  rate,
+  top,
+  bottom,
+}: AddDragonProps) {
   const [code, setCode] = useState<string>('');
   const [instances, setInstances] = useSessionStorage('addInstances', 1);
   const [tod, setTOD] = useState<TimePickerValue>('');
@@ -45,80 +54,97 @@ export default function AddDragon({ addToList, rate }: AddDragonProps) {
 
   return (
     <form onSubmit={handleAdd}>
-      <div className="bg-slate-800 p-5 max:rounded-lg ">
-        <div className="my-2">
-          <div className="flex justify-between items-center">
-            <label htmlFor="code">Code:</label>
-            <input
-              id="code"
-              className="text-black"
-              type="text"
-              placeholder="Code"
-              value={code}
-              size={5}
-              minLength={4}
-              maxLength={5}
-              onChange={(e) => {
-                setCode(e.target.value);
-              }}
-            />
+      <div className="bg-slate-800 p-2 max:rounded-lg max:px-5">
+        {top && top}
+        <div className="flex flex-col gap-3 items-stretch ">
+          <div>
+            <div className="flex justify-between items-center">
+              <Label
+                id="code"
+                text="Code"
+              />
+              <input
+                id="code"
+                required
+                className="w-15"
+                type="text"
+                placeholder="Code"
+                value={code}
+                size={5}
+                minLength={4}
+                maxLength={5}
+                onChange={(e) => {
+                  setCode(e.target.value);
+                }}
+              />
+            </div>
           </div>
-        </div>
-        <div className="my-2">
-          <div className="flex justify-between items-center">
-            <label htmlFor="instances">Instances:</label>
-            <DragonInstancesInput
-              instances={instances}
-              setInstances={setInstances}
-            />
-          </div>
-          <div className="text-gray-400">
-            <p>
-              {(rate === 0
-                ? 'Variable: Each image will reload as soon as it has loaded.'
-                : `~${
-                    (60000 / rate) * instances
-                  } views per minute: Actual rate depends on different factors.`) +
-                " Specify '0' to add the dragon but not auto-refresh it."}
-            </p>
-            <aside
-              className="italic"
-              aria-label="information about views and unique views ratio"
-              title="A dragon with 10 UVs will be limited to 150 Vs."
-            >
-              <p>
-                <FontAwesomeIcon icon={faCircleInfo} />
-                &nbsp;Dragon Cave limits views to 15x its unique views.
+          <div>
+            <div className="flex justify-between items-center">
+              <Label
+                id="instances"
+                text="Instances"
+              />
+              <DragonInstancesInput
+                className="w-20"
+                instances={instances}
+                setInstances={setInstances}
+                required
+                id="instances"
+                aria-describedby="instances-description ratio-limit"
+              />
+            </div>
+            <div className="text-gray-400">
+              <p id="instances-description">
+                {(rate === 0
+                  ? 'Variable: Each image will reload as soon as it has loaded.'
+                  : `~${
+                      (60000 / rate) * instances
+                    } views per minute: Actual rate depends on different factors.`) +
+                  " Specify '0' to add the dragon but not auto-refresh it."}
               </p>
-            </aside>
+              <aside className="italic">
+                <p>
+                  <FontAwesomeIcon icon={faCircleInfo} />
+                  &nbsp;
+                  <span id="ratio-limit">
+                    Dragon Cave limits views to 15x its unique views.
+                  </span>
+                </p>
+              </aside>
+            </div>
           </div>
+          <div>
+            <div className="flex justify-between items-center">
+              <Label
+                id="tod"
+                text="Dies at"
+              />
+              <TimePicker
+                onChange={setTOD}
+                value={tod}
+                format="mm:ss"
+                maxDetail="second"
+                disableClock={true}
+                clearAriaLabel="Clear TOD"
+                name="test"
+              />
+            </div>
+            <div className="text-gray-400">
+              <p>
+                (Optional) Specify the minute and second the timer changes and
+                FART will provide a TOD countdown. Dragon must be unfogged.
+              </p>
+            </div>
+          </div>
+          <Button
+            type="submit"
+            className="button-purple"
+          >
+            Add dragon
+          </Button>
         </div>
-        <div className="my-2">
-          <div className="flex justify-between items-center">
-            <label htmlFor="tod">Dies at:</label>
-            <TimePicker
-              onChange={setTOD}
-              value={tod}
-              format="mm:ss"
-              maxDetail="second"
-              disableClock={true}
-            />
-          </div>
-          <div className="text-gray-400">
-            <p>
-              (Optional) Specify the minute and second the timer changes and
-              FART will provide a TOD countdown. Dragon must be unfogged.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="flex items-end flex-col mt-2 mx-5 max:mx-0">
-        <button
-          className="rounded bg-indigo-500 px-2 py-1 hover:bg-indigo-700"
-          type="submit"
-        >
-          Add
-        </button>
+        {bottom && bottom}
       </div>
     </form>
   );

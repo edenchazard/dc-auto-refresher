@@ -4,9 +4,7 @@ import TimingService from '../app/timing-service';
 
 // Receives an array of 'parts' of a time and formats with leading zeroes
 const fmtTimeArray = (arr: number[]) => {
-  return arr
-    .map((value) => (value < 10 ? `0${value}` : value.toString()))
-    .join(':');
+  return arr.map((part) => part.toString().padStart(2, '0')).join(':');
 };
 
 // returns difference between two dates in ms
@@ -28,7 +26,7 @@ function formatTime(ms: number): string {
     dateObj.getSeconds(),
   ]);
 }
-
+/* 
 function formatTimeUTC(ms: number): string {
   const dateObj = new Date(ms);
   return fmtTimeArray([
@@ -36,14 +34,23 @@ function formatTimeUTC(ms: number): string {
     dateObj.getUTCMinutes(),
     dateObj.getUTCSeconds(),
   ]);
+} */
+
+function getTimeParts(ms: number) {
+  const dateObj = new Date(ms);
+  return {
+    hour: dateObj.getUTCHours(),
+    minutes: dateObj.getUTCMinutes(),
+    seconds: dateObj.getUTCSeconds(),
+  };
 }
 
 function formatForCountdown(tod: Date): string {
   const today = new Date();
   const days = daysDifference(today, tod) - 1;
-  const dayString = days > 0 ? `${days}d ` : '';
-  const timeString = formatTimeUTC(differenceBetweenTwoDates(today, tod));
-  return dayString + timeString;
+  const timeParts = getTimeParts(differenceBetweenTwoDates(today, tod));
+  const parts = [timeParts.hour, timeParts.minutes, timeParts.seconds];
+  return (days > 0 ? `${days}d ` : '') + fmtTimeArray(parts);
 }
 
 export function Clock() {
@@ -61,7 +68,7 @@ export function Clock() {
     };
   }, []);
 
-  return <span>{formatTime(time)}</span>;
+  return <>{formatTime(time)}</>;
 }
 
 interface CountDownProps {
@@ -96,5 +103,5 @@ export function CountDown({ to, whenDone }: CountDownProps) {
     };
   }, [to, whenDone]);
 
-  return <span>{formatForCountdown(to)}</span>;
+  return <>{formatForCountdown(to)}</>;
 }
