@@ -1,7 +1,5 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
-
-  mode: 'jit',
   theme: {
     screens: {
       max: '448px',
