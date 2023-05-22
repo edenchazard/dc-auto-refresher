@@ -1,12 +1,15 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    screens: {
-      max: '448px',
-      threecol: '350px',
-      xxs: '300px'
+    extend: {
+      screens: {
+        // basically a size we specify when to "uncollapse stuff"
+        'minsz': '390px',
+        'mid-sz': '450px',
+        // super small!
+        'xxs': '300px'
+      },
     },
-    extend: {},
   },
   plugins: [],
 };

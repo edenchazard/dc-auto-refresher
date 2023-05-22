@@ -54,7 +54,7 @@ export default function AddDragon({
 
   return (
     <form onSubmit={handleAdd}>
-      <div className="bg-slate-800 p-2 max:rounded-lg max:px-5">
+      <div className="bg-slate-800 p-2 minsz:rounded-lg minsz:px-5">
         {top && top}
         <div className="flex flex-col gap-3 items-stretch ">
           <div>

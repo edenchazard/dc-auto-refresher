@@ -193,9 +193,9 @@ export default function App() {
         place="top"
         effect="solid"
       />
-      <div className="min-h-screen App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto text-white">
+      <div className="min-h-screen App rounded-lg shadow-lg bg-slate-900 max-w-2xl mx-auto text-white">
         <Header />
-        <main className="p-0 flex flex-col gap-3 [&>section:not(#add-dragon)]:m-2 max:p-3">
+        <main className="mt-1 p-0 flex flex-col gap-3 [&>section:not(#add-dragon)]:m-2 minsz:px-3">
           <section id="add-dragon">
             <AddDragon
               rate={rate}

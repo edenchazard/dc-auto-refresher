@@ -113,13 +113,14 @@ export default function RefresherControls({
           <Clock />
         </time>
       </div>
-      <div className="flex flex-col gap-y-2 gap-x-3 flex-wrap items-stretch xxs:flex-row xxs:items-center">
+      <div className="grid items-center grid-cols-1 xxs:grid-cols-2 mid-sz:grid-cols-[8rem_1fr_1fr] gap-x-3 gap-y-1">
         <Label
+          className="min-w-fit"
           id="rate"
           text="Refresh Interval"
         />
         <RefreshRateSelect
-          className="text-black flex-1 "
+          className="min-w-[8rem] mid-sz:max-w-[12rem]"
           id="rate"
           value={rate}
           onChanged={updateRate}
@@ -127,7 +128,7 @@ export default function RefresherControls({
         {
           // AR enabled
           <ToggleButton
-            className="button-purple flex-1 min-w-[9rem]"
+            className="button-purple min-w-[8rem] xxs:col-span-2 mid-sz:col-span-1 mid-sz:justify-self-end mid-sz:w-full mid-sz:max-w-[12rem]"
             onClick={click}
             disabled={disabled}
             pressed={autorefresh}
