@@ -186,7 +186,6 @@ export default function App() {
     void handle();
   }
 
-  const gridClass = `items-center flex-1 grid gap-1 grid-cols-[5rem_6rem_1fr_4rem]`;
   return (
     <div className="min-h-screen font-sans font-normal font-base">
       <ReactTooltip
@@ -194,7 +193,7 @@ export default function App() {
         place="top"
         effect="solid"
       />
-      <div className="App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto text-white">
+      <div className="min-h-screen App rounded-lg shadow-lg bg-slate-900 max-w-md mx-auto text-white">
         <Header />
         <main className="p-0 flex flex-col gap-3 [&>section:not(#add-dragon)]:m-2 max:p-3">
           <section id="add-dragon">
