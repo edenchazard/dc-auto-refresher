@@ -3,11 +3,11 @@ module.exports = {
   theme: {
     extend: {
       screens: {
+        // super small!
+        'xxs': '300px',
         // basically a size we specify when to "uncollapse stuff"
         'minsz': '390px',
         'mid-sz': '450px',
-        // super small!
-        'xxs': '300px'
       },
     },
   },
