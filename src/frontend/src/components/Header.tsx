@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { type IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faMugHot, faToolbox } from '@fortawesome/free-solid-svg-icons';
+import { faEgg, faMugHot, faToolbox } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 
 export default function Header() {
@@ -32,6 +32,12 @@ export default function Header() {
             title="Buy me a ko-fi (external link)"
           >
             <FontAwesomeIcon icon={faMugHot as IconProp} />
+          </HeaderLink>
+          <HeaderLink
+            link="https://dragcave.net"
+            title="Dragcave (external link)"
+          >
+            <FontAwesomeIcon icon={faEgg as IconProp} />
           </HeaderLink>
         </nav>
       </div>
