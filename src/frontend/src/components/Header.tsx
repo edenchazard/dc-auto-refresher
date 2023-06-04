@@ -12,10 +12,9 @@ export default function Header() {
     >
       <div className=" bg-slate-600 text-center flex flex-col flex-1 flex-wrap items-stretch minsz:rounded-b-sm minsz:flex-row minsz:text-left">
         <div className="p-2 rounded-b-sm flex-1 bg-slate-700">
-          <h1 className="inline">FART</h1> v{import.meta.env.VITE_APP_VERSION}{' '}
-          &copy; eden chazard
+          <h1 className="inline">FART</h1>
         </div>
-        <div className="flex justify-center flex-wrap gap-y-2 divide-slate-500 divide-x divide-x-dashed minsz:justify-end">
+        <nav className="flex justify-center flex-wrap gap-y-2 divide-slate-500 divide-x divide-x-dashed minsz:justify-end">
           <HeaderLink
             link="/dc/tools"
             title="More DC Tools"
@@ -34,7 +33,7 @@ export default function Header() {
           >
             <FontAwesomeIcon icon={faMugHot as IconProp} />
           </HeaderLink>
-        </div>
+        </nav>
       </div>
     </header>
   );
