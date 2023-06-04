@@ -8,6 +8,7 @@ module.exports = {
         // basically a size we specify when to "uncollapse stuff"
         'minsz': '390px',
         'mid-sz': '450px',
+        'menu-big': '309px'
       },
     },
   },

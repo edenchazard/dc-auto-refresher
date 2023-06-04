@@ -10,32 +10,36 @@ export default function Header() {
       id="top"
       className="minsz:px-3 text-s"
     >
-      <div className=" bg-slate-600 text-center flex flex-col flex-1 flex-wrap items-stretch minsz:rounded-b-sm minsz:flex-row minsz:text-left">
-        <div className="p-2 rounded-b-sm flex-1 bg-slate-700">
-          <h1 className="inline">FART</h1>
-        </div>
-        <nav className="flex justify-center flex-wrap gap-y-2 divide-slate-500 divide-x divide-x-dashed minsz:justify-end">
+      <div className=" bg-slate-700 flex flex-col items-stretch flex-wrap minsz:rounded-b-sm mid-sz:flex-row mid-sz:items-center">
+        <h1 className="py-2 px-3 rounded-b-sm text-center flex-1 mid-sz:text-left">
+          FART
+        </h1>
+        <nav className="flex flex-col items-stretch flex-grow divide-slate-500 menu-big:flex-row menu-big:divide-x menu-big:divide-x-dashed ">
           <HeaderLink
             link="/dc/tools"
             title="More DC Tools"
+            text="Tools"
           >
             <FontAwesomeIcon icon={faToolbox as IconProp} />
           </HeaderLink>
           <HeaderLink
             link="https://github.com/edenchazard/dc-auto-refresher/"
             title="View source on Github (external link)"
+            text="Github"
           >
             <FontAwesomeIcon icon={faGithub as IconProp} />
           </HeaderLink>
           <HeaderLink
             link="https://ko-fi.com/dctools"
-            title="Buy me a ko-fi (external link)"
+            title="Support the site with a ko-fi (external link)"
+            text="Ko-fi"
           >
             <FontAwesomeIcon icon={faMugHot as IconProp} />
           </HeaderLink>
           <HeaderLink
             link="https://dragcave.net"
             title="Dragcave (external link)"
+            text="Dragcave"
           >
             <FontAwesomeIcon icon={faEgg as IconProp} />
           </HeaderLink>
@@ -47,15 +51,17 @@ export default function Header() {
 
 interface HeaderLinkProps extends React.HTMLProps<HTMLAnchorElement> {
   link: string;
+  text: string;
 }
-function HeaderLink({ link, ...props }: HeaderLinkProps) {
+function HeaderLink({ link, text, ...props }: HeaderLinkProps) {
   return (
     <a
       href={link}
-      className="p-2 min-w-[3rem] text-center hover:border-slate-600 hover:bg-slate-800"
+      className="flex-1 gap-x-2 p-2 items-center flex flex-row text-center bg-slate-600 hover:border-slate-600 hover:bg-slate-800 menu-big:flex-col"
       {...props}
     >
       {props.children}
+      {text}
     </a>
   );
 }
