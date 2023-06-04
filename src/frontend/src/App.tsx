@@ -238,24 +238,28 @@ export default function App() {
           </section>
           <section>
             <Heading>Dragons</Heading>
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-4 items-stretch">
-              {listOfDragons.map((dragon, index) => {
-                return (
-                  <DragonTR
-                    className={'flex flex-col text-center gap-1'}
-                    dragon={dragon}
-                    key={dragon.code}
-                    rate={rate}
-                    setInstances={(instances: number) => {
-                      handleUpdateDragon(index, instances);
-                    }}
-                    remove={() => {
-                      handleRemove(index);
-                    }}
-                  />
-                );
-              })}
-            </div>
+            {listOfDragons.length > 0 ? (
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-4 items-stretch">
+                {listOfDragons.map((dragon, index) => {
+                  return (
+                    <DragonTR
+                      className={'flex flex-col text-center gap-1'}
+                      dragon={dragon}
+                      key={dragon.code}
+                      rate={rate}
+                      setInstances={(instances: number) => {
+                        handleUpdateDragon(index, instances);
+                      }}
+                      remove={() => {
+                        handleRemove(index);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-center">No dragons have been added.</p>
+            )}
           </section>
           <section className="min-h-[5rem]">
             <Heading>Refresher</Heading>
@@ -267,7 +271,7 @@ export default function App() {
                 disableViews={noView}
               />
             ) : (
-              <p className="text-center">The auto-refresher isn't running.</p>
+              <p className="text-center">FART hasn't been started.</p>
             )}
           </section>
         </main>
