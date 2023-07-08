@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
-interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
+interface ButtonProps extends ComponentProps<'button'> {
   styles?: {
     normal: string;
     hover: string;
@@ -22,9 +22,9 @@ export function Button({ ...props }: Partial<ButtonProps>) {
 
   return (
     <button
-      type="button"
+      type={'button'}
       {...props}
-      className={`button rounded px-2 py-1 ${props.className}`}
+      className={`button rounded px-2 py-1 ${props.className ?? ''}`}
     >
       {props.children}
     </button>

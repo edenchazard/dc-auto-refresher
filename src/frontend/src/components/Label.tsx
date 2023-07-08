@@ -8,7 +8,7 @@ export default function Label({ id, text, ...props }: LabelProps) {
     <label
       htmlFor={id}
       {...props}
-      className={`after:content-[":"] ${props.className}`}
+      className={`after:content-[":"] ${props.className ?? ''}`}
     >
       {text}
     </label>

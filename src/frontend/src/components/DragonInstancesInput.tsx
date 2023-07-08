@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 interface DragonInstancesInputProps extends React.HTMLProps<HTMLInputElement> {
   instances: number;

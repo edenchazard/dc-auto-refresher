@@ -9,10 +9,7 @@ export function validateCode(code: string): boolean {
 }
 
 // Generates a dragcave img url with a cachebust
-export function generateDragCaveImgUrl(
-  code: string,
-  noView: boolean = false,
-): string {
+export function generateDragCaveImgUrl(code: string, noView = false): string {
   const cacheBust = Date.now() + Math.random();
   // no view disables views on the dragon
   return `https://dragcave.net/image/${code}${
@@ -36,7 +33,7 @@ export function getListFromString(str: string): Dragon[] | null {
     // check if tod has passed and null it if so
     // or a 'bad' value
     const tod =
-      Date.now() > parseInt(data[2]) || isNaN(data[2] as any)
+      Date.now() > parseInt(data[2]) || isNaN(parseInt(data[2]))
         ? null
         : parseInt(data[2]);
 

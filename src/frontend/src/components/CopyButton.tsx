@@ -1,11 +1,10 @@
 import type React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { ComponentProps, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { Button } from './Buttons';
 
-interface copyButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface copyButtonProps extends ComponentProps<'button'> {
   copyText: string;
   text?: React.ReactNode;
 }
@@ -24,10 +23,12 @@ export default function CopyButton({
 
   // re-renders will cause this to reset to null.
   // we need to protect against when we cause a re-render by changing the label.
-  let timeout = useRef<ReturnType<null | typeof window.setTimeout>>(null);
+  const timeout = useRef<null | number>(null);
 
   useEffect(() => {
-    return () => window.clearTimeout(timeout.current);
+    return () => {
+      if (timeout.current) window.clearTimeout(timeout.current);
+    };
   }, [timeout]);
 
   /**
@@ -38,7 +39,7 @@ export default function CopyButton({
    */
   function updateLabel(label: string, time = 5000) {
     // clear if there's already an interval
-    window.clearTimeout(timeout.current);
+    if (timeout.current) window.clearTimeout(timeout.current);
 
     setTempLabel(label);
     timeout.current = window.setTimeout(() => {
@@ -51,7 +52,7 @@ export default function CopyButton({
   }
 
   function copyToClipboard() {
-    (async () => {
+    void (async () => {
       try {
         await navigator.clipboard.writeText(copyText);
         updateButton('Copied!');

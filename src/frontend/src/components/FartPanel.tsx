@@ -1,5 +1,6 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { useLocalStorage, useSessionStorage } from 'usehooks-ts';
 import ReactTooltip from 'react-tooltip';
 
@@ -22,7 +23,7 @@ import type { ErrorMessage } from '../components/ErrorDisplay';
 
 function Heading({ children }: { children: React.ReactNode }) {
   return (
-    //<div className="relative flex items-center gap-5">
+    // <div className="relative flex items-center gap-5">
     //  <div className="flex-grow border-t border-gray-400"></div>
     <h2 className="text-center">{children}</h2>
     //   <div className="flex-grow border-t border-gray-400"></div>
@@ -196,7 +197,7 @@ export default function FartPanel() {
             <ErrorDisplay
               className="my-2 text-center"
               error={error}
-              done={setError}
+              done={() => setError(null)}
             />
           }
         />
@@ -262,7 +263,7 @@ export default function FartPanel() {
             disableViews={noView}
           />
         ) : (
-          <p className="text-center">FART hasn't been started.</p>
+          <p className="text-center">FART hasn&apos;t been started.</p>
         )}
       </section>
     </>

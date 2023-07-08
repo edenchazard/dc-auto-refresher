@@ -4,7 +4,7 @@ import './globals.css';
 import Header from '../components/Header';
 
 export const metadata = {
-  //metadataBase: new URL(''),
+  // metadataBase: new URL(''),
   title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
   description: 'Hatch and grow your dragons faster.',
   applicationName: 'FART',

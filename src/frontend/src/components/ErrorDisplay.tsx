@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 export enum ErrorType {
   error = 1,
@@ -25,7 +26,7 @@ function determineClass(type: number) {
 interface ErrorDisplayProps extends React.HTMLProps<HTMLDivElement> {
   error: ErrorMessage;
   hideAfter?: number;
-  done: (value: any) => void;
+  done: (value: null | unknown) => void;
 }
 export function ErrorDisplay({
   error,
@@ -56,7 +57,7 @@ export function ErrorDisplay({
   }
 
   return (
-    <div className={props.className + ' ' + determineClass(error.type)}>
+    <div className={props.className ?? '' + ' ' + determineClass(error.type)}>
       {error.message}
     </div>
   );

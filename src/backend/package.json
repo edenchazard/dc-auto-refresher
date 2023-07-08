@@ -8,8 +8,10 @@
     "dev": "nodemon ./src/server.ts",
     "build": "tsc -p .",
     "prod": "node ./server.js",
-    "lint": "eslint --ext .js ./src",
-    "format": "prettier --write ."
+    "lint": "eslint ./src",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier --write .",
+    "fix": "npm run lint:fix && npm run format"
   },
   "author": "Charley Reeson",
   "license": "ISC",

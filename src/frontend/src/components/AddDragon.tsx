@@ -1,15 +1,15 @@
-import { ReactChildren, ReactElement, useState } from 'react';
+import { type ReactElement, useState } from 'react';
 import TimePicker from 'react-time-picker';
-import type { TimePickerValue } from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
 import { useSessionStorage } from 'usehooks-ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
-import type { Dragon } from '../renderer/types';
+import type { Dragon } from '../app/types';
 import DragonInstancesInput from './DragonInstancesInput';
 import Label from './Label';
 import { Button } from './Buttons';
+import type { DateTimePickerProps } from 'react-datetime-picker';
 
 interface AddDragonProps {
   addToList: (dragon: Dragon) => void;
@@ -25,7 +25,7 @@ export default function AddDragon({
 }: AddDragonProps) {
   const [code, setCode] = useState<string>('');
   const [instances, setInstances] = useSessionStorage('addInstances', 1);
-  const [tod, setTOD] = useState<TimePickerValue>('');
+  const [tod, setTOD] = useState<DateTimePickerProps['value']>('');
 
   function handleAdd(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -56,7 +56,7 @@ export default function AddDragon({
   return (
     <form onSubmit={handleAdd}>
       <div className="bg-slate-800 p-2 minsz:rounded-lg minsz:px-5">
-        {top && top}
+        {top !== null && top}
         <div className="flex flex-col gap-3 items-stretch ">
           <div>
             <div className="flex justify-between items-center">
@@ -145,7 +145,7 @@ export default function AddDragon({
             Add dragon
           </Button>
         </div>
-        {bottom && bottom}
+        {bottom !== null && bottom}
       </div>
     </form>
   );

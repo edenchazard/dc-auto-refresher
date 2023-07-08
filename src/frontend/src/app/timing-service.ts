@@ -29,7 +29,7 @@ class TimingService extends Observer {
   }
 
   // Starts the timer and notifies subscriptions every updateInterval miliseconds
-  start(updateInterval: number = 1000) {
+  start(updateInterval = 1000) {
     // run subscriptions every second
     this.interval = window.setInterval(() => {
       this.notify();
@@ -42,4 +42,5 @@ class TimingService extends Observer {
   }
 }
 
-export default new TimingService();
+const instance = new TimingService();
+export default instance;

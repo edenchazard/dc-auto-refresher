@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { type IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEgg, faMugHot, faToolbox } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
+import type React from 'react';
 
 export default function Header() {
   return (
