@@ -1,4 +1,4 @@
-FROM node:lts-alpine as build
+FROM node:lts
 WORKDIR /app
 ENV NODE_ENV=development
 COPY ./package.json .

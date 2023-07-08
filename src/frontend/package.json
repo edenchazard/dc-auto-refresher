@@ -15,7 +15,7 @@
     "usehooks-ts": "^2.9.1"
   },
   "scripts": {
-    "start": "vite --host",
+    "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint **/*.{js,ts,tsx,cjs}",

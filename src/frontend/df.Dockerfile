@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:lts
 WORKDIR /app
 ENV CHOKIDAR_USEPOLLING=true
 ENV NODE_ENV=development
