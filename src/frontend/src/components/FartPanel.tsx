@@ -1,25 +1,24 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import { useLocalStorage, useSessionStorage } from 'usehooks-ts';
 import ReactTooltip from 'react-tooltip';
 
-import type { Dragon } from './app/interfaces';
-import errMsg from './app/errors';
-import * as DCAPI from './app/dcapi';
+import type { Dragon } from '../app/types';
+import errMsg from '../app/errors';
+import * as DCAPI from '../app/dcapi';
 import {
   hasRefreshableDragons,
   isCodeInList,
   validateCode,
-} from './app/functions';
-import useIconCycle from './hooks/useIconCycle';
-import useParseListPreset from './hooks/useParseListPreset';
-import Header from './components/Header';
-import DragonTR from './components/DragonTR';
-import AddDragon from './components/AddDragon';
-import RefresherControls from './components/RefresherControls';
-import RefresherView from './components/RefresherView';
-import { ErrorDisplay } from './components/ErrorDisplay';
-import type { ErrorMessage } from './components/ErrorDisplay';
-import './App.css';
+} from '../app/functions';
+import useIconCycle from '../hooks/useIconCycle';
+import useParseListPreset from '../hooks/useParseListPreset';
+import DragonTR from '../components/DragonTR';
+import AddDragon from '../components/AddDragon';
+import RefresherControls from '../components/RefresherControls';
+import RefresherView from '../components/RefresherView';
+import { ErrorDisplay } from '../components/ErrorDisplay';
+import type { ErrorMessage } from '../components/ErrorDisplay';
 
 function Heading({ children }: { children: React.ReactNode }) {
   return (
@@ -31,7 +30,7 @@ function Heading({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+export default function FartPanel() {
   const [listOfDragons, setListOfDragons] = useSessionStorage<Dragon[]>(
     'listOfDragons',
     [],
@@ -46,7 +45,7 @@ export default function App() {
   const [error, setError] = useState<ErrorMessage>(null);
 
   // handle icon changes when auto refresh is active
-  useIconCycle(autorefresh, listOfDragons, 'FART', './logo192.png');
+  useIconCycle(autorefresh, listOfDragons, './logo192.png');
 
   // Was a preset list param specified?
   useParseListPreset(setListOfDragons, true);
@@ -187,98 +186,85 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen font-sans font-normal font-base">
-      <ReactTooltip
-        globalEventOff="click"
-        place="top"
-        effect="solid"
-      />
-      <div className="min-h-screen App rounded-lg shadow-lg bg-slate-900 max-w-2xl mx-auto text-white flex flex-col">
-        <Header />
-        <main className="flex-1 mt-1 p-0 flex flex-col gap-3 [&>section:not(#add-dragon)]:m-2 minsz:px-3">
-          <section id="add-dragon">
-            <AddDragon
-              rate={rate}
-              addToList={handleAdd}
-              top={<Heading>Add a dragon</Heading>}
-              bottom={
-                <ErrorDisplay
-                  className="my-2 text-center"
-                  error={error}
-                  done={setError}
+    <>
+      <section id="add-dragon">
+        <AddDragon
+          rate={rate}
+          addToList={handleAdd}
+          top={<Heading>Add a dragon</Heading>}
+          bottom={
+            <ErrorDisplay
+              className="my-2 text-center"
+              error={error}
+              done={setError}
+            />
+          }
+        />
+      </section>
+      <section
+        id="controls"
+        className=""
+      >
+        <Heading>Settings</Heading>
+        <RefresherControls
+          list={listOfDragons}
+          rate={rate}
+          smartRemoval={smartRemoval}
+          autorefresh={autorefresh}
+          updateRate={(rate: number) => {
+            setAutorefresh(false);
+            setRate(rate);
+          }}
+          click={() => {
+            toggleAutorefresh(!autorefresh);
+          }}
+          updateSmartRemoval={(value: boolean) => {
+            setSmartRemoval(value);
+          }}
+          noView={noView}
+          updateNoView={(value: boolean) => {
+            setNoView(value);
+          }}
+        />
+      </section>
+      <section>
+        <Heading>Dragons</Heading>
+        {listOfDragons.length > 0 ? (
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-4 items-stretch">
+            {listOfDragons.map((dragon, index) => {
+              return (
+                <DragonTR
+                  className={'flex flex-col text-center gap-1'}
+                  dragon={dragon}
+                  key={dragon.code}
+                  rate={rate}
+                  setInstances={(instances: number) => {
+                    handleUpdateDragon(index, instances);
+                  }}
+                  remove={() => {
+                    handleRemove(index);
+                  }}
                 />
-              }
-            />
-          </section>
-          <section
-            id="controls"
-            className=""
-          >
-            <Heading>Settings</Heading>
-            <RefresherControls
-              list={listOfDragons}
-              rate={rate}
-              smartRemoval={smartRemoval}
-              autorefresh={autorefresh}
-              updateRate={(rate: number) => {
-                setAutorefresh(false);
-                setRate(rate);
-              }}
-              click={() => {
-                toggleAutorefresh(!autorefresh);
-              }}
-              updateSmartRemoval={(value: boolean) => {
-                setSmartRemoval(value);
-              }}
-              noView={noView}
-              updateNoView={(value: boolean) => {
-                setNoView(value);
-              }}
-            />
-          </section>
-          <section>
-            <Heading>Dragons</Heading>
-            {listOfDragons.length > 0 ? (
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-4 items-stretch">
-                {listOfDragons.map((dragon, index) => {
-                  return (
-                    <DragonTR
-                      className={'flex flex-col text-center gap-1'}
-                      dragon={dragon}
-                      key={dragon.code}
-                      rate={rate}
-                      setInstances={(instances: number) => {
-                        handleUpdateDragon(index, instances);
-                      }}
-                      remove={() => {
-                        handleRemove(index);
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="text-center">No dragons have been added.</p>
-            )}
-          </section>
-          <section className="min-h-[5rem]">
-            <Heading>Refresher</Heading>
-            {autorefresh ? (
-              <RefresherView
-                dragonList={listOfDragons}
-                rate={rate}
-                onImageChange={handleImageChange}
-                disableViews={noView}
-              />
-            ) : (
-              <p className="text-center">FART hasn't been started.</p>
-            )}
-          </section>
-        </main>
-        <footer className="text-center my-4">
-          v{import.meta.env.VITE_APP_VERSION} &copy; eden chazard
-        </footer>
-      </div>
-    </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="text-center">No dragons have been added.</p>
+        )}
+      </section>
+      <section className="min-h-[5rem]">
+        <Heading>Refresher</Heading>
+        {autorefresh ? (
+          <RefresherView
+            dragonList={listOfDragons}
+            rate={rate}
+            onImageChange={handleImageChange}
+            disableViews={noView}
+          />
+        ) : (
+          <p className="text-center">FART hasn't been started.</p>
+        )}
+      </section>
+    </>
   );
 }

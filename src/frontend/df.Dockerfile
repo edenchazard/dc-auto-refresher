@@ -2,9 +2,9 @@ FROM node:lts
 WORKDIR /app
 ENV CHOKIDAR_USEPOLLING=true
 ENV NODE_ENV=development
-ENV VITE_APP_URL=/
+ENV MOUNT_PATH=
 COPY ./package.json .
 RUN npm install
 
-EXPOSE ${VITE_PORT}
-ENTRYPOINT [ "npm", "run", "start" ]
+EXPOSE ${FRONTEND_PORT}
+ENTRYPOINT [ "npm", "run", "dev" ]

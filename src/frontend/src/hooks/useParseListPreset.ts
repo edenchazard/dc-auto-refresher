@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { getListFromString } from '../app/functions';
-import type { Dragon } from '../app/interfaces';
+import type { Dragon } from '../../renderer/interfaces';
 
 export default function useParseListPreset(
   setListOfDragons: (list: Dragon[]) => void,

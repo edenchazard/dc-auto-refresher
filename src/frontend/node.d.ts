@@ -1,6 +1,6 @@
 interface ImportMeta {
   env: {
     BASE_URL: string;
-    VITE_APP_VERSION: string;
+    NEXT_APP_VERSION: string;
   };
 }

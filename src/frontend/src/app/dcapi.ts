@@ -1,6 +1,6 @@
-import type { Dragon } from './interfaces';
+import type { Dragon } from './types';
 
-const API_URL = `${import.meta.env.BASE_URL}./api`;
+const API_URL = `${process.env.NEXT_BASE_URL}/api`;
 
 interface APIResponse {
   errors: string[];

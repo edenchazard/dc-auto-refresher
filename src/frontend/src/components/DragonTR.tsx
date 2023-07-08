@@ -2,8 +2,9 @@ import React from 'react';
 import DragonInstancesInput from './DragonInstancesInput';
 import { generateDragCaveImgUrl } from '../app/functions';
 import { CountDown } from './Clock';
-import type { Dragon } from '../app/interfaces';
+import type { Dragon } from '../app/types';
 import { Button } from './Buttons';
+
 interface RateCalculatorProps {
   rate: number;
   instances: number;

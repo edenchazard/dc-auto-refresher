@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 body {
   background: #15202b;
 }
@@ -10,7 +9,7 @@ body {
   color: #000;
 }
 .react-time-picker__wrapper {
-  border: 0px none;
+  border: 0px none !important;
 }
 /* fixes bug with page stretching on mobile because of timepicker */
 #root {

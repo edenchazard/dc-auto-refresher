@@ -14,7 +14,7 @@ services:
       dockerfile: ./df-prod.Dockerfile
       args:
         - APP_VERSION=${APP_VERSION}
-        - MOUNT_PATH=/dc/auto-refresher/
+        - MOUNT_PATH=
     ports:
       - 127.0.0.1:85:${FRONTEND_PORT}
     depends_on:
@@ -22,12 +22,9 @@ services:
     restart: unless-stopped
     environment:
       - API_PORT=${API_PORT}
-      - FRONTEND_PORT=${FRONTEND_PORT}
+      - NEXT_PORT=${FRONTEND_PORT}
     networks:
-      - dc
       - internal
 
 networks:
   internal:
-  dc:
-    external: true

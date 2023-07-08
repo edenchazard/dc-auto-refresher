@@ -1,5 +1,4 @@
-import React from 'react';
-import { type Dragon, type Size } from './interfaces';
+import { type Dragon, type Size } from './types';
 
 export function isCodeInList(listOfDragons: Dragon[], code: string): boolean {
   return listOfDragons.find((dragon) => dragon.code === code) !== undefined;

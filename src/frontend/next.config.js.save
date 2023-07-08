@@ -1,0 +1,10 @@
+       return [
+            {
+                source: "/api/:slug*",
+                destination: `http://api:${env.API_PORT}/:slug*`,
+            },
+        ];
+    },
+}
+
+module.exports = nextConfig

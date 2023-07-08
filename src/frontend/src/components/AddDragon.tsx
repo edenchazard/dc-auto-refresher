@@ -1,11 +1,12 @@
 import { ReactChildren, ReactElement, useState } from 'react';
 import TimePicker from 'react-time-picker';
 import type { TimePickerValue } from 'react-time-picker';
+import 'react-time-picker/dist/TimePicker.css';
 import { useSessionStorage } from 'usehooks-ts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
-import type { Dragon } from '../app/interfaces';
+import type { Dragon } from '../renderer/types';
 import DragonInstancesInput from './DragonInstancesInput';
 import Label from './Label';
 import { Button } from './Buttons';

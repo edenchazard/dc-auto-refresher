@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 
-import type { Size, Dragon } from '../app/interfaces';
-import { generateDragCaveImgUrl, sizesSame } from '../app/functions';
+import type { Size, Dragon } from '../app/types';
+import { generateDragCaveImgUrl, sizesSame } from '../utils/functions';
+
 /*
 
 // The number of images we are expecting to load

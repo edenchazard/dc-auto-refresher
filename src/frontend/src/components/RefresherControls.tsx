@@ -1,4 +1,4 @@
-import type { Dragon } from '../app/interfaces';
+import type { Dragon } from '../app/types';
 import { Clock } from './Clock';
 import Label from './Label';
 import ShareSetup from './ShareSetup';
