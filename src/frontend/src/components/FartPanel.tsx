@@ -1,4 +1,5 @@
 'use client';
+
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocalStorage, useSessionStorage } from 'usehooks-ts';
@@ -7,11 +8,12 @@ import ReactTooltip from 'react-tooltip';
 import type { Dragon } from '../app/types';
 import errMsg from '../app/errors';
 import * as DCAPI from '../app/dcapi';
+import TimingService from '../app/timing-service';
 import {
   hasRefreshableDragons,
   isCodeInList,
   validateCode,
-} from '../app/functions';
+} from '../utils/functions';
 import useIconCycle from '../hooks/useIconCycle';
 import useParseListPreset from '../hooks/useParseListPreset';
 import DragonTR from '../components/DragonTR';
@@ -50,6 +52,8 @@ export default function FartPanel() {
 
   // Was a preset list param specified?
   useParseListPreset(setListOfDragons, true);
+
+  useEffect(() => TimingService.start(1000), []);
 
   // If we have no dragons to refresh, auto-refresh should always be false.
   // This also prevents cases such as the auto-refresher removing hatched dragons

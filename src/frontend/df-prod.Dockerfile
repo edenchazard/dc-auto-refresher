@@ -3,36 +3,33 @@ FROM node:lts-alpine as build
 WORKDIR /app
 ARG MOUNT_PATH
 ARG APP_VERSION
-ENV NEXT_BASE_URL=$MOUNT_PATH
-ENV NEXT_APP_VERSION=${APP_VERSION}
+ARG API_KEY
+ENV NEXT_PUBLIC_BASE_URL=${MOUNT_PATH}
+ENV NEXT_PUBLIC_APP_VERSION=${APP_VERSION}
+ENV API_KEY=${API_KEY}
 COPY ./ ./
 RUN npm ci && npm run build
 
 # Copy build files to optimised container
 FROM node:lts-alpine as final
 WORKDIR /app
-ARG USER="sniff"
-ARG GROUP="thistj09"
+ENV NODE_ENV=production
 
-#COPY --from=build /app/nginx-prod.conf.template /etc/nginx/nginx.conf.template
-COPY --from=build /app/.next /app
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED 1
 
-COPY --from=build /app/next.config.js ./
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
 COPY --from=build /app/public ./public
-COPY --from=build /app/.next ./.next
-COPY --from=build /app/node_modules ./node_modules
 
-RUN  addgroup ${GROUP} && \
-     adduser -D -G ${GROUP} ${USER} && \
-     #touch /var/run/nginx.pid && \
-     chown -R ${USER}:${GROUP} /app
-     #/var/www/html /var/cache/nginx /var/log/nginx /etc/nginx/conf.d /var/run/nginx.pid && \
-#     chmod -R u=rx,g=rx,o= /var/www/html && \
-#     chmod u=rwx,g=r,o= /var/run/nginx.pid
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Run nginx conf substitutions
-#CMD ["/bin/sh", "-c", "envsubst '$FRONTEND_PORT $API_PORT' < /etc/nginx/nginx.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
+USER nextjs
 
-EXPOSE ${NEXT_PORT}
+EXPOSE 3000
 
-USER ${USER}
+CMD ["node", "server.js"]

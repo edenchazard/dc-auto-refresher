@@ -1,6 +1,6 @@
 import type React from 'react';
 import DragonInstancesInput from './DragonInstancesInput';
-import { generateDragCaveImgUrl } from '../app/functions';
+import { generateDragCaveImgUrl } from '../utils/functions';
 import { CountDown } from './Clock';
 import type { Dragon } from '../app/types';
 import { Button } from './Buttons';

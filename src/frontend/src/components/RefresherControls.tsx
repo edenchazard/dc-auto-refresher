@@ -4,7 +4,7 @@ import Label from './Label';
 import ShareSetup from './ShareSetup';
 import RefreshRateSelect from './RefreshRateSelect';
 import { ToggleButton } from './Buttons';
-import { hasRefreshableDragons } from '../app/functions';
+import { hasRefreshableDragons } from '../utils/functions';
 
 interface RefresherControlsProps {
   list: Dragon[];

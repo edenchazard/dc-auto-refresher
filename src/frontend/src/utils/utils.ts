@@ -1,4 +1,4 @@
-import type { APIDragon } from './types';
+import type { APIDragon } from './DragCaveAPIWrapper';
 
 function validateCode(code: string): boolean {
   return /^[a-zA-Z0-9]{5}$/.test(code);

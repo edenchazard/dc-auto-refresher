@@ -6,5 +6,5 @@ ENV MOUNT_PATH=
 COPY ./package.json .
 RUN npm install
 
-EXPOSE ${FRONTEND_PORT}
+EXPOSE 3000
 ENTRYPOINT [ "npm", "run", "dev" ]

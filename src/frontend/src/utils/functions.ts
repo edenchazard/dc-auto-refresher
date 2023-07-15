@@ -1,4 +1,4 @@
-import { type Dragon, type Size } from './types';
+import { type Dragon, type Size } from '../app/types';
 
 export function isCodeInList(listOfDragons: Dragon[], code: string): boolean {
   return listOfDragons.find((dragon) => dragon.code === code) !== undefined;

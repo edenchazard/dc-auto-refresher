@@ -57,7 +57,7 @@ export function ErrorDisplay({
   }
 
   return (
-    <div className={props.className ?? '' + ' ' + determineClass(error.type)}>
+    <div className={props.className + ' ' + determineClass(error.type)}>
       {error.message}
     </div>
   );

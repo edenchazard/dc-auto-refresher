@@ -1,4 +1,5 @@
-import type { APIDragon } from './DragCaveAPIWrapper';
+import type {APIDragon}
+
 interface AppConfig {
   port: number;
   apiPath: string;

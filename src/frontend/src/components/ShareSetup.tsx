@@ -1,6 +1,6 @@
 import { type Dragon } from '../app/types';
 import CopyButton from './CopyButton';
-import { createShareLinkFromList } from '../app/functions';
+import { createShareLinkFromList } from '../utils/functions';
 import Label from './Label';
 
 export default function ShareSetup({ list }: { list: Dragon[] }) {

@@ -1,10 +1,8 @@
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import './globals.css';
-
 import Header from '../components/Header';
 
 export const metadata = {
-  // metadataBase: new URL(''),
   title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
   description: 'Hatch and grow your dragons faster.',
   applicationName: 'FART',
@@ -15,6 +13,9 @@ export const metadata = {
     description: 'Hatch and grow your dragons faster.',
     title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
     type: 'website',
+  },
+  icons: {
+    icon: '/favicon.ico',
   },
 };
 
@@ -33,7 +34,7 @@ export default function RootLayout({
               {children}
             </main>
             <footer className="text-center my-4">
-              v{process.env.NEXT_APP_VERSION} &copy; eden chazard
+              v{process.env.NEXT_PUBLIC_APP_VERSION} &copy; eden chazard
             </footer>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { generateDragCaveImgUrl } from '../app/functions';
+import { generateDragCaveImgUrl } from '../utils/functions';
 import type { Dragon } from '../app/types';
 
 function makeDOMFavicon(url: string): HTMLLinkElement {
