@@ -4,11 +4,7 @@ import { generateDragCaveImgUrl } from '../utils/functions';
 import { CountDown } from './Clock';
 import type { Dragon } from '../app/types';
 import { Button } from './Buttons';
-<<<<<<< HEAD
 
-=======
-import Image from 'next/image';
->>>>>>> c2a8fd9... frontend housekeeping.
 interface RateCalculatorProps {
   rate: number;
   instances: number;
@@ -56,7 +52,7 @@ export default function DragonTR({
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Image
+        <img
           className="inline max-h-full"
           alt={dragon.code}
           src={generateDragCaveImgUrl(dragon.code, true)}
