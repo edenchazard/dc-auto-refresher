@@ -1,22 +1,21 @@
+import { Metadata } from 'next';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import './globals.css';
 import Header from '../components/Header';
 
-export const metadata = {
+export const metadata: Metadata = {
+  applicationName: 'FART',
   title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
   description: 'Hatch and grow your dragons faster.',
-  applicationName: 'FART',
   keywords: ['FART', 'dragcave', 'dragcave.net', 'auto-refresher', 'ar'],
-  colorScheme: 'light',
   creator: 'eden chazard',
   openGraph: {
     description: 'Hatch and grow your dragons faster.',
     title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
     type: 'website',
   },
-  icons: {
-    icon: '/favicon.ico',
-  },
+  colorScheme: 'light',
+  themeColor: '#1e293b',
 };
 
 export default function RootLayout({
