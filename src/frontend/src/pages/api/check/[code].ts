@@ -22,10 +22,14 @@ export default async function handler(
   res: NextApiResponse<ResponseData | string>,
 ) {
   const code = (req.query.code as string) ?? '';
-  const seconds = new URL(
-    req.url as string,
-    `http://example.org`,
-  ).searchParams.get('tod');
+  const seconds: number | null = (function () {
+    const param = new URL(
+      req.url as string,
+      `http://example.org`,
+    ).searchParams.get('tod');
+
+    return typeof param === 'string' ? Number(param) : null;
+  })();
 
   const errors: ResponseData['errors'] = [];
 

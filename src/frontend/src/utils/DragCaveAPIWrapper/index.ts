@@ -108,7 +108,7 @@ class DragCaveAPIWrapper {
         errors: data.errors.map((e) => ({ code: e[0], message: e[1] })),
         data: hasErrors ? null : (data[key] as ExpectedResponse[typeof key]),
       };
-    } catch (ex: any) {
+    } catch (ex: unknown) {
       // todo add logging
       throw new DragCaveAPIError(
         `Unexpected response while trying to use the Dragcave API.`,

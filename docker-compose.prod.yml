@@ -20,4 +20,4 @@ services:
 networks:
   dragcave:
     external: true
-    internal:
+  internal:

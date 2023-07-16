@@ -16,7 +16,7 @@ interface DragonInferredDetails {
 type Dragon = APIDragon & DragonInferredDetails;
 
 // Determines various characteristics about a dragon
-function inferDragon(dragon: APIDragon, seconds: number): Dragon {
+function inferDragon(dragon: APIDragon, seconds: number | null): Dragon {
   // We need to compare the current seconds passed this hour with that of
   // what the user inputted, then we set the tod to the current date +
   // the hours, mins and seconds of the dragon remaining

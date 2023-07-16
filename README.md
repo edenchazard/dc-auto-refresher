@@ -26,12 +26,12 @@ git clone https://github.com/edenchazard/dc-auto-refresher.git
 
 cd dc-auto-refresher
 
-# add the config file
-cp ./src/backend/config.example.json ./src/backend/config.json
+# copy config
+cp .env.example .env
 
 # edit with your favorite text editor
 # and put in your API key.
-nano ./src/backend/config.json
+nano .env
 ```
 
 ### Dev

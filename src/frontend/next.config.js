@@ -9,14 +9,6 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   output: 'standalone',
-  /*   async rewrites() {
-      return [
-        {
-          source: '/api/:path*',
-          destination: `http://api:${process.env.API_PORT}/api/:path*`,
-        },
-      ];
-    }, */
 };
 
 module.exports = nextConfig;
