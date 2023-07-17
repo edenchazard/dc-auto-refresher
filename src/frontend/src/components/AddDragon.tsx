@@ -9,7 +9,7 @@ import type { Dragon } from '../app/types';
 import DragonInstancesInput from './DragonInstancesInput';
 import Label from './Label';
 import { Button } from './Buttons';
-import type { DateTimePickerProps } from 'react-datetime-picker';
+import type { TimePickerProps } from 'react-time-picker';
 
 interface AddDragonProps {
   addToList: (dragon: Dragon) => void;
@@ -25,7 +25,7 @@ export default function AddDragon({
 }: AddDragonProps) {
   const [code, setCode] = useState<string>('');
   const [instances, setInstances] = useSessionStorage('addInstances', 1);
-  const [tod, setTOD] = useState<DateTimePickerProps['value']>('');
+  const [tod, setTOD] = useState<TimePickerProps['value']>(null);
 
   function handleAdd(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,7 +50,7 @@ export default function AddDragon({
 
     // reset things
     setCode('');
-    setTOD('');
+    setTOD(null);
   }
 
   return (
@@ -122,13 +122,14 @@ export default function AddDragon({
                 text="Dies at"
               />
               <TimePicker
-                onChange={setTOD}
+                onChange={(e) => setTOD(e)}
+                id="tod"
                 value={tod}
                 format="mm:ss"
                 maxDetail="second"
-                disableClock={true}
                 clearAriaLabel="Clear TOD"
-                name="test"
+                name="tod"
+                disableClock={true}
               />
             </div>
             <div className="text-gray-400">
