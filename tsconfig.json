@@ -23,6 +23,6 @@
       }
     ]
   },
-  "exclude": ["node_modules", "**/trash"],
+  "exclude": ["node_modules", "trash"],
   "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"]
 }

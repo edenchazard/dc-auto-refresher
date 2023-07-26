@@ -1,20 +1,20 @@
 name: dc-ar_dev
 services:
-  frontend:
-    build:
-      context: ./src/frontend
-      dockerfile: ./df.Dockerfile
-    volumes:
-      - ./src/frontend:/app
-      - /app/node_modules
+  dev:
+    image: node:lts
     ports:
       - 3000:3000
     environment:
       - APP_VERSION=${APP_VERSION}
       - API_KEY=${API_KEY}
+      - ENV CHOKIDAR_USEPOLLING=true
+      - ENV NODE_ENV=development
     networks:
       - internal
+    volumes:
+      - .:/workspace:delegated
     restart: unless-stopped
+    command: sleep infinity
 
 networks:
   internal:

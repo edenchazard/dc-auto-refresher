@@ -7,17 +7,17 @@ services:
       args:
         - APP_VERSION=${APP_VERSION}
         - API_KEY=${API_KEY}
-        - MOUNT_PATH=
+        - MOUNT_PATH=/dc/auto-refresher
     ports:
-      - 127.0.0.1:49120:3000
+      - 49120:3000
     restart: unless-stopped
     environment:
       - API_KEY=${API_KEY}
     networks:
-      - dragcave
+      #- dragcave
       - internal
 
 networks:
-  dragcave:
-    external: true
+  #dragcave:
+  #external: true
   internal:

@@ -1,0 +1,44 @@
+// For format details, see https://aka.ms/devcontainer.json.
+{
+	"name": "Dev Environment",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+    "service": "dev",
+    "dockerComposeFile": "../docker-compose.yml",
+
+    "workspaceFolder": "/workspace",
+	
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [3000],
+	
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "npm i",
+	"postAttachCommand": "npm run dev",
+
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+		  "settings": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.formatOnSave": true,
+			"source.fixAll.eslint": true
+		  },
+		  "extensions": [
+			"dbaeumer.vscode-eslint",
+			"esbenp.prettier-vscode",
+			"streetsidesoftware.code-spell-checker",
+			"mikestead.dotenv",
+			"davidanson.vscode-markdownlint",
+			"formulahendry.auto-rename-tag",
+			"dsznajder.es7-react-js-snippets",
+			"ms-azuretools.vscode-docker",
+			"eamodio.gitlens"
+		  ]
+		}
+	  },
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	"remoteUser": "root"
+}
