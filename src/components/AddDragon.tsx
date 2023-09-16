@@ -54,7 +54,10 @@ export default function AddDragon({
   }
 
   return (
-    <form onSubmit={handleAdd}>
+    <form
+      onSubmit={handleAdd}
+      autoComplete="off"
+    >
       <div className="bg-slate-800 p-2 minsz:rounded-lg minsz:px-5">
         {top !== null && top}
         <div className="flex flex-col gap-3 items-stretch ">
