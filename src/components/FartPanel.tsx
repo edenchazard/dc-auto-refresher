@@ -206,10 +206,7 @@ export default function FartPanel() {
           }
         />
       </section>
-      <section
-        id="controls"
-        className=""
-      >
+      <section id="controls">
         <Heading>Settings</Heading>
         <RefresherControls
           list={listOfDragons}
