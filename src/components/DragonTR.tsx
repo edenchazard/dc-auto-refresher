@@ -1,4 +1,6 @@
 import type React from 'react';
+import { Tooltip } from 'react-tooltip';
+
 import DragonInstancesInput from './DragonInstancesInput';
 import { generateDragCaveImgUrl } from '../utils/functions';
 import { CountDown } from './Clock';
@@ -46,6 +48,7 @@ export default function DragonTR({
 
   return (
     <div {...props}>
+      <Tooltip id={dragon.code} />
       <a
         className="w-full text-center h-12"
         href={`https://dragcave.net/view/${dragon.code}`}
@@ -77,7 +80,8 @@ export default function DragonTR({
         {diesOn !== null && (
           <time
             className="block h-full"
-            data-tip={'TOD: ' + diesOn.toLocaleString()}
+            data-tooltip-id={dragon.code}
+            data-tooltip-content={'TOD: ' + diesOn.toLocaleString()}
             data-event="click"
             role="timer"
           >

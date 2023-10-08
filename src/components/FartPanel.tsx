@@ -3,7 +3,6 @@
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocalStorage, useSessionStorage } from 'usehooks-ts';
-import ReactTooltip from 'react-tooltip';
 
 import type { Dragon } from '../app/types';
 import errMsg from '../app/errors';
@@ -106,9 +105,6 @@ export default function FartPanel() {
           setListOfDragons(orderedList);
           setError(null);
           setAutorefresh(false);
-
-          // fixes problem that stops the tooltip for TOD appearing
-          ReactTooltip.rebuild();
         } else {
           setError({ type: 1, message: errMsg.BADDRAGON });
         }
