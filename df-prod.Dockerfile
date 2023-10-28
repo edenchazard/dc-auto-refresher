@@ -1,12 +1,6 @@
 # Build in intermediate container
 FROM node:lts-alpine as build
 WORKDIR /app
-ARG MOUNT_PATH
-ARG APP_VERSION
-ARG API_KEY
-ENV NEXT_PUBLIC_BASE_URL=${MOUNT_PATH}
-ENV NEXT_PUBLIC_APP_VERSION=${APP_VERSION}
-ENV API_KEY=${API_KEY}
 COPY ./ ./
 RUN npm ci && npm run build
 

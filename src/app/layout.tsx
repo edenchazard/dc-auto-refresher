@@ -1,9 +1,22 @@
 import { Metadata } from 'next';
+import pkg from '../../package.json';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import './globals.css';
 import Header from '../components/Header';
 
+const dumbPath = process.env.NEXT_PUBLIC_BASE_URL;
+
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN + dumbPath),
+  manifest: `${dumbPath}/manifest.webmanifest`,
+  robots: `${dumbPath}/robots.txt`,
+  icons: {
+    icon: {
+      rel: 'icon',
+      url: `${dumbPath}/logo192.png`,
+    },
+    apple: `${dumbPath}/apple-icon.png`,
+  },
   applicationName: 'FART',
   title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
   description: 'Hatch and grow your dragons faster.',
@@ -17,7 +30,6 @@ export const metadata: Metadata = {
   colorScheme: 'light',
   themeColor: '#1e293b',
 };
-
 export default function RootLayout({
   children,
 }: {
@@ -33,7 +45,7 @@ export default function RootLayout({
               {children}
             </main>
             <footer className="text-center my-4">
-              v{process.env.NEXT_PUBLIC_APP_VERSION} &copy; eden chazard
+              v{pkg.version} &copy; eden chazard
             </footer>
           </div>
         </div>

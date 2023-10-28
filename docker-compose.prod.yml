@@ -2,17 +2,11 @@ name: dc-ar
 services:
   fart:
     build:
-      context: ./src/frontend
+      context: .
       dockerfile: ./df-prod.Dockerfile
-      args:
-        - APP_VERSION=${APP_VERSION}
-        - API_KEY=${API_KEY}
-        - MOUNT_PATH=/dc/auto-refresher
     ports:
       - 49120:3000
     restart: unless-stopped
-    environment:
-      - API_KEY=${API_KEY}
     networks:
       #- dragcave
       - internal
