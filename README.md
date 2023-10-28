@@ -27,11 +27,11 @@ git clone https://github.com/edenchazard/dc-auto-refresher.git
 cd dc-auto-refresher
 
 # copy config
-cp .env.example .env
+cp .env.example .env.local
 
 # edit with your favorite text editor
 # and put in your API key.
-nano .env
+nano .env.local
 ```
 
 ### Dev
