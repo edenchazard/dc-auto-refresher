@@ -47,7 +47,11 @@ export default function FartPanel() {
   const [error, setError] = useState<ErrorMessage>(null);
 
   // handle icon changes when auto refresh is active
-  useIconCycle(autorefresh, listOfDragons, './logo192.png');
+  useIconCycle(
+    autorefresh,
+    listOfDragons,
+    process.env.NEXT_PUBLIC_BASE_URL + '/logo192.png',
+  );
 
   // Was a preset list param specified?
   useParseListPreset(setListOfDragons, true);
