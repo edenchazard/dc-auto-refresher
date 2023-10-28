@@ -26,18 +26,13 @@ export function getListFromString(str: string): Dragon[] | null {
   const list = str.split(';');
 
   const dragonStringToDragon = (str: string): Dragon => {
-    const data = str.split(',');
-    const code = data[0];
-    // defaults to 0 if not valid or floors if float
-    const instances = ~~data[1];
-    // check if tod has passed and null it if so
-    // or a 'bad' value
-    const tod =
-      Date.now() > parseInt(data[2]) || isNaN(parseInt(data[2]))
-        ? null
-        : parseInt(data[2]);
+    const [code, instances, tod] = str.split(',');
 
-    return { code, instances, tod };
+    return {
+      code: code,
+      instances: ~~instances,
+      tod: Date.now() < ~~tod ? ~~tod : null,
+    };
   };
 
   for (const item of list) {
@@ -57,7 +52,10 @@ export function createShareLinkFromList(list: Dragon[]): string {
   // TODO: We'll keep null in the string to ensure backwards compatibility
   // but may change this later.
   const values = list
-    .map((d) => `${d.code},${d.instances},${d.tod === null ? 'null' : d.tod}`)
+    .map(
+      ({ code, instances, tod }) =>
+        `${code},${instances}` + (tod === null ? '' : `,${tod}`),
+    )
     .join(';');
 
   return `${origin}${pathname}?list=${values}`;
