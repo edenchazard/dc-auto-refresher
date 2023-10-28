@@ -98,8 +98,8 @@ export default function AddDragon({
                 aria-describedby="instances-description ratio-limit"
               />
             </div>
-            <div className="text-gray-400">
-              <p id="instances-description">
+            <div className="text-gray-400 flex flex-wrap gap-2">
+              <p id="instances-description inline">
                 {(rate === 0
                   ? 'Variable: Each image will reload as soon as it has loaded.'
                   : `~${
@@ -107,15 +107,16 @@ export default function AddDragon({
                     } views per minute: Actual rate depends on different factors.`) +
                   " Specify '0' to add the dragon but not auto-refresh it."}
               </p>
-              <aside className="italic">
-                <p>
-                  <FontAwesomeIcon icon={faCircleInfo} />
-                  &nbsp;
-                  <span id="ratio-limit">
-                    Dragon Cave limits views to 15x its unique views.
-                  </span>
-                </p>
-              </aside>
+              <p className="bg-slate-600 rounded-2xl text-gray-200 text-xs py-1 px-3 inline italic">
+                <FontAwesomeIcon
+                  icon={faCircleInfo}
+                  className="mr-1"
+                />
+                &nbsp;
+                <span id="ratio-limit">
+                  Dragon Cave limits views to 15x its unique views.
+                </span>
+              </p>
             </div>
           </div>
           <div>
