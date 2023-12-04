@@ -22,28 +22,29 @@ export function sizesSame(oldSize: Size, newSize: Size): boolean {
 }
 
 export function getListFromString(str: string): Dragon[] | null {
-  const unserialize: Dragon[] = [];
-  const list = str.split(';');
+  const now = Math.floor(Date.now());
 
   const dragonStringToDragon = (str: string): Dragon => {
     const [code, instances, tod] = str.split(',');
-
+    const todAsNumber = parseInt(tod);
     return {
       code: code,
       instances: ~~instances,
-      tod: Date.now() < ~~tod ? ~~tod : null,
+      tod: !isNaN(todAsNumber) && todAsNumber > now ? todAsNumber : null,
     };
   };
 
-  for (const item of list) {
-    const dragon = dragonStringToDragon(item);
-
-    // skip if not valid code
-    if (validateCode(dragon.code) && !isCodeInList(unserialize, dragon.code))
-      unserialize.push(dragon);
-  }
-
-  return unserialize.length > 0 ? unserialize : null;
+  const codes: string[] = [];
+  return str
+    .split(';')
+    .map(dragonStringToDragon)
+    .filter((dragon) => {
+      if (validateCode(dragon.code) && codes.indexOf(dragon.code) === -1) {
+        codes.push(dragon.code);
+        return true;
+      }
+      return false;
+    });
 }
 
 export function createShareLinkFromList(list: Dragon[]): string {
