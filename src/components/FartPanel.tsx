@@ -56,7 +56,17 @@ export default function FartPanel() {
   // Was a preset list param specified?
   useParseListPreset(setListOfDragons, true);
 
-  useEffect(() => TimingService.start(1000), []);
+  useEffect(() => {
+    TimingService.start(1000);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        TimingService.stop();
+      } else {
+        TimingService.start(1000);
+      }
+    });
+  }, []);
 
   // If we have no dragons to refresh, auto-refresh should always be false.
   // This also prevents cases such as the auto-refresher removing hatched dragons
