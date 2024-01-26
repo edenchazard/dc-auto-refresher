@@ -63,6 +63,7 @@ export default function FartPanel() {
       if (document.hidden) {
         TimingService.stop();
       } else {
+        TimingService.notify();
         TimingService.start(1000);
       }
     });
