@@ -43,9 +43,5 @@ export default function Page() {
     async () => await import('../components/FartPanel'),
     { ssr: false },
   );
-  return (
-    <>
-      <FartPanel />
-    </>
-  );
+  return <FartPanel />;
 }
