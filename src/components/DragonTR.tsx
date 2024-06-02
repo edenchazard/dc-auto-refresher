@@ -35,11 +35,13 @@ interface DragonTRProps extends React.HTMLProps<HTMLDivElement> {
   setInstances: (value: number) => void;
   rate: number;
   remove: () => void;
+  changeIncludeInList: (dragon: Dragon, value: boolean) => void;
 }
 export default function DragonTR({
   setInstances,
   rate,
   remove,
+  changeIncludeInList,
   dragon,
   ...props
 }: DragonTRProps) {
@@ -61,6 +63,19 @@ export default function DragonTR({
           src={generateDragCaveImgUrl(dragon.code, true)}
         />
       </a>
+      <label
+        className="sr-only"
+        htmlFor={`noView-${dragon.code}`}
+      >
+        Views enabled
+      </label>
+      <input
+        className="absolute right-0 top-14"
+        type="checkbox"
+        id={`noView-${dragon.code}`}
+        defaultChecked={dragon.enabled}
+        onChange={(e) => changeIncludeInList(dragon, e.target.checked)}
+      />
       <label
         htmlFor={`dragon-${dragon.code}`}
         className="italic"

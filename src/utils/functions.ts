@@ -31,6 +31,7 @@ export function getListFromString(str: string): Dragon[] | null {
       code: code,
       instances: ~~instances,
       tod: !isNaN(todAsNumber) && todAsNumber > now ? todAsNumber : null,
+      enabled: true,
     };
   };
 
