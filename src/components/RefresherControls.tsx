@@ -64,38 +64,7 @@ export default function RefresherControls({
           </p>
         </div>
       </div>
-      <div
-        className={noView ? '' : 'opacity-70'}
-        onClick={() => {
-          updateNoView(!noView);
-        }}
-      >
-        <div className={`text-white flex justify-between items-center`}>
-          <Label
-            id="no-views"
-            text="Disable views"
-            // Prevent label from "doubling up" our check behaviour
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          />
-          <input
-            type="checkbox"
-            id="no-views"
-            aria-describedby="no-views-description"
-            checked={noView}
-            onChange={(e) => {
-              updateNoView(e.target.checked);
-            }}
-          />
-        </div>
-        <div className="text-stone-400">
-          <p id="no-views-description">
-            If enabled, views will be prevented from accumulating but dragons
-            will still auto-refresh.
-          </p>
-        </div>
-      </div>
+
       {list.length > 0 && (
         <div>
           <ShareSetup list={list} />

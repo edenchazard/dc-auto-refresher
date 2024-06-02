@@ -108,7 +108,12 @@ export default function FartPanel() {
         if (data.acceptable) {
           const orderedList = [
             ...listOfDragons,
-            { code: dragon.code, instances: dragon.instances, tod: data.tod },
+            {
+              code: dragon.code,
+              instances: dragon.instances,
+              tod: data.tod,
+              enabled: true,
+            },
           ];
 
           // https://stackoverflow.com/a/58748962
@@ -201,6 +206,16 @@ export default function FartPanel() {
     void handle();
   }
 
+  function handleChangeIncludeInList(dragon: Dragon, value: boolean) {
+    const newList = [...listOfDragons];
+    const find = newList.find((v) => v.code === dragon.code);
+    if (!find) {
+      return;
+    }
+    find.enabled = value;
+    setListOfDragons(newList);
+  }
+
   return (
     <>
       <section id="add-dragon">
@@ -247,13 +262,14 @@ export default function FartPanel() {
             {listOfDragons.map((dragon, index) => {
               return (
                 <DragonTR
-                  className={'flex flex-col text-center gap-1'}
+                  className={'flex flex-col text-center gap-1 relative'}
                   dragon={dragon}
                   key={dragon.code}
                   rate={rate}
                   setInstances={(instances: number) => {
                     handleUpdateDragon(index, instances);
                   }}
+                  changeIncludeInList={handleChangeIncludeInList}
                   remove={() => {
                     handleRemove(index);
                   }}

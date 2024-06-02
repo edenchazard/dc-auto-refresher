@@ -6,6 +6,7 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 
 import type { Size, Dragon } from '../app/types';
 import { generateDragCaveImgUrl, sizesSame } from '../utils/functions';
+import Label from './Label';
 
 /*
 
@@ -28,7 +29,9 @@ interface RefresherViewProps {
   onImageChange?: (code: string) => void;
 }
 
-type ImageWithDataset = HTMLImageElement & { dataset: { code: string } };
+type ImageWithDataset = HTMLImageElement & {
+  dataset: { code: string; enabled: string };
+};
 
 export default function RefresherView({
   dragonList,
@@ -71,10 +74,10 @@ export default function RefresherView({
   }
 
   function updateImage(img: ImageWithDataset) {
-    const code = img.dataset.code;
+    const { code, enabled } = img.dataset;
 
     // immediately replace the src with a new one
-    img.src = generateDragCaveImgUrl(code, disableViews);
+    img.src = generateDragCaveImgUrl(code, enabled === 'false');
   }
 
   function handleLoad(event: React.SyntheticEvent<ImageWithDataset, Event>) {
@@ -105,8 +108,8 @@ export default function RefresherView({
   }
 
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between my-2">
+    <div className="w-full space-y-2">
+      <div className="flex items-center justify-between">
         <p>
           {rate > 0
             ? ` Refreshing every ${rate / 1000}s (cycle #${instance})`
@@ -117,15 +120,27 @@ export default function RefresherView({
           className="spin"
         />
       </div>
+      {dragonList.find((dragon) => !dragon.enabled) && (
+        <div className="bg-slate-800 text-stone-200 p-4 rounded-md">
+          <p className="text-center font-bold text-lg">
+            Views on some dragons are disabled
+          </p>
+          <p>
+            Views will be prevented from accumulating but dragons will still
+            auto-refresh.
+          </p>
+        </div>
+      )}
       <div>
         {dragonList.map((dragon: Dragon, index: number) => {
-          return Array.from(Array(dragon.instances), (e, it) => (
+          return Array.from(Array(dragon.instances), (_, it) => (
             <img
-              className="inline"
-              src={generateDragCaveImgUrl(dragon.code, disableViews)}
+              className={`inline ${!dragon.enabled ? 'bg-slate-800' : ''}`}
+              src={generateDragCaveImgUrl(dragon.code, !dragon.enabled)}
               key={`${index}.${it}`}
               alt={dragon.code}
               data-code={dragon.code}
+              data-enabled={dragon.enabled}
               onLoad={handleLoad}
               onError={handleError}
             />

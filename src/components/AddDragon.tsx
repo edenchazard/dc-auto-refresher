@@ -46,6 +46,7 @@ export default function AddDragon({
       code,
       instances,
       tod: secondsInTOD,
+      enabled: true,
     });
 
     // reset things
