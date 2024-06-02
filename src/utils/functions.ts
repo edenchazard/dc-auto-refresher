@@ -25,13 +25,14 @@ export function getListFromString(str: string): Dragon[] | null {
   const now = Math.floor(Date.now());
 
   const dragonStringToDragon = (str: string): Dragon => {
-    const [code, instances, tod] = str.split(',');
+    const [code, instances, enabled, tod] = str.split(',');
+    console.log(enabled);
     const todAsNumber = parseInt(tod);
     return {
       code: code,
       instances: ~~instances,
       tod: !isNaN(todAsNumber) && todAsNumber > now ? todAsNumber : null,
-      enabled: true,
+      enabled: enabled === 'true',
     };
   };
 
@@ -55,8 +56,8 @@ export function createShareLinkFromList(list: Dragon[]): string {
   // but may change this later.
   const values = list
     .map(
-      ({ code, instances, tod }) =>
-        `${code},${instances}` + (tod === null ? '' : `,${tod}`),
+      ({ code, instances, tod, enabled }) =>
+        `${code},${instances},${enabled}` + (tod === null ? '' : `,${tod}`),
     )
     .join(';');
 
