@@ -120,17 +120,6 @@ export default function RefresherView({
           className="spin"
         />
       </div>
-      {dragonList.find((dragon) => !dragon.enabled) && (
-        <div className="bg-slate-800 text-stone-200 p-4 rounded-md">
-          <p className="text-center font-bold text-lg">
-            Views on some dragons are disabled
-          </p>
-          <p>
-            Views will be prevented from accumulating but dragons will still
-            auto-refresh.
-          </p>
-        </div>
-      )}
       <div>
         {dragonList.map((dragon: Dragon, index: number) => {
           return Array.from(Array(dragon.instances), (_, it) => (

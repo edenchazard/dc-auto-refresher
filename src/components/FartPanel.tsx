@@ -255,7 +255,7 @@ export default function FartPanel() {
           }}
         />
       </section>
-      <section>
+      <section className="space-y-3">
         <Heading>Dragons</Heading>
         {listOfDragons.length > 0 ? (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-4 items-stretch">
@@ -279,6 +279,17 @@ export default function FartPanel() {
           </div>
         ) : (
           <p className="text-center">No dragons have been added.</p>
+        )}
+        {listOfDragons.find((dragon) => !dragon.enabled) && (
+          <div className="bg-slate-800 text-stone-200 p-4 rounded-md text-center">
+            <p className="text-center font-bold text-lg">
+              Views on some dragons are disabled
+            </p>
+            <p>
+              Views will be prevented from accumulating but dragons will still
+              auto-refresh.
+            </p>
+          </div>
         )}
       </section>
       <section className="min-h-[5rem]">
