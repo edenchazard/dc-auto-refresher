@@ -52,7 +52,9 @@ export default function DragonTR({
     <div {...props}>
       <Tooltip id={dragon.code} />
       <a
-        className="w-full text-center h-12"
+        className={`w-full text-center h-12 ${
+          !dragon.enabled ? 'bg-slate-800' : ''
+        }`}
         href={`https://dragcave.net/view/${dragon.code}`}
         target="_blank"
         rel="noopener noreferrer"
@@ -70,7 +72,7 @@ export default function DragonTR({
         Views enabled
       </label>
       <input
-        className="absolute right-0 top-14"
+        className="absolute -right-1 top-12 h-6 w-6"
         type="checkbox"
         id={`noView-${dragon.code}`}
         defaultChecked={dragon.enabled}
