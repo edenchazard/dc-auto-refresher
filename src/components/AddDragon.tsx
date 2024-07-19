@@ -54,6 +54,21 @@ export default function AddDragon({
     setTOD(null);
   }
 
+  function handlePaste(e: ClipboardEvent) {
+    e.preventDefault();
+
+    if (!e.clipboardData) {
+      return;
+    }
+
+    setCode(
+      e.clipboardData
+        .getData('text/plain')
+        .replace(/[^0-9a-z]/gi, '')
+        .slice(0, 5),
+    );
+  }
+
   return (
     <form
       onSubmit={handleAdd}
@@ -81,6 +96,7 @@ export default function AddDragon({
                 onChange={(e) => {
                   setCode(e.target.value);
                 }}
+                onPaste={handlePaste}
               />
             </div>
           </div>
