@@ -6,7 +6,6 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 
 import type { Size, Dragon } from '../app/types';
 import { generateDragCaveImgUrl, sizesSame } from '../utils/functions';
-import Label from './Label';
 
 /*
 
@@ -36,7 +35,6 @@ type ImageWithDataset = HTMLImageElement & {
 export default function RefresherView({
   dragonList,
   rate,
-  disableViews,
   onImageChange,
 }: RefresherViewProps) {
   const [instance, setInstance] = useState<number>(1);

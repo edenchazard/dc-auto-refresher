@@ -26,7 +26,6 @@ export function getListFromString(str: string): Dragon[] | null {
 
   const dragonStringToDragon = (str: string): Dragon => {
     const [code, instances, enabled, tod] = str.split(',');
-    console.log(enabled);
     const todAsNumber = parseInt(tod);
     return {
       code: code,

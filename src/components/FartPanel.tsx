@@ -22,6 +22,8 @@ import RefresherView from '../components/RefresherView';
 import { ErrorDisplay } from '../components/ErrorDisplay';
 import type { ErrorMessage } from '../components/ErrorDisplay';
 
+const checkingQueue = new Set<string>([]);
+
 function Heading({ children }: { children: React.ReactNode }) {
   return (
     // <div className="relative flex items-center gap-5">
@@ -168,19 +170,21 @@ export default function FartPanel() {
   }
 
   function removeDragon(index: number) {
-    listOfDragons.splice(index, 1);
+    const removed = listOfDragons.splice(index, 1);
     setListOfDragons([...listOfDragons]);
+    checkingQueue.delete(removed[0].code);
   }
 
   function handleImageChange(code: string) {
     const handle = async () => {
       // console.log("NEW SIZE FOR "+code);
       // if SR isn't enabled, just stay as normal.
-      if (!smartRemoval) {
+      if (!smartRemoval || checkingQueue.has(code)) {
         return;
       }
 
       try {
+        checkingQueue.add(code);
         const { errors, data } = await DCAPI.checkDragon(code);
 
         // continue with SR checks
