@@ -3,7 +3,6 @@
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useLocalStorage, useSessionStorage } from 'usehooks-ts';
-
 import type { Dragon } from '../app/types';
 import errMsg from '../app/errors';
 import * as DCAPI from '../app/dcapi';
@@ -21,6 +20,9 @@ import RefresherControls from '../components/RefresherControls';
 import RefresherView from '../components/RefresherView';
 import { ErrorDisplay } from '../components/ErrorDisplay';
 import type { ErrorMessage } from '../components/ErrorDisplay';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const checkingQueue = new Set<string>([]);
 
@@ -47,6 +49,10 @@ export default function FartPanel() {
   );
   const [noView, setNoView] = useSessionStorage('noView', false);
   const [error, setError] = useState<ErrorMessage>(null);
+  const [showGardenBanner, setShowGardenBanner] = useLocalStorage(
+    'garden-banner',
+    true,
+  );
 
   // handle icon changes when auto refresh is active
   useIconCycle(
@@ -220,8 +226,31 @@ export default function FartPanel() {
     setListOfDragons(newList);
   }
 
+  function handleDismissGarden(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowGardenBanner(false);
+  }
+
   return (
     <>
+      {showGardenBanner && (
+        <a
+          href={`https://chazza.me/dc/hatchery`}
+          className="bg-slate-500 px-8 py-4 rounded-md top-4 absolute self-center mx-4 text-center shadow-2xl"
+        >
+          Like FART? Why not bask in the smell of plants at the{' '}
+          <span className="underline">Garden of Eden</span>?
+          <button
+            type="button"
+            title="Click to dismiss"
+            className="rounded-full p-3 absolute -right-2 -top-2 bg-slate-200 w-8 h-8 flex items-center justify-center text-slate-900"
+            onClick={handleDismissGarden}
+          >
+            <FontAwesomeIcon icon={faX as IconProp} />
+          </button>
+        </a>
+      )}
       <section id="add-dragon">
         <AddDragon
           rate={rate}
