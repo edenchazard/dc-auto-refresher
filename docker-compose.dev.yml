@@ -1,0 +1,13 @@
+services:
+  fart:
+    image: node:lts-slim
+    ports:
+      - 3000:3000
+    networks:
+      - internal
+    volumes:
+      - .:/workspace:delegated
+    command: sleep infinity
+
+networks:
+  internal:

@@ -1,15 +1,17 @@
-name: dc-ar_dev
 services:
-  dev:
-    image: node:lts
+  fart:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     ports:
       - 3000:3000
+    env_file:
+      - .env
     networks:
+      - dragcave
       - internal
-    volumes:
-      - .:/workspace:delegated
-    restart: unless-stopped
-    command: sleep infinity
 
 networks:
   internal:
+  dragcave:
+    external: true

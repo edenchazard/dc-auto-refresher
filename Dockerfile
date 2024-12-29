@@ -1,11 +1,11 @@
 # Build in intermediate container
-FROM node:lts-alpine as build
+FROM node:lts-slim as build
 WORKDIR /app
 COPY ./ ./
 RUN npm ci && npm run build
 
 # Copy build files to optimised container
-FROM node:lts-alpine as final
+FROM node:lts-slim as final
 WORKDIR /app
 ENV NODE_ENV=production
 
