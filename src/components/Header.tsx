@@ -3,13 +3,23 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { type IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEgg, faMugHot, faToolbox } from '@fortawesome/free-solid-svg-icons';
 import type React from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Header() {
+  const { data: session } = useSession();
+
   return (
     <header
       id="top"
       className="minsz:px-3 text-s"
     >
+      <button
+        type="button"
+        className="bg-slate-700 p-2 rounded-t-sm"
+        onClick={() => signIn('dragcave')}
+      >
+        Login
+      </button>
       <div className=" bg-slate-700 flex flex-col items-stretch flex-wrap minsz:rounded-b-sm mid-sz:flex-row mid-sz:items-center">
         <h1 className="py-2 px-3 rounded-b-sm text-center flex-1 mid-sz:text-left">
           FART

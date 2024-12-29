@@ -1,13 +1,35 @@
 services:
   fart:
-    image: node:lts-slim
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
     ports:
       - 3000:3000
     networks:
       - internal
     volumes:
-      - .:/workspace:delegated
-    command: sleep infinity
+      - .:/src
+      - node_modules:/src/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10
+    tty: true
+    volumes:
+      - dbdata:/var/lib/mysql
+    env_file:
+      - .env
+    ports:
+      - 3306:3306
+    networks:
+      - internal
 
 networks:
   internal:
+
+volumes:
+  node_modules:
+  dbdata:

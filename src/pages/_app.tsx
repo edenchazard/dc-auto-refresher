@@ -1,6 +1,10 @@
+import type { AppProps } from 'next/app';
+import { SessionProvider } from 'next-auth/react';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { getListFromString } from '../utils/functions';
+import Layout from '../app/layout';
+
 interface Props {
   params: { list?: string };
   searchParams: Record<string, string | string[] | undefined>;
@@ -38,10 +42,27 @@ export async function generateMetadata({ searchParams }: Props) {
   }
 }
 
+/* 
 export default function Page() {
   const FartPanel = dynamic(
     async () => await import('../components/FartPanel'),
     { ssr: false },
   );
   return <FartPanel />;
+} */
+
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
+  return (
+    <SessionProvider
+      session={session}
+      basePath={process.env.NEXT_PUBLIC_BASE_URL}
+    >
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </SessionProvider>
+  );
 }
