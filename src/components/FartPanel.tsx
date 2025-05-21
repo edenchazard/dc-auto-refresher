@@ -30,9 +30,9 @@ function Heading({ children }: { children: React.ReactNode }) {
   return (
     // <div className="relative flex items-center gap-5">
     //  <div className="flex-grow border-t border-gray-400"></div>
-    <h2 className="text-center">{children}</h2>
     //   <div className="flex-grow border-t border-gray-400"></div>
     // </div>
+    <h2 className="text-center">{children}</h2>
   );
 }
 

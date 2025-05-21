@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN + dumbPath),
   manifest: `${dumbPath}/manifest.webmanifest`,
   robots: `${dumbPath}/robots.txt`,
+
   icons: {
     icon: {
       rel: 'icon',
@@ -17,18 +18,18 @@ export const metadata: Metadata = {
     },
     apple: `${dumbPath}/apple-icon.png`,
   },
+
   applicationName: 'FART',
   title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
   description: 'Hatch and grow your dragons faster.',
   keywords: ['FART', 'dragcave', 'dragcave.net', 'auto-refresher', 'ar'],
   creator: 'eden chazard',
+
   openGraph: {
     description: 'Hatch and grow your dragons faster.',
     title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
     type: 'website',
-  },
-  colorScheme: 'light',
-  themeColor: '#1e293b',
+  }
 };
 export default function RootLayout({
   children,
@@ -53,3 +54,8 @@ export default function RootLayout({
     </html>
   );
 }
+
+export const viewport = {
+  colorScheme: 'light',
+  themeColor: '#1e293b'
+};
