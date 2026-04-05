@@ -42,7 +42,7 @@ From the project root, run the command:
 docker compose up --build app
 ```
 
-The app will be available at `http://localhost:3000`.
+The app will be available at `http://localhost:4321`.
 
 ### Production
 
