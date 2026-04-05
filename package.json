@@ -26,24 +26,10 @@
     "dev": "astro dev --host 0.0.0.0 --port 3000",
     "build": "astro build",
     "start": "HOST=0.0.0.0 PORT=3000 node dist/server/entry.mjs",
-    "check": "astro check",
     "ts:check": "astro check",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "format": "prettier --write .",
-    "fix": "npm run lint:fix && npm run format"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
