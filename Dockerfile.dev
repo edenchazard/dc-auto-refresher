@@ -3,7 +3,7 @@ ENV NODE_ENV=development
 ARG TESTING=false
 ENV TESTING=$TESTING
 
-WORKDIR /src
+WORKDIR /app
 COPY --link package.json package-lock.json ./
 RUN npm i
 RUN if [ "$TESTING" = "true" ]; then npx playwright install --with-deps; fi
