@@ -1,8 +1,6 @@
 name: Tests
 
-on:
-  push:
-  pull_request:
+on: [push]
 
 jobs:
   code-quality-and-tests:
@@ -11,19 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 24
-          cache: npm
-
-      - name: install dependencies
-        run: npm ci
-
-      - name: copy .env.example to .env
-        run: cp .env.example .env
+      - name: try to build the project
+        run: npm i && npm run build
 
       - name: run prettier checks
-        run: npm run format:check
+        run: npm run fmt:check
 
       - name: run linting
         run: npm run lint
@@ -31,20 +21,14 @@ jobs:
       - name: run typescript checks
         run: npm run ts:check
 
-      - name: try to build the project
-        env:
-          BASE_URL: /
-        run: npm run build
+      - name: copy .env.example to .env
+        run: cp .env.example .env
 
-      - name: install playwright browsers
-        run: BASE_URL=/ CLIENT_SECRET=test-secret docker compose --profile test up -d --build testapp
+      - name: start testing stack
+        run: docker compose up -d testapp
 
-      - name: run vitest
-        run: docker compose exec -T testapp sh -c "npm run test"
+      - name: run unit tests
+        run: docker compose exec -T testapp sh -c "npm run test:unit --run"
 
-      - name: run playwright
-        run: docker compose exec -T testapp sh -c "npm run test:e2e"
-
-      - name: stop testing stack
-        if: always()
-        run: docker compose --profile test down --remove-orphans
+      - name: run end to end tests
+        run: docker compose exec -T testapp sh -c "npm run test:e2e -- --run"
