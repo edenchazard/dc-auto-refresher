@@ -243,7 +243,7 @@ export default function FartPanel() {
           <button
             type="button"
             title="Click to dismiss"
-            className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 p-3 text-slate-900"
+            className="absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 p-3 text-slate-900"
             onClick={handleDismissGarden}
           >
             <FontAwesomeIcon icon={faX} />

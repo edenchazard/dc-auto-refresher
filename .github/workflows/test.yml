@@ -1,0 +1,34 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  code-quality-and-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: start testing stack
+        run: docker compose up -d testapp
+
+      - name: try to build the project
+        run: docker compose exec -T testapp sh -c "npm i && npm run build"
+
+      - name: run prettier checks
+        run: docker compose exec -T testapp sh -c "npm run format:check"
+
+      - name: run linting
+        run: docker compose exec -T testapp sh -c "npm run lint"
+
+      - name: run typescript checks
+        run: docker compose exec -T testapp sh -c "npm run ts:check"
+
+      - name: run unit tests
+        run: docker compose exec -T testapp sh -c "npm run test:unit --run"
+
+      - name: run end to end tests
+        run: docker compose exec -T testapp sh -c "npm run test:e2e"

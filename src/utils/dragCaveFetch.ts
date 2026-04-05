@@ -24,13 +24,17 @@ export type DragCaveApiResponse<Data> = {
 } & Data;
 
 export function dragCaveFetch() {
+  const clientSecret = process.env.CLIENT_SECRET;
+
   return createFetch({
     defaults: {
       baseURL: 'https://dragcave.net/api/v2',
       timeout: 10000,
-      headers: {
-        Authorization: `Bearer ${import.meta.env.CLIENT_SECRET}`,
-      },
+      headers: clientSecret
+        ? {
+            Authorization: `Bearer ${clientSecret}`,
+          }
+        : undefined,
     },
   });
 }

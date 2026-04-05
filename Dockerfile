@@ -1,31 +1,22 @@
-FROM node:lts-slim as base
+FROM node:24.14-bookworm-slim AS base
 WORKDIR /app
-COPY package.json package-lock.json ./
 
-FROM base as prod-deps
-RUN npm ci --omit=dev
-
-FROM base as build-deps
-RUN npm ci
-
-FROM build-deps as build
-COPY ./ ./
+FROM base AS build
+COPY --link package.json package-lock.json ./
+ARG BASE_URL=/dc/auto-refresher
+ENV BASE_URL=$BASE_URL
+COPY --link . .
 RUN npm run build
 
-FROM base as final
+FROM base AS runtime
+ENV NODE_ENV=production 
 WORKDIR /app
-ENV NODE_ENV=production
-ENV HOST=0.0.0.0
-ENV PORT=3000
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 astro
+COPY --from=build --chown=node:node /app/dist ./dist
+COPY --from=build --chown=node:node /app/package.json ./package.json
 
-COPY --from=prod-deps /app/node_modules ./node_modules
-COPY --from=build --chown=astro:nodejs /app/dist ./dist
+USER node
 
-USER astro
+EXPOSE 4321
 
-EXPOSE 3000
-
-CMD ["node", "./dist/server/entry.mjs"]
+CMD ["node", "dist/server/entry.mjs"]
