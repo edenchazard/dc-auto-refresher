@@ -13,7 +13,8 @@ body {
   background: #15202b;
 }
 
-input {
+input,
+select {
   background: #fff;
   color: #000;
 }
