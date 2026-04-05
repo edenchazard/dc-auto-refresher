@@ -1,5 +1,4 @@
 FROM node:24.14-bookworm-slim AS base
-ENV NODE_ENV=production
 WORKDIR /app
 
 FROM base AS build
