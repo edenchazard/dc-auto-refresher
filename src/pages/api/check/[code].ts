@@ -43,9 +43,7 @@ export const GET: APIRoute = async ({ params, request }) => {
 
     if (response.errors.length > 0) {
       return jsonResponse(200, {
-        errors: response.errors.map(
-          ([code, message]) => `API Error ${code}: ${message}`,
-        ),
+        errors: response.errors.map(([, message]) => message),
       });
     }
 
