@@ -1,0 +1,123 @@
+---
+import pkg from '../../package.json';
+import Header from '../components/Header.astro';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import '../app/globals.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const defaultTitle = 'FART - Fast Auto-Refresher Tool for dragcave.net';
+const defaultDescription = 'Hatch and grow your dragons faster.';
+
+const {
+  title = defaultTitle,
+  description = defaultDescription,
+  ogImage,
+} = Astro.props;
+
+const basePath = import.meta.env.BASE_URL;
+const iconPath = `${basePath}/logo192.png`;
+const appleIconPath = `${basePath}/apple-icon.png`;
+const manifestPath = `${basePath}/manifest.webmanifest`;
+const canonicalUrl = new URL(Astro.url.pathname + Astro.url.search, Astro.site ?? Astro.url);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width"
+    />
+    <meta
+      name="generator"
+      content={Astro.generator}
+    />
+    <meta
+      name="application-name"
+      content="FART"
+    />
+    <meta
+      name="description"
+      content={description}
+    />
+    <meta
+      name="keywords"
+      content="FART, dragcave, dragcave.net, auto-refresher, ar"
+    />
+    <meta
+      name="creator"
+      content="eden chazard"
+    />
+    <link
+      rel="canonical"
+      href={canonicalUrl.toString()}
+    />
+    <meta
+      name="theme-color"
+      content="#1e293b"
+    />
+    <meta
+      name="color-scheme"
+      content="light"
+    />
+    <meta
+      property="og:site_name"
+      content="FART"
+    />
+    <meta
+      property="og:type"
+      content="website"
+    />
+    <meta
+      property="og:title"
+      content={title}
+    />
+    <meta
+      property="og:description"
+      content={description}
+    />
+    <meta
+      property="og:url"
+      content={canonicalUrl.toString()}
+    />
+    {ogImage && (
+      <meta
+        property="og:image"
+        content={ogImage}
+      />
+    )}
+    <link
+      rel="manifest"
+      href={manifestPath}
+    />
+    <link
+      rel="icon"
+      href={iconPath}
+    />
+    <link
+      rel="apple-touch-icon"
+      href={appleIconPath}
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div
+      id="root"
+      class="min-h-screen font-sans font-normal font-base overflow-x-hidden"
+    >
+      <div class="min-h-screen App rounded-lg shadow-lg bg-slate-900 max-w-2xl mx-auto text-white flex flex-col">
+        <Header />
+        <main class="flex-1 mt-1 p-0 flex flex-col gap-3 [&>section:not(#add-dragon)]:m-2 minsz:px-3">
+          <slot />
+        </main>
+        <footer class="text-center my-4">v{pkg.version} &copy; eden chazard</footer>
+      </div>
+    </div>
+  </body>
+</html>

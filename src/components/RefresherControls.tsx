@@ -25,8 +25,6 @@ export default function RefresherControls({
   autorefresh,
   smartRemoval,
   updateSmartRemoval,
-  noView,
-  updateNoView,
 }: RefresherControlsProps) {
   const disabled = !hasRefreshableDragons(list);
   return (
@@ -105,8 +103,8 @@ export default function RefresherControls({
               disabled
                 ? 'No dragons to auto-refresh'
                 : autorefresh
-                ? 'Stop auto-refresher'
-                : 'Start auto-refresher'
+                  ? 'Stop auto-refresher'
+                  : 'Start auto-refresher'
             }
           >
             {disabled ? 'No dragons' : autorefresh ? 'Stop' : 'Start'}

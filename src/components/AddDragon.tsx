@@ -1,4 +1,5 @@
-import { type ReactElement, useState } from 'react';
+import type { ClipboardEvent, FormEvent, ReactElement } from 'react';
+import { useState } from 'react';
 import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
 import { useSessionStorage } from 'usehooks-ts';
@@ -27,7 +28,7 @@ export default function AddDragon({
   const [instances, setInstances] = useSessionStorage('addInstances', 1);
   const [tod, setTOD] = useState<TimePickerProps['value']>(null);
 
-  function handleAdd(e: React.FormEvent<HTMLFormElement>) {
+  function handleAdd(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     // by default don't specify a tod, only send the clock value
@@ -54,7 +55,7 @@ export default function AddDragon({
     setTOD(null);
   }
 
-  function handlePaste(e: ClipboardEvent) {
+  function handlePaste(e: ClipboardEvent<HTMLInputElement>) {
     e.preventDefault();
 
     if (!e.clipboardData) {

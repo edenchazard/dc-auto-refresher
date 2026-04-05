@@ -2,5 +2,8 @@
   "semi": true,
   "trailingComma": "all",
   "singleQuote": true,
-  "singleAttributePerLine": true
+  "singleAttributePerLine": true,
+  "plugins": [
+    "prettier-plugin-astro"
+  ]
 }

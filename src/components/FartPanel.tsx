@@ -22,7 +22,6 @@ import { ErrorDisplay } from '../components/ErrorDisplay';
 import type { ErrorMessage } from '../components/ErrorDisplay';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const checkingQueue = new Set<string>([]);
 
@@ -58,7 +57,7 @@ export default function FartPanel() {
   useIconCycle(
     autorefresh,
     listOfDragons,
-    process.env.NEXT_PUBLIC_BASE_URL + '/logo192.png',
+    `${import.meta.env.BASE_URL}/logo192.png`,
   );
 
   // Was a preset list param specified?
@@ -247,7 +246,7 @@ export default function FartPanel() {
             className="rounded-full p-3 absolute -right-2 -top-2 bg-slate-200 w-8 h-8 flex items-center justify-center text-slate-900"
             onClick={handleDismissGarden}
           >
-            <FontAwesomeIcon icon={faX as IconProp} />
+            <FontAwesomeIcon icon={faX} />
           </button>
         </a>
       )}

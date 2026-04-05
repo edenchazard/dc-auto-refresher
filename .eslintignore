@@ -1,5 +1,9 @@
-.next
+.astro
 node_modules
+.eslintrc.js
+astro.config.mjs
+postcss.config.cjs
+tailwind.config.cjs
 bin
 build
 dist

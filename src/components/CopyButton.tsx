@@ -1,5 +1,6 @@
 import type React from 'react';
-import { ComponentProps, useEffect, useRef, useState } from 'react';
+import type { ComponentProps } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { Button } from './Buttons';

@@ -1,29 +1,31 @@
-# Build in intermediate container
-FROM node:lts-slim as build
+FROM node:lts-slim as base
 WORKDIR /app
-COPY ./ ./
-RUN npm ci && npm run build
+COPY package.json package-lock.json ./
 
-# Copy build files to optimised container
-FROM node:lts-slim as final
+FROM base as prod-deps
+RUN npm ci --omit=dev
+
+FROM base as build-deps
+RUN npm ci
+
+FROM build-deps as build
+COPY ./ ./
+RUN npm run build
+
+FROM base as final
 WORKDIR /app
 ENV NODE_ENV=production
-
-# Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV HOST=0.0.0.0
+ENV PORT=3000
 
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN adduser --system --uid 1001 astro
 
-COPY --from=build /app/public ./public
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=build --chown=astro:nodejs /app/dist ./dist
 
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
+USER astro
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["node", "./dist/server/entry.mjs"]

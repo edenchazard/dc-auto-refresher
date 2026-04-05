@@ -1,21 +1,31 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     es2021: true,
+    node: true,
   },
+  parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   extends: [
-    'next/core-web-vitals',
     'plugin:@typescript-eslint/recommended',
+    'plugin:astro/recommended',
     'prettier',
   ],
-  overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
     project: ['./tsconfig.json'],
   },
-  rules: {
-    '@next/next/no-img-element': 'off',
-  },
+  overrides: [
+    {
+      files: ['*.astro'],
+      parser: 'astro-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        extraFileExtensions: ['.astro'],
+        project: ['./tsconfig.json'],
+      },
+    },
+  ],
 };
