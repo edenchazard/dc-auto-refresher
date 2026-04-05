@@ -19,7 +19,7 @@ jobs:
         run: docker compose exec -T testapp sh -c "npm i && npm run build"
 
       - name: run prettier checks
-        run: docker compose exec -T testapp sh -c "npm run fmt:check"
+        run: docker compose exec -T testapp sh -c "npm run format:check"
 
       - name: run linting
         run: docker compose exec -T testapp sh -c "npm run lint"
