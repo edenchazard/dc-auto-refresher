@@ -59,7 +59,7 @@ export const GET: APIRoute = async ({ params, request }) => {
         tod: dragon.tod,
       },
     });
-  } catch (ex: unknown) {
+  } catch {
     return jsonResponse(400, { errors: ['Sorry, an error occurred.'] });
   }
 };
