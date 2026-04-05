@@ -24,7 +24,6 @@ export type DragCaveApiResponse<Data> = {
 } & Data;
 
 export function dragCaveFetch() {
-  console.log(import.meta.env.CLIENT_SECRET);
   return createFetch({
     defaults: {
       baseURL: 'https://dragcave.net/api/v2',
