@@ -20,7 +20,6 @@ function jsonResponse(status: number, body: ResponseData | string) {
     status,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${import.meta.env.CLIENT_SECRET}`,
     },
   });
 }
