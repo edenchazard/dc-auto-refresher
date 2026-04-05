@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('home page metadata and primary content render', async ({ page }) => {
+  console.log('Navigating to home page');
   await page.goto('/');
 
   await expect(page).toHaveTitle(
