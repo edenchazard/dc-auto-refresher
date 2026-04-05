@@ -59,7 +59,7 @@ At runtime, provide `CLIENT_SECRET` and any host-specific `BASE_URL`, `HOST`, or
 Run unit tests locally:
 
 ```sh
-npm run test
+npm run test:unit
 ```
 
 Run end-to-end tests in the Docker test container:
