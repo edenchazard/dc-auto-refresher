@@ -1,0 +1,25 @@
+---
+import FartPanel from '../components/FartPanel';
+import Layout from '../layouts/Layout.astro';
+import { getListFromString } from '../utils/functions';
+
+const presetList = Astro.url.searchParams.get('list');
+const parsedList = presetList === null ? null : getListFromString(presetList);
+const title = 'FART - Fast Auto-Refresher Tool for dragcave.net';
+const description =
+  Array.isArray(parsedList) && parsedList.length > 0
+    ? 'My dragons need FARTing! Help them here.'
+    : 'Hatch and grow your dragons faster.';
+const ogImage =
+  Array.isArray(parsedList) && parsedList.length > 0
+    ? `https://dragcave.net/ogimage/${parsedList[0].code}`
+    : undefined;
+---
+
+<Layout
+  title={title}
+  description={description}
+  ogImage={ogImage}
+>
+  <FartPanel client:only="react" />
+</Layout>

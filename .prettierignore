@@ -1,7 +1,5 @@
-.next
+.astro
 node_modules
-package-lock.json
 bin
 build
 dist
-trash

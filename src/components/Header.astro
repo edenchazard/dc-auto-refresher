@@ -1,0 +1,68 @@
+---
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faEgg, faMugHot, faToolbox } from '@fortawesome/free-solid-svg-icons';
+
+interface HeaderLinkProps {
+  link: string;
+  title: string;
+  text: string;
+  icon: typeof faToolbox;
+}
+
+const links: HeaderLinkProps[] = [
+  {
+    link: '/dc/tools',
+    title: 'More DC Tools',
+    text: 'Tools',
+    icon: faToolbox,
+  },
+  {
+    link: 'https://github.com/edenchazard/dc-auto-refresher/',
+    title: 'View source on Github (external link)',
+    text: 'Github',
+    icon: faGithub,
+  },
+  {
+    link: 'https://ko-fi.com/dctools',
+    title: 'Support the site with a ko-fi (external link)',
+    text: 'Ko-fi',
+    icon: faMugHot,
+  },
+  {
+    link: 'https://dragcave.net',
+    title: 'Dragcave (external link)',
+    text: 'Dragcave',
+    icon: faEgg,
+  },
+];
+---
+
+<header
+  id="top"
+  class="text-s minsz:px-3"
+>
+  <div
+    class="flex flex-col flex-wrap items-stretch bg-slate-700 minsz:rounded-b-sm mid-sz:flex-row mid-sz:items-center"
+  >
+    <h1 class="flex-1 rounded-b-sm px-3 py-2 text-center mid-sz:text-left">
+      FART
+    </h1>
+    <nav
+      class="menu-big:divide-x-dashed flex grow flex-col items-stretch divide-slate-500 menu-big:flex-row menu-big:divide-x"
+    >
+      {
+        links.map(({ link, title, text, icon }) => (
+          <a
+            href={link}
+            title={title}
+            class="flex flex-1 flex-row items-center gap-x-2 bg-slate-600 p-2 text-center hover:border-slate-600 hover:bg-slate-800 menu-big:flex-col"
+          >
+            <FontAwesomeIcon icon={icon} />
+            {text}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>

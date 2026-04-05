@@ -1,12 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'react-tooltip/dist/react-tooltip.css' layer(base);
 
-@import 'react-tooltip/dist/react-tooltip.css';
+@import 'tailwindcss';
+
+@theme {
+  --breakpoint-xxs: 300px;
+  --breakpoint-minsz: 390px;
+  --breakpoint-mid-sz: 450px;
+  --breakpoint-menu-big: 309px;
+}
 
 body {
   background: #15202b;
 }
+
+input,
+select {
+  background: #fff;
+  color: #000;
+}
+
 .react-time-picker--enabled {
   background: #fff;
   color: #000;
@@ -23,14 +35,14 @@ input,
 select,
 textarea,
 .react-time-picker {
-  @apply p-1 rounded-sm text-black;
+  @apply rounded-xs p-1 text-black;
 }
 .button-purple {
-  @apply bg-indigo-300 text-indigo-900 hover:bg-indigo-700 hover:text-white disabled:bg-slate-300 disabled:text-black focus:bg-blue-800 focus:text-white;
+  @apply bg-indigo-300 text-indigo-900 hover:bg-indigo-700 hover:text-white focus:bg-blue-800 focus:text-white disabled:bg-slate-300 disabled:text-black;
 }
 
 .button-purple[aria-pressed='true'] {
-  @apply text-white bg-violet-900 ring-2 ring-purple-500 ring-offset-1 ring-offset-slate-900;
+  @apply bg-violet-900 text-white ring-2 ring-purple-500 ring-offset-1 ring-offset-slate-900;
 }
 .button-green {
   @apply bg-teal-700 text-white hover:bg-teal-900 hover:text-white focus:bg-emerald-900 focus:text-white;

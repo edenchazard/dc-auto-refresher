@@ -25,8 +25,6 @@ export default function RefresherControls({
   autorefresh,
   smartRemoval,
   updateSmartRemoval,
-  noView,
-  updateNoView,
 }: RefresherControlsProps) {
   const disabled = !hasRefreshableDragons(list);
   return (
@@ -37,7 +35,7 @@ export default function RefresherControls({
           updateSmartRemoval(!smartRemoval);
         }}
       >
-        <div className={`text-white flex justify-between items-center`}>
+        <div className={`flex items-center justify-between text-white`}>
           <Label
             id="smartRemoval"
             // Prevent label from "doubling up" our check behaviour
@@ -82,14 +80,14 @@ export default function RefresherControls({
           <Clock />
         </time>
       </div>
-      <div className="grid items-center grid-cols-1 xxs:grid-cols-2 mid-sz:grid-cols-[8rem_1fr_1fr] gap-x-3 gap-y-1">
+      <div className="grid grid-cols-1 items-center gap-x-3 gap-y-1 xxs:grid-cols-2 mid-sz:grid-cols-[8rem_1fr_1fr]">
         <Label
           className="min-w-fit"
           id="rate"
           text="Refresh Interval"
         />
         <RefreshRateSelect
-          className="min-w-[8rem] mid-sz:max-w-[12rem]"
+          className="min-w-32 mid-sz:max-w-48"
           id="rate"
           value={rate}
           onChanged={updateRate}
@@ -97,7 +95,7 @@ export default function RefresherControls({
         {
           // AR enabled
           <ToggleButton
-            className="button-purple min-w-[8rem] xxs:col-span-2 mid-sz:col-span-1 mid-sz:justify-self-end mid-sz:w-full mid-sz:max-w-[12rem]"
+            className="button-purple min-w-32 xxs:col-span-2 mid-sz:col-span-1 mid-sz:w-full mid-sz:max-w-48 mid-sz:justify-self-end"
             onClick={click}
             disabled={disabled}
             pressed={autorefresh}
@@ -105,8 +103,8 @@ export default function RefresherControls({
               disabled
                 ? 'No dragons to auto-refresh'
                 : autorefresh
-                ? 'Stop auto-refresher'
-                : 'Start auto-refresher'
+                  ? 'Stop auto-refresher'
+                  : 'Start auto-refresher'
             }
           >
             {disabled ? 'No dragons' : autorefresh ? 'Stop' : 'Start'}

@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
 interface ButtonProps extends ComponentProps<'button'> {
   styles?: {
@@ -24,7 +24,7 @@ export function Button({ ...props }: Partial<ButtonProps>) {
     <button
       type={'button'}
       {...props}
-      className={`button rounded px-2 py-1 ${props.className ?? ''}`}
+      className={`button rounded-sm px-2 py-1 ${props.className ?? ''}`}
     >
       {props.children}
     </button>

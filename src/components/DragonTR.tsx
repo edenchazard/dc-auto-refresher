@@ -52,7 +52,7 @@ export default function DragonTR({
     <div {...props}>
       <Tooltip id={dragon.code} />
       <a
-        className={`w-full text-center h-12 ${
+        className={`h-12 w-full text-center ${
           !dragon.enabled ? 'bg-slate-800' : ''
         }`}
         href={`https://dragcave.net/view/${dragon.code}`}

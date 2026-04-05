@@ -22,16 +22,15 @@ import { ErrorDisplay } from '../components/ErrorDisplay';
 import type { ErrorMessage } from '../components/ErrorDisplay';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const checkingQueue = new Set<string>([]);
 
 function Heading({ children }: { children: React.ReactNode }) {
   return (
     // <div className="relative flex items-center gap-5">
-    //  <div className="flex-grow border-t border-gray-400"></div>
+    //  <div className="grow border-t border-gray-400"></div>
     <h2 className="text-center">{children}</h2>
-    //   <div className="flex-grow border-t border-gray-400"></div>
+    //   <div className="grow border-t border-gray-400"></div>
     // </div>
   );
 }
@@ -58,7 +57,7 @@ export default function FartPanel() {
   useIconCycle(
     autorefresh,
     listOfDragons,
-    process.env.NEXT_PUBLIC_BASE_URL + '/logo192.png',
+    `${import.meta.env.BASE_URL}/logo192.png`,
   );
 
   // Was a preset list param specified?
@@ -237,17 +236,17 @@ export default function FartPanel() {
       {showGardenBanner && (
         <a
           href={`https://chazza.me/dc/hatchery`}
-          className="bg-slate-500 px-8 py-4 rounded-md top-4 absolute self-center mx-4 text-center shadow-2xl"
+          className="absolute top-4 mx-4 self-center rounded-md bg-slate-500 px-8 py-4 text-center shadow-2xl"
         >
           Like FART? Why not bask in the smell of plants at the{' '}
           <span className="underline">Garden of Eden</span>?
           <button
             type="button"
             title="Click to dismiss"
-            className="rounded-full p-3 absolute -right-2 -top-2 bg-slate-200 w-8 h-8 flex items-center justify-center text-slate-900"
+            className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 p-3 text-slate-900"
             onClick={handleDismissGarden}
           >
-            <FontAwesomeIcon icon={faX as IconProp} />
+            <FontAwesomeIcon icon={faX} />
           </button>
         </a>
       )}
@@ -291,11 +290,11 @@ export default function FartPanel() {
       <section className="space-y-3">
         <Heading>Dragons</Heading>
         {listOfDragons.length > 0 ? (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] gap-4 items-stretch">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(7rem,1fr))] items-stretch gap-4">
             {listOfDragons.map((dragon, index) => {
               return (
                 <DragonTR
-                  className={'flex flex-col text-center gap-1 relative'}
+                  className={'relative flex flex-col gap-1 text-center'}
                   dragon={dragon}
                   key={dragon.code}
                   rate={rate}
@@ -314,8 +313,8 @@ export default function FartPanel() {
           <p className="text-center">No dragons have been added.</p>
         )}
         {listOfDragons.find((dragon) => !dragon.enabled) && (
-          <div className="bg-slate-800 text-stone-200 p-4 rounded-md text-center">
-            <p className="text-center font-bold text-lg">
+          <div className="rounded-md bg-slate-800 p-4 text-center text-stone-200">
+            <p className="text-center text-lg font-bold">
               Views on some dragons are disabled
             </p>
             <p>
@@ -325,7 +324,7 @@ export default function FartPanel() {
           </div>
         )}
       </section>
-      <section className="min-h-[5rem]">
+      <section className="min-h-20">
         <Heading>Refresher</Heading>
         {autorefresh ? (
           <RefresherView
