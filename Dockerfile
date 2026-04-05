@@ -13,10 +13,8 @@ FROM base AS runtime
 ENV NODE_ENV=production 
 WORKDIR /app
 
-COPY --from=prod-deps --chown=node:node /app/node_modules ./node_modules
 COPY --from=build --chown=node:node /app/dist ./dist
 COPY --from=build --chown=node:node /app/package.json ./package.json
-RUN mkdir -p /app/.astro && chown node:node /app/.astro
 
 USER node
 
