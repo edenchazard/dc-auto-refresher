@@ -6,7 +6,6 @@ test('home page metadata and primary content render', async ({ page }) => {
   await expect(page).toHaveTitle(
     'FART - Fast Auto-Refresher Tool for dragcave.net',
   );
-  console.log('Navigating to home page', page.url());
   await expect(
     page.getByRole('heading', { level: 1, name: 'FART' }),
   ).toBeVisible();
