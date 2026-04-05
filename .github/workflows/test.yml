@@ -9,23 +9,23 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: try to build the project
-        run: npm i && npm run build
-
-      - name: run prettier checks
-        run: npm run fmt:check
-
-      - name: run linting
-        run: npm run lint
-
-      - name: run typescript checks
-        run: npm run ts:check
-
       - name: copy .env.example to .env
         run: cp .env.example .env
 
       - name: start testing stack
         run: docker compose up -d testapp
+
+      - name: try to build the project
+        run: docker compose exec -T testapp sh -c "npm i && npm run build"
+
+      - name: run prettier checks
+        run: docker compose exec -T testapp sh -c "npm run fmt:check"
+
+      - name: run linting
+        run: docker compose exec -T testapp sh -c "npm run lint"
+
+      - name: run typescript checks
+        run: docker compose exec -T testapp sh -c "npm run ts:check"
 
       - name: run unit tests
         run: docker compose exec -T testapp sh -c "npm run test:unit --run"
