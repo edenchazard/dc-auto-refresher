@@ -7,12 +7,14 @@ services:
     env_file:
       - .env
     environment:
-      BASE_URL: ${BASE_URL:-/}
+      BASE_URL: ${BASE_URL}
     ports:
-      - 3000:3000
+      - 4321:4321
     volumes:
       - .:/app
       - node_modules:/app/node_modules
+    networks:
+      - internal
 
   testapp:
     build:
@@ -26,10 +28,15 @@ services:
     env_file:
       - .env
     environment:
-      BASE_URL: ${BASE_URL:-/}
+      BASE_URL: ${BASE_URL}
     volumes:
       - .:/app
       - node_modules:/app/node_modules
+    networks:
+      - test
 
 volumes:
   node_modules:
+networks:
+  internal:
+  test:

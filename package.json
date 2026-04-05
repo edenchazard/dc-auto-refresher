@@ -25,7 +25,7 @@
   },
   "scripts": {
     "preview": "astro preview",
-    "dev": "astro dev",
+    "dev": "astro dev --host 0.0.0.0",
     "build": "astro build",
     "start": "dist/server/entry.mjs",
     "test:unit": "vitest run",
