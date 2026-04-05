@@ -72,7 +72,7 @@ export default function DragonTR({
         Views enabled
       </label>
       <input
-        className="absolute -right-1 top-12 h-6 w-6"
+        className="absolute top-12 -right-1 h-6 w-6"
         type="checkbox"
         id={`noView-${dragon.code}`}
         defaultChecked={dragon.enabled}

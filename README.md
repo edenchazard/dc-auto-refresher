@@ -18,7 +18,7 @@ Fast Auto Refreshing Tool, aka FART (yes, really!). Fart is an open-source auto-
 
 ## Running the project
 
-The project is dockerized, so all you need is docker, docker-compose, a clone of the repository and access to the DC API. You can then choose to run the development or production compose files.
+The project is dockerized, so all you need is Docker, Docker Compose, a clone of the repository, and access to the DragCave API.
 
 ```sh
 # clone repo
@@ -29,8 +29,8 @@ cd dc-auto-refresher
 # copy config
 cp .env.example .env
 
-# edit with your favorite text editor
-# and put in your API key.
+# add your DragCave API key
+# BASE_URL should stay `/` for local development
 nano .env
 ```
 
@@ -39,14 +39,33 @@ nano .env
 From the project root, run the command:
 
 ```sh
-docker compose -f docker-compose.dev.yml up -d
+docker compose up --build app
 ```
+
+The app will be available at `http://localhost:3000`.
 
 ### Production
 
-1. Change MOUNT_PATH in docker-compose.prod.yml to the deployment url. e.g. If you want it to be available at example.org/fart, you'd use "/fart".
-2. From the project root, run the command:
+Build the production image:
 
 ```sh
-docker compose up -d --build
+docker build -f Dockerfile --build-arg BASE_URL=/dc/auto-refresher .
+```
+
+At runtime, provide `CLIENT_SECRET` and any host-specific `BASE_URL`, `HOST`, or `PORT` environment variables as needed.
+
+### Tests
+
+Run unit tests locally:
+
+```sh
+npm run test
+```
+
+Run end-to-end tests in the Docker test container:
+
+```sh
+docker compose --profile test up -d --build testapp
+docker compose exec testapp npm run test:e2e
+docker compose --profile test down --remove-orphans
 ```

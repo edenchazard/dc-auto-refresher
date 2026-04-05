@@ -1,0 +1,50 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  code-quality-and-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: copy .env.example to .env
+        run: cp .env.example .env
+
+      - name: run prettier checks
+        run: npm run format:check
+
+      - name: run linting
+        run: npm run lint
+
+      - name: run typescript checks
+        run: npm run ts:check
+
+      - name: try to build the project
+        env:
+          BASE_URL: /
+        run: npm run build
+
+      - name: install playwright browsers
+        run: BASE_URL=/ CLIENT_SECRET=test-secret docker compose --profile test up -d --build testapp
+
+      - name: run vitest
+        run: docker compose exec -T testapp sh -c "npm run test"
+
+      - name: run playwright
+        run: docker compose exec -T testapp sh -c "npm run test:e2e"
+
+      - name: stop testing stack
+        if: always()
+        run: docker compose --profile test down --remove-orphans

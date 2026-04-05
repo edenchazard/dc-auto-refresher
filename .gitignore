@@ -25,3 +25,5 @@ yarn-error.log*
 
 .astro
 dist
+playwright-report
+test-results

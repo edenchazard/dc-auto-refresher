@@ -28,14 +28,21 @@
     "dev": "astro dev --host 0.0.0.0 --port 3000",
     "build": "astro build",
     "start": "HOST=0.0.0.0 PORT=3000 node dist/server/entry.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
     "ts:check": "astro check",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier . --check"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.5.2",
     "@typescript-eslint/parser": "^8.58.0",
     "eslint": "^10.2.0",
     "eslint-plugin-astro": "^1.6.0",
@@ -43,7 +50,8 @@
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.58.0"
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^4.1.2"
   },
   "overrides": {
     "vite": "^7"

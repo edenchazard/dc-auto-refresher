@@ -75,7 +75,7 @@ export default function AddDragon({
       onSubmit={handleAdd}
       autoComplete="off"
     >
-      <div className="bg-slate-800 p-2 minsz:rounded-lg minsz:px-5">
+      <div className="minsz:rounded-lg minsz:px-5 bg-slate-800 p-2">
         {top !== null && top}
         <div className="flex flex-col items-stretch gap-3">
           <div>
@@ -125,7 +125,7 @@ export default function AddDragon({
                     } views per minute: Actual rate depends on different factors.`) +
                   " Specify '0' to add the dragon but not auto-refresh it."}
               </p>
-              <p className="rounded-2xl bg-slate-600 px-3 py-1 text-xs italic text-gray-200">
+              <p className="rounded-2xl bg-slate-600 px-3 py-1 text-xs text-gray-200 italic">
                 <FontAwesomeIcon
                   icon={faCircleInfo}
                   className="mr-2"

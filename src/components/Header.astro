@@ -43,20 +43,20 @@ const links: HeaderLinkProps[] = [
   class="text-s minsz:px-3"
 >
   <div
-    class="flex flex-col flex-wrap items-stretch bg-slate-700 minsz:rounded-b-sm mid-sz:flex-row mid-sz:items-center"
+    class="minsz:rounded-b-sm mid-sz:flex-row mid-sz:items-center flex flex-col flex-wrap items-stretch bg-slate-700"
   >
-    <h1 class="flex-1 rounded-b-sm px-3 py-2 text-center mid-sz:text-left">
+    <h1 class="mid-sz:text-left flex-1 rounded-b-sm px-3 py-2 text-center">
       FART
     </h1>
     <nav
-      class="menu-big:divide-x-dashed flex grow flex-col items-stretch divide-slate-500 menu-big:flex-row menu-big:divide-x"
+      class="menu-big:divide-x-dashed menu-big:flex-row menu-big:divide-x flex grow flex-col items-stretch divide-slate-500"
     >
       {
         links.map(({ link, title, text, icon }) => (
           <a
             href={link}
             title={title}
-            class="flex flex-1 flex-row items-center gap-x-2 bg-slate-600 p-2 text-center hover:border-slate-600 hover:bg-slate-800 menu-big:flex-col"
+            class="menu-big:flex-col flex flex-1 flex-row items-center gap-x-2 bg-slate-600 p-2 text-center hover:border-slate-600 hover:bg-slate-800"
           >
             <FontAwesomeIcon icon={icon} />
             {text}
