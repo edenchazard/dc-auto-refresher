@@ -8,12 +8,12 @@ export default function ShareSetup({ list }: { list: Dragon[] }) {
 
   return (
     <>
-      <div className="flex flex-col gap-y-2 gap-x-3 items-stretch flex-wrap xxs:flex-row xxs:items-center">
+      <div className="flex flex-col flex-wrap items-stretch gap-x-3 gap-y-2 xxs:flex-row xxs:items-center">
         <Label
           id="share"
           text="Share Link"
         />
-        <div className="flex flex-col items-stretch flex-1 xxs:flex-row">
+        <div className="flex flex-1 flex-col items-stretch xxs:flex-row">
           <input
             className="flex-1 rounded-b-none xxs:rounded-l-sm xxs:rounded-r-none"
             id="share"

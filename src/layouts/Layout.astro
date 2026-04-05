@@ -23,7 +23,10 @@ const basePath = import.meta.env.BASE_URL;
 const iconPath = `${basePath}/logo192.png`;
 const appleIconPath = `${basePath}/apple-icon.png`;
 const manifestPath = `${basePath}/manifest.webmanifest`;
-const canonicalUrl = new URL(Astro.url.pathname + Astro.url.search, Astro.site ?? Astro.url);
+const canonicalUrl = new URL(
+  Astro.url.pathname + Astro.url.search,
+  Astro.site ?? Astro.url,
+);
 ---
 
 <!doctype html>
@@ -86,12 +89,14 @@ const canonicalUrl = new URL(Astro.url.pathname + Astro.url.search, Astro.site ?
       property="og:url"
       content={canonicalUrl.toString()}
     />
-    {ogImage && (
-      <meta
-        property="og:image"
-        content={ogImage}
-      />
-    )}
+    {
+      ogImage && (
+        <meta
+          property="og:image"
+          content={ogImage}
+        />
+      )
+    }
     <link
       rel="manifest"
       href={manifestPath}
@@ -109,14 +114,20 @@ const canonicalUrl = new URL(Astro.url.pathname + Astro.url.search, Astro.site ?
   <body>
     <div
       id="root"
-      class="min-h-screen font-sans font-normal font-base overflow-x-hidden"
+      class="font-base min-h-screen overflow-x-hidden font-sans font-normal"
     >
-      <div class="min-h-screen App rounded-lg shadow-lg bg-slate-900 max-w-2xl mx-auto text-white flex flex-col">
+      <div
+        class="App mx-auto flex min-h-screen max-w-2xl flex-col rounded-lg bg-slate-900 text-white shadow-lg"
+      >
         <Header />
-        <main class="flex-1 mt-1 p-0 flex flex-col gap-3 [&>section:not(#add-dragon)]:m-2 minsz:px-3">
+        <main
+          class="mt-1 flex flex-1 flex-col gap-3 p-0 minsz:px-3 [&>section:not(#add-dragon)]:m-2"
+        >
           <slot />
         </main>
-        <footer class="text-center my-4">v{pkg.version} &copy; eden chazard</footer>
+        <footer class="my-4 text-center">
+          v{pkg.version} &copy; eden chazard
+        </footer>
       </div>
     </div>
   </body>

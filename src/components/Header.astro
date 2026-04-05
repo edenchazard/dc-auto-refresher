@@ -40,21 +40,29 @@ const links: HeaderLinkProps[] = [
 
 <header
   id="top"
-  class="minsz:px-3 text-s"
+  class="text-s minsz:px-3"
 >
-  <div class="bg-slate-700 flex flex-col items-stretch flex-wrap minsz:rounded-b-sm mid-sz:flex-row mid-sz:items-center">
-    <h1 class="py-2 px-3 rounded-b-sm text-center flex-1 mid-sz:text-left">FART</h1>
-    <nav class="flex flex-col items-stretch flex-grow divide-slate-500 menu-big:flex-row menu-big:divide-x menu-big:divide-x-dashed">
-      {links.map(({ link, title, text, icon }) => (
-        <a
-          href={link}
-          title={title}
-          class="flex-1 gap-x-2 p-2 items-center flex flex-row text-center bg-slate-600 hover:border-slate-600 hover:bg-slate-800 menu-big:flex-col"
-        >
-          <FontAwesomeIcon icon={icon} />
-          {text}
-        </a>
-      ))}
+  <div
+    class="flex flex-col flex-wrap items-stretch bg-slate-700 minsz:rounded-b-sm mid-sz:flex-row mid-sz:items-center"
+  >
+    <h1 class="flex-1 rounded-b-sm px-3 py-2 text-center mid-sz:text-left">
+      FART
+    </h1>
+    <nav
+      class="menu-big:divide-x-dashed flex flex-grow flex-col items-stretch divide-slate-500 menu-big:flex-row menu-big:divide-x"
+    >
+      {
+        links.map(({ link, title, text, icon }) => (
+          <a
+            href={link}
+            title={title}
+            class="flex flex-1 flex-row items-center gap-x-2 bg-slate-600 p-2 text-center hover:border-slate-600 hover:bg-slate-800 menu-big:flex-col"
+          >
+            <FontAwesomeIcon icon={icon} />
+            {text}
+          </a>
+        ))
+      }
     </nav>
   </div>
 </header>

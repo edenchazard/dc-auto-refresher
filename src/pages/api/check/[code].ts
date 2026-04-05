@@ -1,6 +1,10 @@
 import type { APIRoute } from 'astro';
-import { validateCode, inferDragon } from '../../../utils/utils'; 
-import { dragCaveFetch, type APIDragon, type DragCaveApiResponse } from '../../../utils/dragCaveFetch';
+import { validateCode, inferDragon } from '../../../utils/utils';
+import {
+  dragCaveFetch,
+  type APIDragon,
+  type DragCaveApiResponse,
+} from '../../../utils/dragCaveFetch';
 
 type ResponseData = {
   errors: string[];
@@ -25,19 +29,23 @@ export const GET: APIRoute = async ({ params, request }) => {
   const code = params.code ?? '';
   const param = new URL(request.url).searchParams.get('tod');
   const seconds = typeof param === 'string' ? Number(param) : null;
-  const errors: ResponseData['errors'] = []; 
+  const errors: ResponseData['errors'] = [];
 
   if (!validateCode(code)) {
     errors.push('Invalid code.');
     return jsonResponse(400, { errors });
   }
 
-  try { 
-    const response = await dragCaveFetch()<DragCaveApiResponse<{ dragons: Record<string, APIDragon>}>>(`/dragon/${code}`);
-  
-    if (response.errors.length > 0) { 
-      return jsonResponse(200, { 
-        errors: response.errors.map(([code, message]) => `API Error ${code}: ${message}`),
+  try {
+    const response = await dragCaveFetch()<
+      DragCaveApiResponse<{ dragons: Record<string, APIDragon> }>
+    >(`/dragon/${code}`);
+
+    if (response.errors.length > 0) {
+      return jsonResponse(200, {
+        errors: response.errors.map(
+          ([code, message]) => `API Error ${code}: ${message}`,
+        ),
       });
     }
 
@@ -53,7 +61,7 @@ export const GET: APIRoute = async ({ params, request }) => {
         tod: dragon.tod,
       },
     });
-  } catch (ex: unknown) { 
-      return jsonResponse(400, { errors: ["Sorry, an error occurred."] }); 
+  } catch (ex: unknown) {
+    return jsonResponse(400, { errors: ['Sorry, an error occurred.'] });
   }
 };

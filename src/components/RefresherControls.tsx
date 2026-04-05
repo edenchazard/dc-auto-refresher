@@ -35,7 +35,7 @@ export default function RefresherControls({
           updateSmartRemoval(!smartRemoval);
         }}
       >
-        <div className={`text-white flex justify-between items-center`}>
+        <div className={`flex items-center justify-between text-white`}>
           <Label
             id="smartRemoval"
             // Prevent label from "doubling up" our check behaviour
@@ -80,7 +80,7 @@ export default function RefresherControls({
           <Clock />
         </time>
       </div>
-      <div className="grid items-center grid-cols-1 xxs:grid-cols-2 mid-sz:grid-cols-[8rem_1fr_1fr] gap-x-3 gap-y-1">
+      <div className="grid grid-cols-1 items-center gap-x-3 gap-y-1 xxs:grid-cols-2 mid-sz:grid-cols-[8rem_1fr_1fr]">
         <Label
           className="min-w-fit"
           id="rate"
@@ -95,7 +95,7 @@ export default function RefresherControls({
         {
           // AR enabled
           <ToggleButton
-            className="button-purple min-w-[8rem] xxs:col-span-2 mid-sz:col-span-1 mid-sz:justify-self-end mid-sz:w-full mid-sz:max-w-[12rem]"
+            className="button-purple min-w-[8rem] xxs:col-span-2 mid-sz:col-span-1 mid-sz:w-full mid-sz:max-w-[12rem] mid-sz:justify-self-end"
             onClick={click}
             disabled={disabled}
             pressed={autorefresh}

@@ -77,9 +77,9 @@ export default function AddDragon({
     >
       <div className="bg-slate-800 p-2 minsz:rounded-lg minsz:px-5">
         {top !== null && top}
-        <div className="flex flex-col gap-3 items-stretch ">
+        <div className="flex flex-col items-stretch gap-3">
           <div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <Label
                 id="code"
                 text="Code"
@@ -102,7 +102,7 @@ export default function AddDragon({
             </div>
           </div>
           <div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <Label
                 id="instances"
                 text="Instances"
@@ -116,7 +116,7 @@ export default function AddDragon({
                 aria-describedby="instances-description ratio-limit"
               />
             </div>
-            <div className="text-gray-400 flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 text-gray-400">
               <p id="instances-description ">
                 {(rate === 0
                   ? 'Variable: Each image will reload as soon as it has loaded.'
@@ -125,7 +125,7 @@ export default function AddDragon({
                     } views per minute: Actual rate depends on different factors.`) +
                   " Specify '0' to add the dragon but not auto-refresh it."}
               </p>
-              <p className="bg-slate-600 rounded-2xl text-gray-200 text-xs py-1 px-3 italic">
+              <p className="rounded-2xl bg-slate-600 px-3 py-1 text-xs italic text-gray-200">
                 <FontAwesomeIcon
                   icon={faCircleInfo}
                   className="mr-2"
@@ -137,7 +137,7 @@ export default function AddDragon({
             </div>
           </div>
           <div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <Label
                 id="tod"
                 text="Dies at"

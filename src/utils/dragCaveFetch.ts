@@ -1,5 +1,4 @@
-
-import { createFetch} from 'ofetch' 
+import { createFetch } from 'ofetch';
 
 export type DragonCode = string;
 
@@ -21,18 +20,18 @@ export interface APIDragon {
 }
 
 export type DragCaveApiResponse<Data> = {
-  errors: Array<[number, string]>; 
-}  & Data;
+  errors: Array<[number, string]>;
+} & Data;
 
-export function dragCaveFetch(){
+export function dragCaveFetch() {
   console.log(import.meta.env.CLIENT_SECRET);
   return createFetch({
     defaults: {
       baseURL: 'https://dragcave.net/api/v2',
       timeout: 10000,
       headers: {
-        'Authorization': `Bearer ${import.meta.env.CLIENT_SECRET}`,
-      }
-    }
+        Authorization: `Bearer ${import.meta.env.CLIENT_SECRET}`,
+      },
+    },
   });
-};
+}
