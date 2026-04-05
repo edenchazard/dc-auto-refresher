@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
   use: {
-    baseURL: `http://localhost:3000`,
+    baseURL: `http://127.0.0.1:4123/`,
     trace: 'on-first-retry',
   },
   projects: [
@@ -14,8 +14,12 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run preview',
-    url: `http://localhost:3000`,
-    timeout: 10 * 1000,
+    command: `npm run build && npm run preview -- --host 0.0.0.0 --port 4123`,
+    url: `http://127.0.0.1:4123/`,
+    timeout: 120 * 1000,
+    env: {
+      ...process.env,
+      BASE_URL: '/',
+    },
   },
 });
