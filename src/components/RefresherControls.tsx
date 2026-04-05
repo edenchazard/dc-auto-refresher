@@ -87,7 +87,7 @@ export default function RefresherControls({
           text="Refresh Interval"
         />
         <RefreshRateSelect
-          className="min-w-[8rem] mid-sz:max-w-[12rem]"
+          className="min-w-32 mid-sz:max-w-48"
           id="rate"
           value={rate}
           onChanged={updateRate}
@@ -95,7 +95,7 @@ export default function RefresherControls({
         {
           // AR enabled
           <ToggleButton
-            className="button-purple min-w-[8rem] xxs:col-span-2 mid-sz:col-span-1 mid-sz:w-full mid-sz:max-w-[12rem] mid-sz:justify-self-end"
+            className="button-purple min-w-32 xxs:col-span-2 mid-sz:col-span-1 mid-sz:w-full mid-sz:max-w-48 mid-sz:justify-self-end"
             onClick={click}
             disabled={disabled}
             pressed={autorefresh}

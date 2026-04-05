@@ -28,9 +28,9 @@ const checkingQueue = new Set<string>([]);
 function Heading({ children }: { children: React.ReactNode }) {
   return (
     // <div className="relative flex items-center gap-5">
-    //  <div className="flex-grow border-t border-gray-400"></div>
+    //  <div className="grow border-t border-gray-400"></div>
     <h2 className="text-center">{children}</h2>
-    //   <div className="flex-grow border-t border-gray-400"></div>
+    //   <div className="grow border-t border-gray-400"></div>
     // </div>
   );
 }
@@ -324,7 +324,7 @@ export default function FartPanel() {
           </div>
         )}
       </section>
-      <section className="min-h-[5rem]">
+      <section className="min-h-20">
         <Heading>Refresher</Heading>
         {autorefresh ? (
           <RefresherView

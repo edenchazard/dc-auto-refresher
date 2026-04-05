@@ -1,12 +1,23 @@
-@import 'react-tooltip/dist/react-tooltip.css';
+@import 'react-tooltip/dist/react-tooltip.css' layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --breakpoint-xxs: 300px;
+  --breakpoint-minsz: 390px;
+  --breakpoint-mid-sz: 450px;
+  --breakpoint-menu-big: 309px;
+}
 
 body {
   background: #15202b;
 }
+
+input {
+  background: #fff;
+  color: #000;
+}
+
 .react-time-picker--enabled {
   background: #fff;
   color: #000;
@@ -23,7 +34,7 @@ input,
 select,
 textarea,
 .react-time-picker {
-  @apply rounded-sm p-1 text-black;
+  @apply rounded-xs p-1 text-black;
 }
 .button-purple {
   @apply bg-indigo-300 text-indigo-900 hover:bg-indigo-700 hover:text-white focus:bg-blue-800 focus:text-white disabled:bg-slate-300 disabled:text-black;
