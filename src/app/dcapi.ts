@@ -1,6 +1,7 @@
 import type { Dragon } from './types';
 
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL + '/api';
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_URL ?? '';
+const API_URL = `${BASE_PATH}/api`;
 
 interface APIResponse {
   errors: string[];

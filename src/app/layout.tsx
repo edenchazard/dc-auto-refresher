@@ -4,18 +4,17 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import './globals.css';
 import Header from '../components/Header';
 
-const dumbPath = process.env.NEXT_PUBLIC_BASE_URL;
+const basePath = process.env.NEXT_PUBLIC_BASE_URL ?? '';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN + dumbPath),
-  manifest: `${dumbPath}/manifest.webmanifest`,
-  robots: `${dumbPath}/robots.txt`,
+  manifest: `${basePath}/manifest.webmanifest`,
+  robots: `${basePath}/robots.txt`,
   icons: {
     icon: {
       rel: 'icon',
-      url: `${dumbPath}/logo192.png`,
+      url: `${basePath}/logo192.png`,
     },
-    apple: `${dumbPath}/apple-icon.png`,
+    apple: `${basePath}/apple-icon.png`,
   },
   applicationName: 'FART',
   title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
