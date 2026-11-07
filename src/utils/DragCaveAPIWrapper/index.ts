@@ -71,10 +71,10 @@ class DragCaveAPIWrapper {
 
   constructor(private readonly apiKey: string) {
     this.http = axios.create({
-      baseURL: `https://dragcave.net/api/${this.apiKey}/json`,
+      baseURL: `https://dragcave.net/api/v2`,
       headers: {
         'User-Agent': 'DragCave API Wrapper',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${apiKey}`,
       },
     });
   }
@@ -143,7 +143,7 @@ class DragCaveAPIWrapper {
 
   async view(code: DragonCode) {
     const response = await this._get<APIDragonCollectionResult>(
-      `/view/${code}`,
+      `/dragon/${code}`,
       'dragons',
     );
 

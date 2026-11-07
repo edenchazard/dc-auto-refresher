@@ -57,5 +57,11 @@
     "eslint-config-prettier": "^8.8.0",
     "postcss": "^8.4.5",
     "prettier": "^3.0.3"
+  },
+  "allowScripts": {
+    "@fortawesome/fontawesome-common-types": true,
+    "@fortawesome/fontawesome-svg-core": true,
+    "@fortawesome/free-brands-svg-icons": true,
+    "@fortawesome/free-solid-svg-icons": true
   }
 }

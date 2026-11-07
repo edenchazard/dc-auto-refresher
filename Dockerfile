@@ -1,29 +1,32 @@
-# Build in intermediate container
-FROM node:lts-slim as build
+# Install dependencies separately so source changes do not invalidate this layer.
+FROM node:26-bookworm-slim AS deps
 WORKDIR /app
-COPY ./ ./
-RUN npm ci && npm run build
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# Copy build files to optimised container
-FROM node:lts-slim as final
+# Build without deployment-specific variables or secrets.
+FROM node:26-bookworm-slim AS build
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
+ARG NEXT_PUBLIC_BASE_URL=/dc/auto-refresher
+ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+# Run the standalone Next.js server.
+FROM node:26-bookworm-slim AS final
 WORKDIR /app
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=build /app/public ./public
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=build --chown=nextjs:nodejs /app/public ./public
 COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
-
-EXPOSE 3000
 
 CMD ["node", "server.js"]

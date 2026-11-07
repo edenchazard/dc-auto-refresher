@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: process.env.NEXT_PUBLIC_BASE_URL,
+  basePath: process.env.NEXT_PUBLIC_BASE_URL || undefined,
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if

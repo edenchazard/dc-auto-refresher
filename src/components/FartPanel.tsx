@@ -58,7 +58,7 @@ export default function FartPanel() {
   useIconCycle(
     autorefresh,
     listOfDragons,
-    process.env.NEXT_PUBLIC_BASE_URL + '/logo192.png',
+    `${process.env.NEXT_PUBLIC_BASE_URL ?? ''}/logo192.png`,
   );
 
   // Was a preset list param specified?

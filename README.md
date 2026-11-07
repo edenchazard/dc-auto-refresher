@@ -18,7 +18,7 @@ Fast Auto Refreshing Tool, aka FART (yes, really!). Fart is an open-source auto-
 
 ## Running the project
 
-The project is dockerized, so all you need is docker, docker-compose, a clone of the repository and access to the DC API. You can then choose to run the development or production compose files.
+The project is dockerized, so all you need is Docker Compose and access to the DC API. You can run the development setup from a clone or deploy the reusable production image from GHCR.
 
 ```sh
 # clone repo
@@ -26,7 +26,7 @@ git clone https://github.com/edenchazard/dc-auto-refresher.git
 
 cd dc-auto-refresher
 
-# copy config
+# copy development config
 cp .env.example .env
 
 # edit with your favorite text editor
@@ -39,14 +39,5 @@ nano .env
 From the project root, run the command:
 
 ```sh
-docker compose -f docker-compose.dev.yml up -d
-```
-
-### Production
-
-1. Change MOUNT_PATH in docker-compose.prod.yml to the deployment url. e.g. If you want it to be available at example.org/fart, you'd use "/fart".
-2. From the project root, run the command:
-
-```sh
-docker compose up -d --build
+docker compose up -d
 ```
