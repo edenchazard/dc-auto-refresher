@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLocalStorage, useSessionStorage } from 'usehooks-ts';
 import type { Dragon } from '../app/types';
 import errMsg from '../app/errors';
@@ -53,6 +53,7 @@ export default function FartPanel() {
     'garden-banner',
     true,
   );
+  const handleAddRef = useRef<(dragon: Dragon) => void>(() => {});
 
   // handle icon changes when auto refresh is active
   useIconCycle(
@@ -67,14 +68,46 @@ export default function FartPanel() {
   useEffect(() => {
     TimingService.start(1000);
 
-    document.addEventListener('visibilitychange', () => {
+    function handleMessage(event: MessageEvent) {
+      if (
+        event.origin !== 'http://localhost:3000' ||
+        event.source !== window.opener ||
+        event.data?.type !== 'PUSH_DRAGON'
+      )
+        return;
+
+      handleAddRef.current({
+        code: event.data.code,
+        instances: event.data.instances,
+        enabled: event.data.enabled,
+        tod: null,
+      });
+    }
+
+    function handleVisibilityChange() {
       if (document.hidden) {
         TimingService.stop();
       } else {
         TimingService.notify();
         TimingService.start(1000);
       }
-    });
+    }
+
+    window.addEventListener('message', handleMessage);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    window.opener?.postMessage(
+      {
+        type: 'FART_READY',
+      },
+      'http://localhost:3000',
+    );
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      TimingService.stop();
+    };
   }, []);
 
   // If we have no dragons to refresh, auto-refresh should always be false.
@@ -114,23 +147,31 @@ export default function FartPanel() {
 
         // not a frozen, hidden or adult dragon
         if (data.acceptable) {
-          const orderedList = [
-            ...listOfDragons,
-            {
-              code: dragon.code,
-              instances: dragon.instances,
-              tod: data.tod,
-              enabled: true,
-            },
-          ];
+          setListOfDragons((currentList) => {
+            // The message listener is registered once, so avoid using the
+            // potentially stale list captured by handleAdd.
+            if (isCodeInList(currentList, dragon.code)) {
+              return currentList;
+            }
 
-          // https://stackoverflow.com/a/58748962
-          orderedList.sort(
-            ({ tod: a }, { tod: b }) =>
-              (a !== null ? a : Infinity) - (b !== null ? b : Infinity),
-          );
+            const orderedList = [
+              ...currentList,
+              {
+                code: dragon.code,
+                instances: dragon.instances,
+                tod: data.tod,
+                enabled: true,
+              },
+            ];
 
-          setListOfDragons(orderedList);
+            // https://stackoverflow.com/a/58748962
+            orderedList.sort(
+              ({ tod: a }, { tod: b }) =>
+                (a !== null ? a : Infinity) - (b !== null ? b : Infinity),
+            );
+
+            return orderedList;
+          });
           setError(null);
           setAutorefresh(false);
         } else {
@@ -148,6 +189,8 @@ export default function FartPanel() {
 
     void add();
   }
+
+  handleAddRef.current = handleAdd;
 
   function toggleAutorefresh(value: boolean) {
     // if there's no dragons in the list, instant false
