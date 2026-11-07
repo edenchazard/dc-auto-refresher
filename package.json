@@ -7,7 +7,6 @@
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "autoprefixer": "10.4.14",
@@ -47,7 +46,7 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^17.0.13",
+    "@types/node": "^26.6.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@typescript-eslint/eslint-plugin": "^8.72.1",
