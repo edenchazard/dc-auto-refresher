@@ -70,11 +70,12 @@ export default function FartPanel() {
 
     function handleMessage(event: MessageEvent) {
       if (
-        event.origin !== 'http://localhost:3000' ||
+        event.origin !== process.env.NEXT_PUBLIC_POST_MESSAGE_ORIGIN ||
         event.source !== window.opener ||
         event.data?.type !== 'PUSH_DRAGON'
-      )
+      ) {
         return;
+      }
 
       handleAddRef.current({
         code: event.data.code,
@@ -100,7 +101,7 @@ export default function FartPanel() {
       {
         type: 'FART_READY',
       },
-      'http://localhost:3000',
+      process.env.NEXT_PUBLIC_POST_MESSAGE_ORIGIN,
     );
 
     return () => {
