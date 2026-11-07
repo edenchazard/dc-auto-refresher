@@ -1,5 +1,4 @@
 import { Metadata, type Viewport } from 'next';
-import pkg from '../../package.json';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import './globals.css';
@@ -48,11 +47,9 @@ export default function RootLayout({
             <main className="flex-1 mt-1 p-0 flex flex-col gap-3 [&>section:not(#add-dragon)]:m-2 minsz:px-3">
               {children}
             </main>
-            <footer className="text-center my-4">
-              v{pkg.version} &copy; eden chazard
-            </footer>
+            <footer className="text-center my-4">&copy; eden chazard</footer>
           </div>
-        </div> 
+        </div>
       </body>
     </html>
   );
