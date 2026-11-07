@@ -7,20 +7,19 @@
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
-    "next": "^13.4.9",
+    "next": "16.4.5",
     "postcss": "8.4.24",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-time-picker": "^6.2.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-time-picker": "^8.1.0",
     "react-tooltip": "^5.21.5",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.6",
-    "usehooks-ts": "^2.9.1",
+    "usehooks-ts": "^3.1.1",
     "worker-timers": "^7.1.1"
   },
   "scripts": {
@@ -29,7 +28,7 @@
     "build": "next build",
     "start": "next start",
     "ts:check": "tsc --noEmit",
-    "lint": "next lint",
+    "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write .",
     "fix": "npm run lint:fix && npm run format"
@@ -47,13 +46,13 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^17.0.13",
-    "@types/react": "^17.0.38",
-    "@types/react-dom": "^17.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
     "autoprefixer": "^10.4.2",
-    "eslint": "8.44.0",
-    "eslint-config-next": "13.4.7",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.5",
     "eslint-config-prettier": "^8.8.0",
     "postcss": "^8.4.5",
     "prettier": "^3.0.3"
@@ -63,5 +62,9 @@
     "@fortawesome/fontawesome-svg-core": true,
     "@fortawesome/free-brands-svg-icons": true,
     "@fortawesome/free-solid-svg-icons": true
+  },
+  "overrides": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
   }
 }

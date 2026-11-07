@@ -56,7 +56,7 @@ export default function CopyButton({
       try {
         await navigator.clipboard.writeText(copyText);
         updateButton('Copied!');
-      } catch (ex) {
+      } catch {
         updateButton('Error :(');
       }
     })();
