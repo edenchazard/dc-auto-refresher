@@ -2,11 +2,12 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { getListFromString } from '../utils/functions';
 interface Props {
-  params: { list?: string };
-  searchParams: Record<string, string | string[] | undefined>;
+  params: Promise<{ list?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export async function generateMetadata({ searchParams }: Props) {
+export async function generateMetadata(props: Props) {
+  const searchParams = await props.searchParams;
   let meta: Metadata = {};
 
   if (searchParams.list !== undefined) {
