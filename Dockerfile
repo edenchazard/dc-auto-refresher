@@ -1,11 +1,11 @@
 # Install dependencies separately so source changes do not invalidate this layer.
-FROM node:lts-slim AS deps
+FROM node:26-bookworm-slim AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
 # Build without deployment-specific variables or secrets.
-FROM node:lts-slim AS build
+FROM node:26-bookworm-slim AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG NEXT_PUBLIC_BASE_URL=/dc/auto-refresher
@@ -15,12 +15,10 @@ COPY . .
 RUN npm run build
 
 # Run the standalone Next.js server.
-FROM node:lts-slim AS final
+FROM node:26-bookworm-slim AS final
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV HOSTNAME=0.0.0.0
-ENV PORT=3000
 
 RUN addgroup --system --gid 1001 nodejs \
     && adduser --system --uid 1001 nextjs
@@ -30,7 +28,5 @@ COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
-
-EXPOSE 3000
 
 CMD ["node", "server.js"]
