@@ -1,11 +1,14 @@
 import { useEffect } from 'react';
 import { getListFromString } from '../utils/functions';
 import type { Dragon } from '../app/types';
+import { useRouter } from 'next/navigation';
 
 export default function useParseListPreset(
   setListOfDragons: (list: Dragon[]) => void,
   replaceHistory = true,
 ) {
+  const router = useRouter();
+  
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const list = query.get('list');
@@ -21,7 +24,8 @@ export default function useParseListPreset(
     }
 
     // Remove list from URL
-    if (replaceHistory)
-      window.history.replaceState('', '', window.location.pathname);
+    if (replaceHistory){
+      router.replace('/');
+    }
   }, [setListOfDragons, replaceHistory]);
 }

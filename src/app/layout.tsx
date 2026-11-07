@@ -52,7 +52,7 @@ export default function RootLayout({
               v{pkg.version} &copy; eden chazard
             </footer>
           </div>
-        </div>
+        </div> 
       </body>
     </html>
   );
