@@ -163,12 +163,12 @@ export default function FartPanel() {
   }
 
   function handleUpdateDragon(index: number, val: number) {
-    listOfDragons[index] = {
-      ...listOfDragons[index],
-      instances: val,
-    };
     setAutorefresh(false);
-    setListOfDragons([...listOfDragons]);
+    setListOfDragons(
+      listOfDragons.map((dragon, i) =>
+        i === index ? { ...dragon, instances: val } : dragon,
+      ),
+    );
   }
 
   function handleRemove(index: number) {
@@ -176,9 +176,9 @@ export default function FartPanel() {
   }
 
   function removeDragon(index: number) {
-    const removed = listOfDragons.splice(index, 1);
-    setListOfDragons([...listOfDragons]);
-    checkingQueue.delete(removed[0].code);
+    const removed = listOfDragons[index];
+    setListOfDragons(listOfDragons.filter((_, i) => i !== index));
+    if (removed) checkingQueue.delete(removed.code);
   }
 
   function handleImageChange(code: string) {

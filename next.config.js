@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    agentUpgrade: 'latest',
+  },
   basePath: process.env.NEXT_PUBLIC_BASE_URL || undefined,
   typescript: {
     // !! WARN !!

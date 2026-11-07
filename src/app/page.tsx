@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { getListFromString } from '../utils/functions';
+import ClientFartPanel from '../components/ClientFartPanel';
 interface Props {
   params: Promise<{ list?: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -40,9 +40,5 @@ export async function generateMetadata(props: Props) {
 }
 
 export default function Page() {
-  const FartPanel = dynamic(
-    async () => await import('../components/FartPanel'),
-    { ssr: false },
-  );
-  return <FartPanel />;
+  return <ClientFartPanel />;
 }

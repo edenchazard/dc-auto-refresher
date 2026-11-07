@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export enum ErrorType {
   error = 1,
@@ -34,14 +34,11 @@ export function ErrorDisplay({
   done,
   ...props
 }: ErrorDisplayProps) {
-  const [, setVisible] = useState(false);
-
   useEffect(() => {
     // hide error after x miliseconds if nohide disabled
     if (error === null) return;
 
     if (error.noHide !== true) {
-      setVisible(true);
       const timeout = setTimeout(() => {
         done(null);
       }, hideAfter);

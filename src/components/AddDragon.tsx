@@ -54,7 +54,7 @@ export default function AddDragon({
     setTOD(null);
   }
 
-  function handlePaste(e: ClipboardEvent) {
+  function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
     e.preventDefault();
 
     if (!e.clipboardData) {

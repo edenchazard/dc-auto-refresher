@@ -1,6 +1,7 @@
-import { Metadata } from 'next';
+import { Metadata, type Viewport } from 'next';
 import pkg from '../../package.json';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import 'react-tooltip/dist/react-tooltip.css';
 import './globals.css';
 import Header from '../components/Header';
 
@@ -26,9 +27,13 @@ export const metadata: Metadata = {
     title: 'FART - Fast Auto-Refresher Tool for dragcave.net',
     type: 'website',
   },
+};
+
+export const viewport: Viewport = {
   colorScheme: 'light',
   themeColor: '#1e293b',
 };
+
 export default function RootLayout({
   children,
 }: {

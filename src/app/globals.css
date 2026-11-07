@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'react-tooltip/dist/react-tooltip.css';
-
 body {
   background: #15202b;
 }
