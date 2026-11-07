@@ -3,7 +3,7 @@ on:
   release:
     types: [published]
 env:
-  IMAGE_NAME: garden-of-eden
+  IMAGE_NAME: dc-auto-refresher
 jobs:
   push:
     runs-on: ubuntu-latest
