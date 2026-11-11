@@ -1,11 +1,11 @@
 # Install dependencies separately so source changes do not invalidate this layer.
-FROM node:26-bookworm-slim AS deps
+FROM node:26.13.1-trixie-slim AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
 # Build without deployment-specific variables or secrets.
-FROM node:26-bookworm-slim AS build
+FROM node:26.13.1-trixie-slim AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG NEXT_PUBLIC_BASE_URL=/dc/auto-refresher
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Run the standalone Next.js server.
-FROM node:26-bookworm-slim AS final
+FROM node:26.13.1-trixie-slim AS final
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
