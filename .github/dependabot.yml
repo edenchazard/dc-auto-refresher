@@ -1,44 +1,61 @@
 version: 2
 updates:
   - package-ecosystem: docker-compose
-    directory: '/'
+    directory: "/"
     schedule:
       interval: weekly
       day: saturday
-      time: '08:00'
+      time: "08:00"
       timezone: Europe/London
     labels:
       - dependencies
       - docker-compose
 
   - package-ecosystem: docker
-    directory: '/'
+    directory: "/"
     schedule:
       interval: weekly
       day: saturday
-      time: '08:00'
+      time: "08:00"
       timezone: Europe/London
     labels:
       - dependencies
       - docker
 
   - package-ecosystem: npm
-    directory: '/'
+    directory: "/"
     schedule:
       interval: weekly
       day: saturday
-      time: '08:00'
+      time: "08:00"
       timezone: Europe/London
     labels:
       - dependencies
       - npm
+    groups:
+      fontawesome:
+        patterns:
+          - \@fortawesome/*
+      react:
+        patterns:
+          - react
+          - react-dom
+          - \@types/react*
+      eslint:
+        patterns:
+          - \*eslint*
+      css:
+        patterns:
+          - tailwindcss
+          - postcss
+          - \@tailwindcss/postcss
 
   - package-ecosystem: github-actions
-    directory: '/'
+    directory: "/"
     schedule:
       interval: weekly
       day: saturday
-      time: '08:00'
+      time: "08:00"
       timezone: Europe/London
     labels:
       - dependencies
