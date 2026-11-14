@@ -1,9 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = Number(process.env.PLAYWRIGHT_PORT ?? 3101);
-const DRAGCAVE_API_URL =
-  process.env.DRAGCAVE_API_URL ?? 'http://dragcave-api/api/v2';
-const BASE_URL = `http://127.0.0.1:${PORT}`;
+const baseUrl = `http://127.0.0.1:3101`;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -13,7 +10,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'list',
   use: {
-    baseURL: BASE_URL,
+    baseURL: baseUrl,
     trace: 'on-first-retry',
   },
   projects: [
@@ -21,19 +18,27 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
   ],
   webServer: [
     {
-      command: `npm run dev -- --hostname 127.0.0.1 --port ${PORT}`,
-      url: BASE_URL,
+      command: `npm run dev -- --hostname 127.0.0.1 --port 3101`,
+      url: baseUrl,
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
       env: {
         API_KEY: 'test-api-key',
-        DRAGCAVE_API_URL,
+        DRAGCAVE_API_URL: process.env.DRAGCAVE_API_URL,
         NEXT_DIST_DIR: '.next-e2e',
         NEXT_PUBLIC_BASE_URL: '',
-        NEXT_PUBLIC_POST_MESSAGE_ORIGIN: BASE_URL,
+        NEXT_PUBLIC_POST_MESSAGE_ORIGIN: baseUrl,
       },
     },
   ],
