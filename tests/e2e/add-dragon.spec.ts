@@ -1,7 +1,5 @@
 import { expect, test } from '@playwright/test';
 
-const DRAGON_CODE = 'abcde';
-
 interface CheckResponse {
   errors: string[];
   data: {
@@ -15,11 +13,13 @@ test('adds a dragon returned by the check endpoint to the list', async ({
   page,
   request,
 }) => {
+  const id = 'abcde';
+
   await request.put(
     new URL('/fixtures/dragon', process.env.DRAGCAVE_API_URL).toString(),
     {
       data: {
-        id: DRAGON_CODE,
+        id,
         name: 'Test Dragon',
         owner: 'tester',
         start: '2026-11-14T00:00:00Z',
@@ -54,12 +54,12 @@ test('adds a dragon returned by the check endpoint to the list', async ({
 
   await page.goto('/');
 
-  await page.getByLabel('Code').fill(DRAGON_CODE);
+  await page.getByLabel('Code').fill(id);
 
   const checkResponse = page.waitForResponse(
     (response) =>
       response.request().method() === 'GET' &&
-      new URL(response.url()).pathname === `/api/check/${DRAGON_CODE}`,
+      new URL(response.url()).pathname === `/api/check/${id}`,
   );
   await page.getByRole('button', { name: 'Add dragon' }).click();
 
@@ -71,9 +71,7 @@ test('adds a dragon returned by the check endpoint to the list', async ({
   expect(body.errors).toEqual([]);
   expect(body.data.acceptable).toBe(true);
 
-  await expect(
-    page.getByText(`(${DRAGON_CODE})`, { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText(`(${id})`, { exact: true })).toBeVisible();
 
-  await expect(page.getByRole('img', { name: DRAGON_CODE })).toBeVisible();
+  await expect(page.getByRole('img', { name: id })).toBeVisible();
 });
