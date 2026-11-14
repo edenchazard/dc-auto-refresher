@@ -1,6 +1,29 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --breakpoint-xxs: 300px;
+  --breakpoint-minsz: 390px;
+  --breakpoint-mid-sz: 450px;
+  --breakpoint-menu-big: 309px;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 body {
   background: #15202b;
@@ -21,7 +44,7 @@ input,
 select,
 textarea,
 .react-time-picker {
-  @apply p-1 rounded-sm text-black;
+  @apply p-1 rounded-xs text-black;
 }
 .button-purple {
   @apply bg-indigo-300 text-indigo-900 hover:bg-indigo-700 hover:text-white disabled:bg-slate-300 disabled:text-black focus:bg-blue-800 focus:text-white;

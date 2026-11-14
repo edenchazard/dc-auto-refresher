@@ -22,7 +22,7 @@ export default function ShareSetup({ list }: { list: Dragon[] }) {
             readOnly
           />
           <CopyButton
-            className="button-purple min-w-[7rem] rounded-t-none xxs:rounded-l-none xxs:rounded-r"
+            className="button-purple min-w-28 rounded-t-none xxs:rounded-l-none xxs:rounded-r"
             copyText={shareLink}
           />
         </div>

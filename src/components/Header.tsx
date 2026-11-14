@@ -14,7 +14,7 @@ export default function Header() {
         <h1 className="py-2 px-3 rounded-b-sm text-center flex-1 mid-sz:text-left">
           FART
         </h1>
-        <nav className="flex flex-col items-stretch flex-grow divide-slate-500 menu-big:flex-row menu-big:divide-x menu-big:divide-x-dashed ">
+        <nav className="flex flex-col items-stretch grow divide-slate-500 menu-big:flex-row menu-big:divide-x menu-big:divide-x-dashed ">
           <HeaderLink
             link="/dc/tools"
             title="More DC Tools"
