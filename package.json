@@ -30,8 +30,8 @@
     "ts:check": "next typegen && tsc --noEmit --incremental false",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "fmt:check": "prettier --check .",
-    "format": "prettier --write .",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "test:unit": "vitest",
     "fix": "npm run lint:fix && npm run format"
   },
@@ -56,8 +56,8 @@
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.5",
     "eslint-config-prettier": "^8.8.0",
+    "oxfmt": "^0.78.0",
     "postcss": "^8.4.5",
-    "prettier": "^3.0.3",
     "vitest": "^5.1.0"
   },
   "allowScripts": {

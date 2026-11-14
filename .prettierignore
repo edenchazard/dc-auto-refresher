@@ -1,8 +1,0 @@
-.next
-node_modules
-next-env.d.ts
-package-lock.json
-bin
-build
-dist
-trash
