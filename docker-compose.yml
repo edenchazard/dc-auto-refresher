@@ -30,19 +30,17 @@ services:
       - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
       - NEXT_PUBLIC_POST_MESSAGE_ORIGIN=${NEXT_PUBLIC_POST_MESSAGE_ORIGIN}
       - API_KEY=${API_KEY}
-      - DRAGCAVE_API_URL=http://mockdragcave:3100/api/v2
+      - DRAGCAVE_API_URL=http://dragcave-api/api/v2
     depends_on:
-      mockdragcave:
+      dragcave-api:
         condition: service_healthy
     networks:
       - test
 
-  mockdragcave:
+  dragcave-api:
     build:
       context: ./tests/mock-dragcave-api
       dockerfile: Dockerfile
-    ports:
-      - 3100:3100
     networks:
       - test
 

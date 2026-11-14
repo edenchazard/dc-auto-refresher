@@ -37,7 +37,7 @@ test('adds a dragon returned by the check endpoint to the list', async ({
     parent_f: '',
     parent_m: '',
   };
-  const apiUrl = process.env.DRAGCAVE_API_URL ?? 'http://127.0.0.1:3100/api/v2';
+  const apiUrl = process.env.DRAGCAVE_API_URL ?? 'http://dragcave-api/api/v2';
   const fixtureResponse = await request.put(
     new URL('/fixtures/dragon', apiUrl).toString(),
     { data: dragonFixture },

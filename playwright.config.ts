@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 const PORT = Number(process.env.PLAYWRIGHT_PORT ?? 3101);
 const DRAGCAVE_API_URL =
-  process.env.DRAGCAVE_API_URL ?? 'http://127.0.0.1:3100/api/v2';
+  process.env.DRAGCAVE_API_URL ?? 'http://dragcave-api/api/v2';
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 
 export default defineConfig({
