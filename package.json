@@ -18,7 +18,7 @@
     "tailwindcss": "^4.3.5",
     "typescript": "5.1.6",
     "usehooks-ts": "^3.1.1",
-    "worker-timers": "^7.1.1"
+    "worker-timers": "^8.0.34"
   },
   "scripts": {
     "preview": "vite preview",
