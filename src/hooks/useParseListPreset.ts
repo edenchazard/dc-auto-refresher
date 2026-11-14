@@ -8,7 +8,7 @@ export default function useParseListPreset(
   replaceHistory = true,
 ) {
   const router = useRouter();
-  
+
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const list = query.get('list');
@@ -24,7 +24,7 @@ export default function useParseListPreset(
     }
 
     // Remove list from URL
-    if (replaceHistory){
+    if (replaceHistory) {
       router.replace('/');
     }
   }, [setListOfDragons, replaceHistory]);

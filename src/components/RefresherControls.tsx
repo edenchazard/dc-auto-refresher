@@ -105,8 +105,8 @@ export default function RefresherControls({
               disabled
                 ? 'No dragons to auto-refresh'
                 : autorefresh
-                ? 'Stop auto-refresher'
-                : 'Start auto-refresher'
+                  ? 'Stop auto-refresher'
+                  : 'Start auto-refresher'
             }
           >
             {disabled ? 'No dragons' : autorefresh ? 'Stop' : 'Start'}

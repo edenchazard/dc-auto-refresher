@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "ES2021",
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -25,11 +22,7 @@
     "incremental": true,
     "resolveJsonModule": true
   },
-  "exclude": [
-    "node_modules",
-    "public",
-    ".devcontainer"
-  ],
+  "exclude": ["node_modules", "public", ".devcontainer"],
   "include": [
     "**/*.ts",
     "**/*.tsx",

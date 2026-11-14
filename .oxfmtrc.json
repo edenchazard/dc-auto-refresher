@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": true,
+  "trailingComma": "all",
+  "singleQuote": true,
+  "singleAttributePerLine": true,
+  "printWidth": 80,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    ".next",
+    "node_modules",
+    "package-lock.json",
+    "bin",
+    "build",
+    "dist",
+    "trash"
+  ]
+}
