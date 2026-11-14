@@ -66,18 +66,16 @@ function checkDragons(dragons: Record<string, APIDragon>): void {
   }
 }
 
-const DEFAULT_BASE_URL = 'https://dragcave.net/api/v2';
-
 class DragCaveAPIWrapper {
   private readonly http: AxiosInstance;
 
   constructor(
     private readonly apiKey: string,
     // Tests can point this at a local mock server.
-    baseURL = process.env.DRAGCAVE_API_BASE_URL ?? DEFAULT_BASE_URL,
+    apiURL = process.env.DRAGCAVE_API_URL,
   ) {
     this.http = axios.create({
-      baseURL,
+      baseURL: apiURL,
       headers: {
         'User-Agent': 'DragCave API Wrapper',
         Authorization: `Bearer ${apiKey}`,

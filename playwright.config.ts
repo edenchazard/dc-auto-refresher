@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = Number(process.env.PLAYWRIGHT_PORT ?? 3101);
-const MOCK_PORT = Number(process.env.MOCK_DRAGCAVE_PORT ?? 3100);
+const DRAGCAVE_API_URL = 'http://127.0.0.1:3100/api/v2';
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 
 export default defineConfig({
@@ -24,11 +24,11 @@ export default defineConfig({
   webServer: [
     {
       command: 'node tests/mock-dragcave-api.mjs',
-      url: `http://127.0.0.1:${MOCK_PORT}/health`,
+      url: new URL('/health', DRAGCAVE_API_URL).toString(),
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,
       env: {
-        MOCK_DRAGCAVE_PORT: String(MOCK_PORT),
+        DRAGCAVE_API_URL,
       },
     },
     {
@@ -38,7 +38,7 @@ export default defineConfig({
       timeout: 120_000,
       env: {
         API_KEY: 'test-api-key',
-        DRAGCAVE_API_BASE_URL: `http://127.0.0.1:${MOCK_PORT}/api/v2`,
+        DRAGCAVE_API_URL,
         NEXT_DIST_DIR: '.next-e2e',
         NEXT_PUBLIC_BASE_URL: '',
         NEXT_PUBLIC_POST_MESSAGE_ORIGIN: BASE_URL,
