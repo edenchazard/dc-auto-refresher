@@ -10,7 +10,7 @@
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "axios": "^1.21.1",
-    "next": "16.4.5",
+    "next": "16.4.6",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "react-time-picker": "^8.1.0",
