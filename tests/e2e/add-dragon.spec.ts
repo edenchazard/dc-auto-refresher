@@ -1,14 +1,5 @@
 import { expect, test } from '@playwright/test';
 
-interface CheckResponse {
-  errors: string[];
-  data: {
-    acceptable: boolean;
-    justHatched: boolean;
-    tod: number | null;
-  };
-}
-
 test('adds a dragon returned by the check endpoint to the list', async ({
   page,
   request,
@@ -67,7 +58,7 @@ test('adds a dragon returned by the check endpoint to the list', async ({
 
   expect(response.status()).toBe(200);
 
-  const body = (await response.json()) as CheckResponse;
+  const body = await response.json();
   expect(body.errors).toEqual([]);
   expect(body.data.acceptable).toBe(true);
 

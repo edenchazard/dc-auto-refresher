@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 
-const host = process.env.HOST ?? '127.0.0.1';
-const port = Number(process.env.PORT ?? 3100);
+const host = '0.0.0.0';
+const port = 80;
 
 // Fixtures live only in this server process and are reset when it restarts.
 const dragons = new Map();
