@@ -1,9 +1,7 @@
 import { createServer } from 'node:http';
 
-const apiUrl = new URL(
-  process.env.DRAGCAVE_API_URL ?? 'http://127.0.0.1:3100/api/v2',
-);
-const port = Number(apiUrl.port || 80);
+const host = process.env.HOST ?? '127.0.0.1';
+const port = Number(process.env.PORT ?? 3100);
 
 // A young dragon that is eligible for auto-refreshing.
 const dragons = {
@@ -56,8 +54,8 @@ const server = createServer((req, res) => {
   );
 });
 
-server.listen(port, apiUrl.hostname, () => {
-  console.log(`Mock DragCave API listening on ${apiUrl.origin}`);
+server.listen(port, host, () => {
+  console.log(`Mock DragCave API listening on http://${host}:${port}`);
 });
 
 function shutdown() {

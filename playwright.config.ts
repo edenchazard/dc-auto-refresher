@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = Number(process.env.PLAYWRIGHT_PORT ?? 3101);
-const DRAGCAVE_API_URL = 'http://127.0.0.1:3100/api/v2';
+const DRAGCAVE_API_URL =
+  process.env.DRAGCAVE_API_URL ?? 'http://127.0.0.1:3100/api/v2';
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 
 export default defineConfig({
@@ -22,15 +23,6 @@ export default defineConfig({
     },
   ],
   webServer: [
-    {
-      command: 'node tests/mock-dragcave-api.mjs',
-      url: new URL('/health', DRAGCAVE_API_URL).toString(),
-      reuseExistingServer: !process.env.CI,
-      timeout: 30_000,
-      env: {
-        DRAGCAVE_API_URL,
-      },
-    },
     {
       command: `npm run dev -- --hostname 127.0.0.1 --port ${PORT}`,
       url: BASE_URL,
