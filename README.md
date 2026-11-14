@@ -53,6 +53,7 @@ docker compose exec testapp npm run fmt:check
 docker compose exec testapp npm run lint
 docker compose exec testapp npm run ts:check
 docker compose exec testapp npm run test:unit -- --run
+docker compose exec testapp npm run test:e2e
 ```
 
 `app` and `testapp` share the `node_modules` volume. If you change dependencies, recreate it with `docker compose down -v`.

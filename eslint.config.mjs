@@ -22,6 +22,7 @@ const eslintConfig = defineConfig([
   eslintConfigPrettier,
   globalIgnores([
     '**/.next/**',
+    '**/.next-e2e/**',
     '**/node_modules/**',
     '**/bin/**',
     '**/build/**',
