@@ -1,38 +1,62 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-body {
-  background: #15202b;
-}
-.react-time-picker--enabled {
-  background: #fff;
-  color: #000;
-}
-.react-time-picker__wrapper {
-  border: 0px none !important;
-}
-/* fixes bug with page stretching on mobile because of timepicker */
-#root {
-  @apply overflow-x-hidden;
-}
-/* apply defaults */
-input,
-select,
-textarea,
-.react-time-picker {
-  @apply p-1 rounded-sm text-black;
-}
-.button-purple {
-  @apply bg-indigo-300 text-indigo-900 hover:bg-indigo-700 hover:text-white disabled:bg-slate-300 disabled:text-black focus:bg-blue-800 focus:text-white;
+@theme {
+  --breakpoint-xxs: 300px;
+  --breakpoint-minsz: 390px;
+  --breakpoint-mid-sz: 450px;
+  --breakpoint-menu-big: 309px;
 }
 
-.button-purple[aria-pressed='true'] {
-  @apply text-white bg-violet-900 ring-2 ring-purple-500 ring-offset-1 ring-offset-slate-900;
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  body {
+    background: #15202b;
+  }
+  .react-time-picker--enabled {
+    background: #fff;
+    color: #000;
+  }
+  .react-time-picker__wrapper {
+    border: 0px none !important;
+  }
+  /* fixes bug with page stretching on mobile because of timepicker */
+  #root {
+    @apply overflow-x-hidden;
+  }
+  /* apply defaults */
+  input,
+  select,
+  textarea,
+  .react-time-picker {
+    @apply p-1 rounded-xs text-black bg-white;
+  }
+  .button-purple {
+    @apply bg-indigo-300 text-indigo-900 hover:bg-indigo-700 hover:text-white disabled:bg-slate-300 disabled:text-black focus:bg-blue-800 focus:text-white;
+  }
+
+  .button-purple[aria-pressed='true'] {
+    @apply text-white bg-violet-900 ring-2 ring-purple-500 ring-offset-1 ring-offset-slate-900;
+  }
+  .button-green {
+    @apply bg-teal-700 text-white hover:bg-teal-900 hover:text-white focus:bg-emerald-900 focus:text-white;
+  }
 }
-.button-green {
-  @apply bg-teal-700 text-white hover:bg-teal-900 hover:text-white focus:bg-emerald-900 focus:text-white;
-}
+
 @-webkit-keyframes rotating /* Safari and Chrome */ {
   from {
     -webkit-transform: rotate(0deg);
