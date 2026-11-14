@@ -70,8 +70,7 @@ class DragCaveAPIWrapper {
   private readonly http: AxiosInstance;
 
   constructor(
-    private readonly apiKey: string,
-    // Tests can point this at a local mock server.
+    readonly apiKey: string,
     apiURL = process.env.DRAGCAVE_API_URL,
   ) {
     this.http = axios.create({
