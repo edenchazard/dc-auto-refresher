@@ -27,11 +27,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "ts:check": "tsc --noEmit",
+    "ts:check": "next typegen && tsc --noEmit --incremental false",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
+    "test:unit": "vitest",
     "fix": "npm run lint:fix && npm run format"
   },
   "browserslist": {
@@ -56,7 +57,8 @@
     "eslint-config-next": "16.4.5",
     "eslint-config-prettier": "^8.8.0",
     "oxfmt": "^0.78.0",
-    "postcss": "^8.4.5"
+    "postcss": "^8.4.5",
+    "vitest": "^5.1.0"
   },
   "allowScripts": {
     "@fortawesome/fontawesome-common-types": true,

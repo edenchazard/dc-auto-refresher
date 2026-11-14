@@ -1,0 +1,35 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  code-quality-and-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: create dummy env
+        run: touch .env && cat .env.testing >> .env
+
+      - name: try building the app
+        run: |
+          docker build . --file Dockerfile --tag test \
+            --label "runnumber=11111" \
+            --build-arg VERSION=0.0.0 \
+            --build-arg COMMIT_SHA=aaaaaaaaaa
+
+      - name: start test environment
+        run: docker compose up testapp -d
+
+      - name: run formatting checks
+        run: docker compose exec -T testapp sh -c "npm run format:check"
+
+      - name: run linting
+        run: docker compose exec -T testapp sh -c "npm run lint"
+
+      - name: run typescript checks
+        run: docker compose exec -T testapp sh -c "npm run ts:check"
+
+      - name: run those tests babyyyyyy
+        run: docker compose exec -T testapp sh -c "npm run test:unit -- --run"
