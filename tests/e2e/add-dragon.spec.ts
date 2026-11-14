@@ -2,12 +2,6 @@ import { expect, test } from '@playwright/test';
 
 const DRAGON_CODE = 'abcde';
 
-// A 1x1 transparent PNG, so dragon images never hit the real DragCave site.
-const ONE_PIXEL_PNG = Buffer.from(
-  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
-  'base64',
-);
-
 interface CheckResponse {
   errors: string[];
   data: {
@@ -37,38 +31,39 @@ test('adds a dragon returned by the check endpoint to the list', async ({
     parent_f: '',
     parent_m: '',
   };
-  const apiUrl = process.env.DRAGCAVE_API_URL ?? 'http://dragcave-api/api/v2';
-  const fixtureResponse = await request.put(
-    new URL('/fixtures/dragon', apiUrl).toString(),
+
+  await request.put(
+    new URL('/fixtures/dragon', process.env.DRAGCAVE_API_URL).toString(),
     { data: dragonFixture },
   );
-  expect(fixtureResponse.status()).toBe(201);
-
-  await page.addInitScript(() => {
-    window.localStorage.setItem('garden-banner', 'false');
-  });
 
   await page.route('https://dragcave.net/image/**', (route) =>
     route.fulfill({
       status: 200,
       contentType: 'image/png',
-      body: ONE_PIXEL_PNG,
+      body: Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+        'base64',
+      ),
     }),
   );
+
+  await page.addInitScript(() => {
+    window.localStorage.setItem('garden-banner', 'false');
+  });
 
   await page.goto('/');
 
   await page.getByLabel('Code').fill(DRAGON_CODE);
 
-  const checkResponse = page.waitForResponse(
+  await page.getByRole('button', { name: 'Add dragon' }).click();
+
+  const response = await page.waitForResponse(
     (response) =>
       response.request().method() === 'GET' &&
       new URL(response.url()).pathname === `/api/check/${DRAGON_CODE}`,
   );
 
-  await page.getByRole('button', { name: 'Add dragon' }).click();
-
-  const response = await checkResponse;
   expect(response.status()).toBe(200);
 
   const body = (await response.json()) as CheckResponse;
@@ -78,5 +73,6 @@ test('adds a dragon returned by the check endpoint to the list', async ({
   await expect(
     page.getByText(`(${DRAGON_CODE})`, { exact: true }),
   ).toBeVisible();
+
   await expect(page.getByRole('img', { name: DRAGON_CODE })).toBeVisible();
 });
