@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --breakpoint-xxs: 300px;
@@ -49,7 +49,7 @@
     @apply bg-indigo-300 text-indigo-900 hover:bg-indigo-700 hover:text-white disabled:bg-slate-300 disabled:text-black focus:bg-blue-800 focus:text-white;
   }
 
-  .button-purple[aria-pressed="true"] {
+  .button-purple[aria-pressed='true'] {
     @apply text-white bg-violet-900 ring-2 ring-purple-500 ring-offset-1 ring-offset-slate-900;
   }
   .button-green {
