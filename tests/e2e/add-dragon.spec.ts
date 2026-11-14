@@ -19,7 +19,31 @@ interface CheckResponse {
 
 test('adds a dragon returned by the check endpoint to the list', async ({
   page,
+  request,
 }) => {
+  const dragonFixture = {
+    id: DRAGON_CODE,
+    name: 'Test Dragon',
+    owner: 'tester',
+    start: '2026-11-14T00:00:00Z',
+    hatch: '0',
+    grow: '0',
+    death: '0',
+    views: 1,
+    unique: 1,
+    clicks: 0,
+    gender: '',
+    hoursleft: 24,
+    parent_f: '',
+    parent_m: '',
+  };
+  const apiUrl = process.env.DRAGCAVE_API_URL ?? 'http://127.0.0.1:3100/api/v2';
+  const fixtureResponse = await request.put(
+    new URL('/fixtures/dragon', apiUrl).toString(),
+    { data: dragonFixture },
+  );
+  expect(fixtureResponse.status()).toBe(201);
+
   await page.addInitScript(() => {
     window.localStorage.setItem('garden-banner', 'false');
   });
