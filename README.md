@@ -41,3 +41,18 @@ From the project root, run the command:
 ```sh
 docker compose up -d
 ```
+
+### Tests
+
+Start the test container, then run the checks inside it:
+
+```sh
+docker compose up testapp -d
+
+docker compose exec testapp npm run fmt:check
+docker compose exec testapp npm run lint
+docker compose exec testapp npm run ts:check
+docker compose exec testapp npm run test:unit -- --run
+```
+
+`app` and `testapp` share the `node_modules` volume. If you change dependencies, recreate it with `docker compose down -v`.

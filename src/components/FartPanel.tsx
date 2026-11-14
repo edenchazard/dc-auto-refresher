@@ -191,7 +191,11 @@ export default function FartPanel() {
     void add();
   }
 
-  handleAddRef.current = handleAdd;
+  // Keep the mount-only message listener pointed at the latest handler.
+  // Refs must be updated after render, not during it.
+  useEffect(() => {
+    handleAddRef.current = handleAdd;
+  });
 
   function toggleAutorefresh(value: boolean) {
     // if there's no dragons in the list, instant false
