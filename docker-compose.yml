@@ -4,37 +4,38 @@ services:
       context: .
       dockerfile: ./Dockerfile.dev
     command: npm run dev
-    env_file:
-      - .env
-    ports:
-      - 3000:3000
     volumes:
       - .:/src
       - node_modules:/src/node_modules
+    ports:
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+      - NEXT_PUBLIC_POST_MESSAGE_ORIGIN=${NEXT_PUBLIC_POST_MESSAGE_ORIGIN}
+      - API_KEY=${API_KEY}
     networks:
       - internal
 
-  #testapp:
-  #  build:
-  #    context: .
-  #    dockerfile: ./Dockerfile.dev
-  #    args:
-  #      TESTING: 'true'
-  #  profiles:
-  #    - test
-  #  command: sh -c "tail -f /dev/null"
-  #  env_file:
-  #    - .env
-  #  environment:
-  #    BASE_URL: ${BASE_URL}
-  #  volumes:
-  #    - .:/app
-  #    - node_modules:/app/node_modules
-  #  networks:
-  #    - test
+  testapp:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+      args:
+        TESTING: 'true'
+    command: sh -c "tail -f /dev/null"
+    volumes:
+      - .:/src
+      - node_modules:/src/node_modules
+    environment:
+      - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+      - NEXT_PUBLIC_POST_MESSAGE_ORIGIN=${NEXT_PUBLIC_POST_MESSAGE_ORIGIN}
+      - API_KEY=${API_KEY}
+    networks:
+      - test
 
 volumes:
   node_modules:
+
 networks:
   internal:
-  #test:
+  test:
