@@ -36,20 +36,20 @@ updates:
     groups:
       fontawesome:
         patterns:
-          - \@fortawesome/*
+          - "@fortawesome/*"
       react:
         patterns:
-          - react
-          - react-dom
-          - \@types/react*
+          - "react"
+          - "react-dom"
+          - "@types/react*"
       eslint:
         patterns:
-          - \*eslint*
+          - "*eslint*"
       css:
         patterns:
-          - tailwindcss
-          - postcss
-          - \@tailwindcss/postcss
+          - "tailwindcss"
+          - "postcss"
+          - "@tailwindcss/postcss"
 
   - package-ecosystem: github-actions
     directory: '/'
