@@ -76,7 +76,7 @@ interface CountDownProps {
   whenDone?: () => void;
 }
 export function CountDown({ to, whenDone }: CountDownProps) {
-  const [, setTime] = useState<number>(
+  const [, setTime] = useState<number>(() =>
     differenceBetweenTwoDates(new Date(), to),
   );
 

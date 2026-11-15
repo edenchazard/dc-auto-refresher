@@ -47,7 +47,6 @@ export default function FartPanel() {
     'smartRemoval',
     true,
   );
-  const [noView, setNoView] = useSessionStorage('noView', false);
   const [error, setError] = useState<ErrorMessage>(null);
   const [showGardenBanner, setShowGardenBanner] = useLocalStorage(
     'garden-banner',
@@ -330,10 +329,6 @@ export default function FartPanel() {
           updateSmartRemoval={(value: boolean) => {
             setSmartRemoval(value);
           }}
-          noView={noView}
-          updateNoView={(value: boolean) => {
-            setNoView(value);
-          }}
         />
       </section>
       <section className="space-y-3">
@@ -380,7 +375,6 @@ export default function FartPanel() {
             dragonList={listOfDragons}
             rate={rate}
             onImageChange={handleImageChange}
-            disableViews={noView}
           />
         ) : (
           <p className="text-center">FART hasn&apos;t been started.</p>

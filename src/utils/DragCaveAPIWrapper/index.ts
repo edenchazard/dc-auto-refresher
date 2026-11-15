@@ -37,35 +37,6 @@ class DragCaveAPIError extends Error {
   }
 }
 
-// TODO add API response checking
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function checkDragons(dragons: Record<string, APIDragon>): void {
-  // Function to validate API response from dragcave
-  // Only checks the fields we need.
-  function validate(responseObj: APIDragon): boolean {
-    const props = ['grow', 'death', 'start', 'hatch', 'hoursleft'];
-
-    // check every prop and ensure it exists in the API result
-    for (const prop of props) {
-      if (!(prop in responseObj)) {
-        // as soon as one fails, short-circuit.
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  if (dragons !== undefined) {
-    // Dragon data was returned, but the API response doesn't
-    // match the layout we're expecting.
-    for (const code in dragons) {
-      if (!validate(dragons[code]))
-        throw new DragCaveAPIError(`Unexpected dragon data for ${code}`);
-    }
-  }
-}
-
 class DragCaveAPIWrapper {
   private readonly http: AxiosInstance;
 
@@ -150,8 +121,6 @@ class DragCaveAPIWrapper {
       'dragons',
     );
 
-    // checkDragons(response.data);
-
     return {
       ...response,
       // rewrite the data object to reference the single dragon
@@ -172,8 +141,6 @@ class DragCaveAPIWrapper {
         ids: codes.join(','),
       },
     );
-
-    // checkDragons(response.data);
 
     return response;
   }
