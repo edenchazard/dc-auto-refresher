@@ -14,8 +14,6 @@ interface RefresherControlsProps {
   autorefresh: boolean;
   smartRemoval: boolean;
   updateSmartRemoval: (value: boolean) => void;
-  noView: boolean;
-  updateNoView: (value: boolean) => void;
 }
 export default function RefresherControls({
   list,
@@ -25,8 +23,6 @@ export default function RefresherControls({
   autorefresh,
   smartRemoval,
   updateSmartRemoval,
-  noView,
-  updateNoView,
 }: RefresherControlsProps) {
   const disabled = !hasRefreshableDragons(list);
   return (

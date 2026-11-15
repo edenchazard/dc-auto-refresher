@@ -330,10 +330,6 @@ export default function FartPanel() {
           updateSmartRemoval={(value: boolean) => {
             setSmartRemoval(value);
           }}
-          noView={noView}
-          updateNoView={(value: boolean) => {
-            setNoView(value);
-          }}
         />
       </section>
       <section className="space-y-3">
