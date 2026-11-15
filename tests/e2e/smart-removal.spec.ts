@@ -39,14 +39,19 @@ test('smart removal removes a dragon when its image size changes', async ({
 
   await page.getByRole('button', { name: 'Start' }).click();
 
-  // Wait for the first refresh to load the original image size before
-  // pretending the dragon has grown.
+  // Force a completed load at the original size so the refresher has
+  // definitely recorded it before the image changes.
   const refresherImage = page.locator(`img[data-code="${id}"]`);
-  await expect
-    .poll(() =>
-      refresherImage.evaluate((img: HTMLImageElement) => img.naturalWidth),
-    )
-    .toBe(1);
+  const originalWidth = await refresherImage.evaluate(
+    async (img: HTMLImageElement) => {
+      await new Promise<void>((resolve) => {
+        img.addEventListener('load', () => resolve(), { once: true });
+        img.src = `${img.src.split('?')[0]}?q=${Date.now()}`;
+      });
+      return img.naturalWidth;
+    },
+  );
+  expect(originalWidth).toBe(1);
 
   useGrownImage = true;
 
