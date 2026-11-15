@@ -7,8 +7,6 @@
     "@fortawesome/free-brands-svg-icons": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@fortawesome/react-fontawesome": "^3.5.0",
-    "@types/react": "18.2.14",
-    "@types/react-dom": "18.2.6",
     "axios": "^1.21.1",
     "next": "16.4.6",
     "react": "19.3.1",
@@ -62,9 +60,5 @@
     "@fortawesome/fontawesome-svg-core": true,
     "@fortawesome/free-brands-svg-icons": true,
     "@fortawesome/free-solid-svg-icons": true
-  },
-  "overrides": {
-    "@types/react": "19.3.0",
-    "@types/react-dom": "19.3.0"
   }
 }
