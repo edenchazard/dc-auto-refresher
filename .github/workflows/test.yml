@@ -33,3 +33,6 @@ jobs:
 
       - name: run those tests babyyyyyy
         run: docker compose exec -T testapp sh -c "npm run test:unit -- --run"
+
+      - name: run end-to-end tests
+        run: docker compose exec -T -e CI=true testapp sh -c "npm run test:e2e"

@@ -57,6 +57,7 @@
     "dist/**",
     "trash/**",
     "out/**",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "**/.next-e2e/**"
   ]
 }

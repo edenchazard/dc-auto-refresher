@@ -40,9 +40,12 @@ class DragCaveAPIError extends Error {
 class DragCaveAPIWrapper {
   private readonly http: AxiosInstance;
 
-  constructor(private readonly apiKey: string) {
+  constructor(
+    readonly apiKey: string,
+    apiURL = process.env.DRAGCAVE_API_URL,
+  ) {
     this.http = axios.create({
-      baseURL: `https://dragcave.net/api/v2`,
+      baseURL: apiURL,
       headers: {
         'User-Agent': 'DragCave API Wrapper',
         Authorization: `Bearer ${apiKey}`,
