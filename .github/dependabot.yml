@@ -42,9 +42,11 @@ updates:
           - 'react'
           - 'react-dom'
           - '@types/react*'
-      eslint:
+      oxc:
         patterns:
-          - '*eslint*'
+          - 'oxlint'
+          - 'oxfmt'
+          - '@oxlint/*'
       css:
         patterns:
           - 'tailwindcss'
