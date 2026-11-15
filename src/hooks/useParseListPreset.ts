@@ -27,5 +27,5 @@ export default function useParseListPreset(
     if (replaceHistory) {
       router.replace('/');
     }
-  }, [setListOfDragons, replaceHistory]);
+  }, [setListOfDragons, replaceHistory, router]);
 }

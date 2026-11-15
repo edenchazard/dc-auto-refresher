@@ -24,7 +24,6 @@ function calculateNumberOfImages(listOfDragons: Dragon[]): number {
 interface RefresherViewProps {
   dragonList: Dragon[];
   rate: number;
-  disableViews: boolean;
   onImageChange?: (code: string) => void;
 }
 
