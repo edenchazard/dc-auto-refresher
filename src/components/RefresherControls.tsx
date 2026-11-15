@@ -15,6 +15,8 @@ interface RefresherControlsProps {
   smartRemoval: boolean;
   updateSmartRemoval: (value: boolean) => void;
 }
+
+// oxlint-disable jsx-a11y/no-static-element-interactions
 export default function RefresherControls({
   list,
   rate,
@@ -31,6 +33,12 @@ export default function RefresherControls({
         className={smartRemoval ? '' : 'opacity-70'}
         onClick={() => {
           updateSmartRemoval(!smartRemoval);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            updateSmartRemoval(!smartRemoval);
+          }
         }}
       >
         <div className={`text-white flex justify-between items-center`}>
