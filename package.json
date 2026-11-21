@@ -53,7 +53,7 @@
     "oxfmt": "^0.79.0",
     "oxlint": "1.94.0",
     "postcss": "^8.5.33",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.1"
   },
   "allowScripts": {
     "@fortawesome/fontawesome-common-types": true,
